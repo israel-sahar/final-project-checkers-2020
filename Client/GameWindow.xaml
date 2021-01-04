@@ -104,10 +104,10 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Canvas Grid.Column="1" Grid.Row="1" Name="FourInARowBord"  Width="500" Height="500" Initialized="FourInARowBord_Initialized">
+        <Canvas Grid.Column="1" Grid.Row="1" Name="CheckerBord"  Width="500" Height="500" Initialized="CheckerBord_Initialized">
             <Border BorderBrush="#673F39" BorderThickness="10">
-                <Grid Width ="{Binding ActualWidth,  ElementName=FourInARowBord}"
-                          Height="{Binding ActualHeight, ElementName=FourInARowBord}"
+                <Grid Width ="{Binding ActualWidth,  ElementName=CheckerBord}"
+                          Height="{Binding ActualHeight, ElementName=CheckerBord}"
                           Name="GameBoardGrid" Panel.ZIndex="1">
                 </Grid>
             </Border>
@@ -117,6 +117,21 @@
 
             </StackPanel>
         </Border>
+           
+            <Label FontSize="28" FontWeight="Bold" Content="Possibles Move:" Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="3" Padding="45,10" />
+       <!-- <ListBox Name="PathsButtonsList" Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="6" Background="Transparent" Margin="10">
+                
+            </ListBox>-->
+
+        <ItemsControl ItemsSource="{Binding}"
+                      Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="4" Grid.RowSpan="6" Margin="35,0,10,0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
 
         <Button Name="leaveBtn" Content="LEAVE"  Grid.Column="7" Grid.ColumnSpan="2"
                 Click="leaveBtn_Click" Style="{DynamicResource RoundedButtonStyle}"/>

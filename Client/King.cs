@@ -36,6 +36,11 @@ namespace Client
             return this.Coordinate== other.Coordinate && this.Team==other.Team &&this.IsKing==other.IsKing;
         }
 
+        public override int GetHashCode()
+        {
+            return (IsKing?1:0) + Coordinate.GetHashCode() + Team.GetHashCode();
+        }
+
         public override string ToString()
         {
             return base.ToString()+",is King";
@@ -44,18 +49,18 @@ namespace Client
         public override void CalculatePossibleMoves(Board boardGame)
         {
             OptionalPaths = new List<Path>();
-            var canEat = PiecesToEat(Coordinate, boardGame);
+            var FirstcanEat = PiecesToEat(Coordinate, boardGame);
 
-            foreach (Piece p in canEat.Keys)
+            foreach (Piece p in FirstcanEat.Keys)
             {
-                Point lastPoint = new Point(canEat[p].X + p.Coordinate.X, canEat[p].Y + p.Coordinate.Y);
+                Point lastPoint = new Point(FirstcanEat[p].X + p.Coordinate.X, FirstcanEat[p].Y + p.Coordinate.Y);
                 while (boardGame.IsCoordinateOnBoard(lastPoint) && boardGame.IsSqaureEmpty(lastPoint))
                 {
                     Path option = new Path();
                     option.AddRecord(lastPoint,p);
                     OptionalPaths.Add(option);
-                    lastPoint.Y += canEat[p].Y;
-                    lastPoint.X += canEat[p].X;
+                    lastPoint.Y += FirstcanEat[p].Y;
+                    lastPoint.X += FirstcanEat[p].X;
                 }
             }
             for (int j = 0; j < OptionalPaths.Count; j++)
@@ -63,36 +68,36 @@ namespace Client
                 Board newBoard = new Board(boardGame);
                     var pCopy = newBoard.GetPieceAt(this.Coordinate);
                     newBoard.MovePieceWithoutResult(pCopy, OptionalPaths[j].getLastPosition(), OptionalPaths[j].EatenPieces);
-                    canEat = PiecesToEat(OptionalPaths[j].getLastPosition(), newBoard);
+                    var NextcanEat = PiecesToEat(OptionalPaths[j].getLastPosition(), newBoard);
 
 
-                    foreach (Piece p in canEat.Keys)
+                    foreach (Piece p in NextcanEat.Keys)
                     {
-                        Point lastPoint = new Point(p.Coordinate.X + canEat[p].X, p.Coordinate.Y + canEat[p].Y);
+                        Point lastPoint = new Point(p.Coordinate.X + NextcanEat[p].X, p.Coordinate.Y + NextcanEat[p].Y);
                         while (newBoard.IsCoordinateOnBoard(lastPoint) && newBoard.IsSqaureEmpty(lastPoint))
                         {
                             Path newPath = new Path(OptionalPaths[j]);
                             newPath.AddRecord(lastPoint,p);
                             OptionalPaths.Add(newPath);
-                            lastPoint.Y += canEat[p].Y;
-                            lastPoint.X += canEat[p].X;
+                            lastPoint.Y += NextcanEat[p].Y;
+                            lastPoint.X += NextcanEat[p].X;
                         }
                     }
                 }
-            if (OptionalPaths.Count == 0)
+            if (FirstcanEat.Count<4)
             {
-                for (int row = -1; Math.Abs(row) == 1; row += 2)
+                for (int deltaRow = -1; Math.Abs(deltaRow) == 1; deltaRow += 2)
                 {
-                    for (int column = -1; Math.Abs(column) == 1; column += 2)
+                    for (int deltaColumn = -1; Math.Abs(deltaColumn) == 1; deltaColumn += 2)
                     {
-                        Point pointTo = new Point((int)Coordinate.X + row, (int)Coordinate.Y + column);
+                        Point pointTo = new Point((int)Coordinate.X + deltaRow, (int)Coordinate.Y + deltaColumn);
                         while (boardGame.IsCoordinateOnBoard(pointTo) &&
                                boardGame.IsSqaureEmpty(pointTo)) {
                             Path option = new Path();
                             option.AddRecord(pointTo);
                             OptionalPaths.Add(option);
-                            pointTo.Y += column;
-                            pointTo.X += row;
+                            pointTo.Y += deltaColumn;
+                            pointTo.X += deltaRow;
                         }
                     }
                 }
@@ -110,7 +115,7 @@ namespace Client
                     Point pointToCheck = new Point((int)pieceCoordinate.X + row, (int)pieceCoordinate.Y + column);
                     if (boardGame.IsCoordinateOnBoard(pointToCheck) &&
                        !boardGame.IsSqaureEmpty(pointToCheck) &&
-                        boardGame.GetPieceAt(pointToCheck).Team == Team.Opponent)
+                        boardGame.GetPieceAt(pointToCheck).Team != boardGame.GetPieceAt(pieceCoordinate).Team)
                     {
                         Point pointToMove = new Point((int)pieceCoordinate.X + row * 2, (int)pieceCoordinate.Y + column * 2);
 
@@ -122,19 +127,6 @@ namespace Client
                 }
             }
             return piecesToEat;
-        }
-
-        private bool IsDonePossibleMoves(Board boardGame)
-        {
-            foreach (Path path in OptionalPaths)
-            {
-                Board newBoard = new Board(boardGame);
-                var p=newBoard.GetPieceAt(this.Coordinate);
-                newBoard.MovePiece(p, path.getLastPosition(), path.EatenPieces);
-
-                if (PiecesToEat(path.getLastPosition(), newBoard).Count != 0) return false;
-            }
-            return true;
         }
     }
 }

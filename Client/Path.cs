@@ -72,5 +72,31 @@ namespace Client
                 if (!PathOfPiece.Contains(p)) return false;
             return true;
         }
+
+        public override bool Equals(object obj)
+        {
+            Path p = obj as Path;
+            if (p == null) return false;
+            if (p.EatenPieces.Count != this.EatenPieces.Count || p.PathOfPiece.Count != this.PathOfPiece.Count) return false;
+            foreach (Point point in p.PathOfPiece) {
+                if (!this.PathOfPiece.Contains(point)) return false;
+            }
+            foreach (Piece piece in p.EatenPieces)
+            {
+                if (!this.EatenPieces.Contains(piece)) return false;
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 0;
+            foreach (Point p in PathOfPiece)
+                hash += p.GetHashCode();
+            foreach (Piece p in EatenPieces)
+                hash += p.GetHashCode();
+            return hash;
+        }
+
     }
 }

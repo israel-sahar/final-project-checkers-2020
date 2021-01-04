@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Client.Board</StartupObject>
+    <StartupObject>Client.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

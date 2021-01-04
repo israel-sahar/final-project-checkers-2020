@@ -13,5 +13,10 @@ namespace Client
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            GameWindow st = new GameWindow();
+            st.Show();
+        }
     }
 }

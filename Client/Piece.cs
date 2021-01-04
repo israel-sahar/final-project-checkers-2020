@@ -15,5 +15,9 @@ namespace Client
         }
         public abstract void CalculatePossibleMoves(Board boardGame);
 
+        public override int GetHashCode()
+        {
+            return Team.GetHashCode() + Coordinate.GetHashCode();
+        }
     }
 }
