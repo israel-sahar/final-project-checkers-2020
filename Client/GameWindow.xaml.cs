@@ -182,7 +182,7 @@ namespace Client
 
             MakeAnimationMove(GetPosition(chosenPiece), path, res.Item2);
 
-            if (Game.GetPieceAt(GetPosition(chosenPiece)).IsKing) AddKingIcon(Game.GetPieceAt(GetPosition(chosenPiece)).Coordinate);
+            if (!res.Item2 && Game.GetPieceAt(GetPosition(chosenPiece)).IsKing) AddKingIcon(Game.GetPieceAt(GetPosition(chosenPiece)).Coordinate);
 
             chosenPiece = null;
 
@@ -240,7 +240,7 @@ namespace Client
             var res = Game.MovePiece(reqPiece.Item1, reqPiece.Item2);
             MakeAnimationMove(location, reqPiece.Item2, res.Item2);
 
-            if (reqPiece.Item1.IsKing) AddKingIcon(reqPiece.Item1.Coordinate);
+            if (!res.Item2 && reqPiece.Item1.IsKing) AddKingIcon(reqPiece.Item1.Coordinate);
             MyTurn = true;
             //do something with result
         }
