@@ -11,12 +11,12 @@ namespace Client
     public class Path
     {
         public List<Point> PathOfPiece { get; set; }
-        public List<Piece> EatenPieces { get; set; }
+        public List<Point> EatenPieces { get; set; }
 
         public Path()
         {
             PathOfPiece = new List<Point>();
-            EatenPieces = new List<Piece>();
+            EatenPieces = new List<Point>();
         }
 
         public Path(Path path)
@@ -24,19 +24,15 @@ namespace Client
             PathOfPiece = new List<Point>();
             foreach (Point p in path.PathOfPiece)
                 PathOfPiece.Add(new Point(p.X, p.Y));
-            EatenPieces = new List<Piece>();
-            foreach (Piece p in path.EatenPieces)
-                if (p.IsKing)
-                    EatenPieces.Add(new King((King)p));
-                else
-                    EatenPieces.Add(new Checker((Checker)p));
-
+            EatenPieces = new List<Point>();
+            foreach (Point p in path.EatenPieces)
+                    EatenPieces.Add(new Point(p.X, p.Y));
         }
 
         public void AddRecord(Point path, Piece eaten)
         {
             PathOfPiece.Add(path);
-            EatenPieces.Add(eaten);
+            EatenPieces.Add(new Point(eaten.Coordinate.X, eaten.Coordinate.Y));
         }
 
         public void AddRecord(Point path)
@@ -60,8 +56,8 @@ namespace Client
             foreach (Point p in PathOfPiece)
                 str += $"({p.X},{p.Y}), ";
             str += "\nThe Pieces It Eating:\n";
-            foreach (Piece p in EatenPieces)
-                str += $"({p.Coordinate.X},{p.Coordinate.Y}), ";
+            foreach (Point p in EatenPieces)
+                str += $"({p.X},{p.Y}), ";
             str += "\n==========\n";
             return str;
         }
@@ -81,7 +77,7 @@ namespace Client
             foreach (Point point in p.PathOfPiece) {
                 if (!this.PathOfPiece.Contains(point)) return false;
             }
-            foreach (Piece piece in p.EatenPieces)
+            foreach (Point piece in p.EatenPieces)
             {
                 if (!this.EatenPieces.Contains(piece)) return false;
             }
@@ -93,7 +89,7 @@ namespace Client
             int hash = 0;
             foreach (Point p in PathOfPiece)
                 hash += p.GetHashCode();
-            foreach (Piece p in EatenPieces)
+            foreach (Point p in EatenPieces)
                 hash += p.GetHashCode();
             return hash;
         }

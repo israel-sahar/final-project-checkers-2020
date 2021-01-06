@@ -26,13 +26,11 @@ namespace Client
         public int BoardSize { get; set; }
         public bool MyTurn { get; set; }
 
-        private Ellipse[,] UiBoard;
-        //private Ellipse[,] FullBoardAnimation;
-       private Board Game { get; set; }
+        private Board Game { get; set; }
 
         private bool isOffline;
         private int chosenLevel;
-        
+
         //colors
         private SolidColorBrush myColor;
         private SolidColorBrush opponentColor;
@@ -50,35 +48,23 @@ namespace Client
             this.chosenLevel = chosenLevel;
             MyTurn = v;
             Init();
-
-
         }
 
-        public GameWindow() {
+        public GameWindow()
+        {
             BoardSize = 10;
             MyTurn = true;
             Init();
         }
 
-        private void Init() {
+        private void Init()
+        {
             myColor = (MyTurn) ? redColorPiece : blueColorPiece;
             opponentColor = (MyTurn) ? blueColorPiece : redColorPiece;
 
             Game = new Board(BoardSize, (MyTurn) ? Direction.Down : Direction.Up);
 
-            UiBoard = new Ellipse[BoardSize, BoardSize];
-            //FullBoardAnimation = new Ellipse[BoardSize, BoardSize];
-            for (int i = 0; i < BoardSize; i++)
-            {
-                for (int j = 0; j < BoardSize; j++)
-                {
-
-                    UiBoard[i, j] = null;
-                    //FullBoardAnimation[i, j] = null;
-                }
-            }
             InitializeComponent();
-
         }
 
         private void CheckerBord_Initialized(object sender, EventArgs e)
@@ -97,13 +83,10 @@ namespace Client
                 {
                     Rectangle square = new Rectangle
                     {
-                        Fill = (i % 2 == 0 && j % 2 == 0)||(i % 2 != 0 && j % 2 !=0) ? brownBrush : blackBrush
+                        Fill = (i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0) ? brownBrush : blackBrush
                     };
-                    //if(square.Fill.Equals(blackBrush)) square.MouseDown += ClickSquare;
-                    Grid.SetColumn(square, i);
-                    Grid.SetRow(square, j);
 
-                    GameBoardGrid.Children.Add(square);
+                    AddObject(square, new Point(i, j));
                 }
             }
 
@@ -119,20 +102,17 @@ namespace Client
                 if (i % 2 == 1) j = 0;
                 for (; j < BoardSize; j += 2)
                 {
-                Ellipse pieces = new Ellipse
+                    Ellipse pieces = new Ellipse
                     {
-                        Fill = MyTurn?myColor:opponentColor,
+                        Fill = MyTurn ? myColor : opponentColor,
                         Margin = new Thickness(5),
                         Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("White")),
-                        StrokeThickness = 1
+                        StrokeThickness = 1,
+                        Tag = false
                     };
 
-                    if(pieces.Fill == myColor) pieces.MouseDown += ClickPiece;
-                    Grid.SetColumn(pieces, j);
-                    Grid.SetRow(pieces, i);
-
-                    UiBoard[i, j] = pieces;
-                    GameBoardGrid.Children.Add(pieces);
+                    if (pieces.Fill == myColor) pieces.MouseDown += ClickPiece;
+                    AddObject(pieces, new Point(i, j));
                 }
             }
 
@@ -148,15 +128,12 @@ namespace Client
                         Fill = MyTurn ? opponentColor : myColor,
                         Margin = new Thickness(5),
                         Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("White")),
-                        StrokeThickness = 1
+                        StrokeThickness = 1,
+                        Tag = false
                     };
-                    
-                    if (pieces.Fill == myColor) pieces.MouseDown += ClickPiece;
-                    Grid.SetColumn(pieces, j);
-                    Grid.SetRow(pieces, i);
 
-                    UiBoard[i, j] = pieces;
-                    GameBoardGrid.Children.Add(pieces);
+                    if (pieces.Fill == myColor) pieces.MouseDown += ClickPiece;
+                    AddObject(pieces, new Point(i, j));
                 }
             }
         }
@@ -165,145 +142,142 @@ namespace Client
         private void ClickPiece(object sender, MouseButtonEventArgs e)
         {
             if (MyTurn == false) return;
-             Ellipse piece = sender as Ellipse;
-            Point position = GetPosition(piece);
 
-                   chosenPiece = piece;
-                Piece p = Game.GetPieceAt(position);
-                p.CalculatePossibleMoves(Game);
-                List<Path> paths = p.OptionalPaths;
+            Point position = GetPosition(sender);
+            chosenPiece = GetEllipse(position);
+
+            Piece selectedPiece = Game.GetPieceAt(position);
+            selectedPiece.CalculatePossibleMoves(Game);
+            List<Path> paths = selectedPiece.OptionalPaths;
+
             btnGroup = new ObservableCollection<Button>();
-            for (int i = 0; i < paths.Count; i++) {
+            for (int i = 0; i < paths.Count; i++)
+            {
                 Button b = new Button()
                 {
                     Tag = paths[i],
                     Content = i + 1,
                     Style = (Style)this.Resources["RoundedButtonStyle"],
-                Padding = new Thickness(15),
-                Margin = new Thickness(3)
-            };
+                    Padding = new Thickness(15),
+                    Margin = new Thickness(3)
+                };
                 b.MouseEnter += ShowPath;
                 b.MouseLeave += HidePath;
                 b.Click += MakeMove;
 
-                    btnGroup.Add(b);
-                
-                }
+                btnGroup.Add(b);
+
+            }
             DataContext = btnGroup;
         }
 
         //Piece to move
         private Ellipse chosenPiece;
-        Point currentPositionPiece;
         private void MakeMove(object sender, RoutedEventArgs e)
         {
             Path path = ((Button)sender).Tag as Path;
             btnGroup.Clear();
-            //make animatin
+
+            (Result, bool) res = Game.MovePiece(Game.GetPieceAt(GetPosition(chosenPiece)), path);
+
+            MakeAnimationMove(GetPosition(chosenPiece), path, res.Item2);
+
+            if (Game.GetPieceAt(GetPosition(chosenPiece)).IsKing) AddKingIcon(Game.GetPieceAt(GetPosition(chosenPiece)).Coordinate);
+
+            chosenPiece = null;
 
             //switch turns
-            currentPositionPiece = GetPosition(chosenPiece);
-            (Result,bool) res = Game.MovePiece(Game.GetPieceAt(GetPosition(chosenPiece)), path);
-            //Grid.SetZIndex(chosenPiece, 3);
-            UiBoard[(int)currentPositionPiece.X, (int)currentPositionPiece.Y] = null;
-            if (res.Item2)
-            {
-                GameBoardGrid.Children.Remove(chosenPiece);
-            }
+            MyTurn = false;
+            if (res.Item1 == Result.Continue)
+                MakeComputerTurn();
+            else
+                Console.WriteLine("Result!");
+        }
+
+        private void MakeAnimationMove(Point currentPosition, Path path, bool isBurn)
+        {
+            if (isBurn)
+                RemoveEllipse(currentPosition);
             else
             {
-                UiBoard[(int)(path.getLastPosition().X), (int)(path.getLastPosition().Y)] = chosenPiece;
-
                 for (int i = 0; i < path.PathOfPiece.Count; i++)
                 {
-                    // toWhereOnCanvas = FullBoardAnimation[(int)p.X, (int)p.Y].TranslatePoint(new Point(0, 0), CheckerBord);
-                    //FromWhereOnCanvas = FullBoardAnimation[(int)currentPositionPiece.X, (int)currentPositionPiece.Y].TranslatePoint(new Point(0, 0), CheckerBord);
-
-                    GameBoardGrid.Children.Remove(chosenPiece);
-                    Grid.SetColumn(chosenPiece, (int)path.PathOfPiece[i].Y);
-                    Grid.SetRow(chosenPiece, (int)path.PathOfPiece[i].X);
-                    GameBoardGrid.Children.Add(chosenPiece);
+                    MoveEllipse(currentPosition, path.PathOfPiece[i]);
+                    currentPosition = path.PathOfPiece[i];
                     if (path.EatenPieces.Count != 0)
                     {
-                        GameBoardGrid.Children.Remove(UiBoard[(int)(path.EatenPieces[0].Coordinate.X), (int)(path.EatenPieces[0].Coordinate.Y)]);
-                        UiBoard[(int)(path.EatenPieces[0].Coordinate.X), (int)(path.EatenPieces[0].Coordinate.Y)] = null;
+                        RemoveEllipse(path.EatenPieces[0]);
                         path.EatenPieces.RemoveAt(0);
                     }
                 }
-                //do something with result
             }
-            chosenPiece = null;
-            MyTurn = false;
-            MakeComputerTurn();
         }
 
         private void MakeComputerTurn()
         {
             var camputerPieces = Game.OpponentTeamPieces;
-            (Piece,Path) reqPiece=(null,null);
+            (Piece, Path) reqPiece = (null, null);
             List<(Piece, Path)> forRandomChoose = new List<(Piece, Path)>();
-            foreach (Piece p in camputerPieces) {
+            foreach (Piece p in camputerPieces)
+            {
                 p.CalculatePossibleMoves(Game);
-                foreach (Path path in p.OptionalPaths) {
-                forRandomChoose.Add((p, path));
-                if (reqPiece.Item1 == null || path.EatenPieces.Count > reqPiece.Item2.EatenPieces.Count)
+                foreach (Path path in p.OptionalPaths)
                 {
-                    reqPiece.Item1 = p; reqPiece.Item2 = path;
+                    forRandomChoose.Add((p, path));
+                    if (reqPiece.Item1 == null || path.EatenPieces.Count > reqPiece.Item2.EatenPieces.Count)
+                    {
+                        reqPiece.Item1 = p; reqPiece.Item2 = path;
+                    }
                 }
             }
-            }
-            if (reqPiece.Item2.EatenPieces.Count==0)
+            if (reqPiece.Item2.EatenPieces.Count == 0)
             {
                 int rInt = (new Random(DateTime.Now.Millisecond)).Next(1, forRandomChoose.Count + 1);
                 reqPiece.Item1 = forRandomChoose.ElementAt(rInt - 1).Item1;
                 reqPiece.Item2 = forRandomChoose.ElementAt(rInt - 1).Item2;
             }
-            currentPositionPiece = new Point(reqPiece.Item1.Coordinate.X, reqPiece.Item1.Coordinate.Y);
-            var res = Game.MovePiece(reqPiece.Item1,reqPiece.Item2);
-            chosenPiece = UiBoard[(int)currentPositionPiece.X, (int)currentPositionPiece.Y];
+            Point location = reqPiece.Item1.Coordinate;
+            var res = Game.MovePiece(reqPiece.Item1, reqPiece.Item2);
+            MakeAnimationMove(location, reqPiece.Item2, res.Item2);
 
-            UiBoard[(int)currentPositionPiece.X, (int)currentPositionPiece.Y] = null;
-            if (res.Item2)
-            {
-                GameBoardGrid.Children.Remove(chosenPiece);
-            }
-            else
-            {
-                UiBoard[(int)(reqPiece.Item2.getLastPosition().X), (int)(reqPiece.Item2.getLastPosition().Y)] = chosenPiece;
-
-                for (int i = 0; i < reqPiece.Item2.PathOfPiece.Count; i++)
-                {
-                    // toWhereOnCanvas = FullBoardAnimation[(int)p.X, (int)p.Y].TranslatePoint(new Point(0, 0), CheckerBord);
-                    //FromWhereOnCanvas = FullBoardAnimation[(int)currentPositionPiece.X, (int)currentPositionPiece.Y].TranslatePoint(new Point(0, 0), CheckerBord);
-
-                    GameBoardGrid.Children.Remove(chosenPiece);
-                    Grid.SetColumn(chosenPiece, (int)reqPiece.Item2.PathOfPiece[i].Y);
-                    Grid.SetRow(chosenPiece, (int)reqPiece.Item2.PathOfPiece[i].X);
-                    GameBoardGrid.Children.Add(chosenPiece);
-                    if (reqPiece.Item2.EatenPieces.Count != 0)
-                    {
-                        GameBoardGrid.Children.Remove(UiBoard[(int)(reqPiece.Item2.EatenPieces[0].Coordinate.X), (int)(reqPiece.Item2.EatenPieces[0].Coordinate.Y)]);
-                        UiBoard[(int)(reqPiece.Item2.EatenPieces[0].Coordinate.X), (int)(reqPiece.Item2.EatenPieces[0].Coordinate.Y)] = null;
-                        reqPiece.Item2.EatenPieces.RemoveAt(0);
-                    }
-                }
-            }
-            MyTurn = true ;
+            if (reqPiece.Item1.IsKing) AddKingIcon(reqPiece.Item1.Coordinate);
+            MyTurn = true;
             //do something with result
         }
 
-        private void HidePath(object sender, MouseEventArgs e)
+        private void AddKingIcon(Point coordinate)
         {
-            foreach (var a in recs)
-                GameBoardGrid.Children.Remove(a);
-            foreach(var a in tbs)
-                GameBoardGrid.Children.Remove(a);
-            tbs.Clear();
-            recs.Clear();
+            Ellipse ell = GetEllipse(coordinate);
+
+            if (((bool)ell.Tag) == false)
+            {
+                Image kingImg = new Image()
+                {
+                    Source = new BitmapImage(new Uri(@"C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\assets\images\king.png")),
+                    Width = ell.Width,
+                    Height = ell.Height,
+                    Margin = new Thickness(12),
+                    Cursor = null
+                };
+                kingImg.MouseDown += ClickPiece;
+                ell.Tag = true;
+
+                AddObject(kingImg, coordinate);
+                Grid.SetZIndex(kingImg, Grid.GetZIndex(ell) + 1);
+            }
         }
 
         List<Rectangle> recs = new List<Rectangle>();
         List<TextBlock> tbs = new List<TextBlock>();
+        private void HidePath(object sender, MouseEventArgs e)
+        {
+            foreach (var a in recs)
+                GameBoardGrid.Children.Remove(a);
+            foreach (var a in tbs)
+                GameBoardGrid.Children.Remove(a);
+            tbs.Clear();
+            recs.Clear();
+        }
 
         private void ShowPath(object sender, MouseEventArgs e)
         {
@@ -312,59 +286,81 @@ namespace Client
             {
                 Rectangle square = new Rectangle
                 {
-                    Fill = myColor
+                    Fill = myColor,
+                    Opacity = 0.5,
+                    Margin = new Thickness(5)
                 };
-                square.Opacity = 0.5;
-                square.Margin = new Thickness(5);
-                Grid.SetColumn(square, (int)p.Y);
-                Grid.SetRow(square, (int)p.X);
 
-                GameBoardGrid.Children.Add(square);
+                AddObject(square, p);
 
-                TextBlock tb = new TextBlock();
-                tb.Text = (path.PathOfPiece.IndexOf(p)+1).ToString();
-                tb.FontSize = 24;
-                tb.Margin = new Thickness(5);
-                tb.HorizontalAlignment = HorizontalAlignment.Center;
-                tb.VerticalAlignment = VerticalAlignment.Center;
-                tb.Foreground = new SolidColorBrush(Color.FromArgb(150, (byte)255, (byte)255, (byte)255));
-                tb.FontWeight = FontWeights.Bold;
-                Grid.SetColumn(tb, (int)p.Y);
-                Grid.SetRow(tb, (int)p.X);
+                TextBlock indexSquare = new TextBlock()
+                {
+                    Text = (path.PathOfPiece.IndexOf(p) + 1).ToString(),
+                    FontSize = 24,
+                    Margin = new Thickness(5),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Foreground = new SolidColorBrush(Color.FromArgb(150, (byte)255, (byte)255, (byte)255)),
+                    FontWeight = FontWeights.Bold
+                };
 
-                GameBoardGrid.Children.Add(tb);
+                AddObject(indexSquare, p);
+
                 recs.Add(square);
-                tbs.Add(tb);
+                tbs.Add(indexSquare);
             }
         }
 
         /// <summary>
-        /// get position of an element(sqaure,piece) on board by index
+        /// get position of an element on board by index
         /// </summary>
         /// <param name="objectTag">Tag of an element</param>
         /// <returns>(Row,Column)</returns>
         private Point GetPosition(object objectOnBoard)
         {
-            if (objectOnBoard is Ellipse)
-                return new Point(Grid.GetRow((Ellipse)objectOnBoard), Grid.GetColumn((Ellipse)objectOnBoard));
-
-            return new Point(Grid.GetRow((Rectangle)objectOnBoard), Grid.GetColumn((Rectangle)objectOnBoard));
+            return new Point(Grid.GetRow((UIElement)objectOnBoard), Grid.GetColumn((UIElement)objectOnBoard));
         }
 
-        private Ellipse GetEllipse(Point point)
+        private void MoveEllipse(Point pointFrom, Point pointTo)
+        {
+            Ellipse ellipseToMove = GetEllipse(pointFrom);
+            Grid.SetColumn(ellipseToMove, (int)pointTo.Y);
+            Grid.SetRow(ellipseToMove, (int)pointTo.X);
+
+            if ((bool)ellipseToMove.Tag)
+            {
+                Image kingImgToMove = GetImage(pointFrom);
+                Grid.SetColumn(kingImgToMove, (int)pointTo.Y);
+                Grid.SetRow(kingImgToMove, (int)pointTo.X);
+            }
+        }
+
+        private void RemoveEllipse(Point pointFrom)
+        {
+            Ellipse ellipseToMove = GetEllipse(pointFrom);
+            GameBoardGrid.Children.Remove(ellipseToMove);
+
+            if ((bool)ellipseToMove.Tag)
+                GameBoardGrid.Children.Remove(GetImage(pointFrom));
+        }
+
+        private Image GetImage(Point pointFrom)
+        {
+            return (Image)GameBoardGrid.Children.Cast<UIElement>()
+                        .First(e => Grid.GetRow(e) == pointFrom.X && Grid.GetColumn(e) == pointFrom.Y && (e is Image == true));
+        }
+
+        private Ellipse GetEllipse(Point pointFrom)
         {
             return (Ellipse)GameBoardGrid.Children.Cast<UIElement>()
-            .First(e => Grid.GetRow(e) == point.X && Grid.GetColumn(e) == point.Y && (e is Ellipse==true));
+            .First(e => Grid.GetRow(e) == pointFrom.X && Grid.GetColumn(e) == pointFrom.Y && (e is Ellipse == true));
         }
 
-        private void SetEllipse(Point pointFrom,Point pointTo)
+        private void AddObject(object obj, Point pointTo)
         {
-            
-        }
-
-        private void SetEllipse(object obj, Point pointTo)
-        {
-
+            Grid.SetColumn((UIElement)obj, (int)pointTo.Y);
+            Grid.SetRow((UIElement)obj, (int)pointTo.X);
+            GameBoardGrid.Children.Add((UIElement)obj);
         }
 
         private void leaveBtn_Click(object sender, RoutedEventArgs e)

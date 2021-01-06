@@ -163,5 +163,8 @@
     <Resource Include="assets\images\facebook.png" />
     <Resource Include="assets\images\google.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\images\king.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
