@@ -46,11 +46,12 @@ namespace Client
             gameLevelGrid.Visibility = Visibility.Visible;
         }
 
+        //handle level
         private void chooseLevelGameClick(object sender, RoutedEventArgs e)
         {
             chosenLevel = Int32.Parse(this.Tag.ToString());
 
-            GameWindow window = new GameWindow(chosenSize, chosenLevel,true);
+            GameWindow window = new GameWindow(chosenSize, Level.Easy,true);
             window.Show();
             this.Close();
         }
@@ -91,12 +92,13 @@ namespace Client
             playerBtn.Visibility = Visibility.Visible;
         }
 
+        //handle level
         private void chooseSizeTablePlayerClick(object sender, RoutedEventArgs e)
         {
             chosenSize = Int32.Parse(this.Tag.ToString());
 
             //chosen level should be null
-            GameWindow window = new GameWindow(chosenSize,chosenLevel, false);
+            GameWindow window = new GameWindow(chosenSize,Level.Easy, false);
             window.Show();
             this.Close();
         }

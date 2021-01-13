@@ -62,6 +62,7 @@
     </ApplicationDefinition>
     <Compile Include="Board.cs" />
     <Compile Include="Checker.cs" />
+    <Compile Include="ComputerMove.cs" />
     <Compile Include="King.cs" />
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>

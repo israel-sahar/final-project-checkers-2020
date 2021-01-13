@@ -40,12 +40,18 @@ namespace Client
             PathOfPiece.Add(path);
         }
 
-        public Point getLastPosition()
+        public Point GetLastPosition()
         {
             return PathOfPiece[PathOfPiece.Count - 1];
         }
 
-        public bool isContainCoordinate(Point p)
+        public Point GetNextPositin()
+        {
+            Point p= new Point(PathOfPiece[0].X, PathOfPiece[0].Y);
+            PathOfPiece.RemoveAt(0);
+            return p;
+        }
+        public bool IsContainCoordinate(Point p)
         {
             return PathOfPiece.Contains(p);
         }
@@ -62,7 +68,7 @@ namespace Client
             return str;
         }
 
-        internal bool isContainPath(Path path)
+        internal bool IsContainPath(Path path)
         {
             foreach (Point p in path.PathOfPiece)
                 if (!PathOfPiece.Contains(p)) return false;

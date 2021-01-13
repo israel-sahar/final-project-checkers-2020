@@ -29,8 +29,8 @@ namespace Client
         private void watchButton_Click(object sender, RoutedEventArgs e)
         {
             //make user offline
-            GameWindow window = new GameWindow(a1, a2, true);
-            window.Show();
+            //GameWindow window = new GameWindow(a1, a2, true);
+            //window.Show();
             this.Close();
         }
 

@@ -59,11 +59,12 @@ namespace Client
             playOfflineButton.Visibility = Visibility.Visible;
         }
 
+        //handle level
         private void chooseLevelGameClick(object sender, RoutedEventArgs e)
         {
             choosenLevel = Int32.Parse(((Button)sender).Tag.ToString());
 
-            GameWindow window = new GameWindow(choosenSize, choosenLevel, true);
+            GameWindow window = new GameWindow(choosenSize, Level.Easy, true);
             window.Show();
             this.Close();
         }

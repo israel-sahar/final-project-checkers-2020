@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,11 +27,11 @@ namespace Client
         public int BoardSize { get; set; }
         public bool MyTurn { get; set; }
 
+        
         private Board Game { get; set; }
 
-        private bool isOffline;
-        private int chosenLevel;
-
+        public Level ChosenLevel { get; set; }
+        ComputerMove pcPlayer;
         //colors
         private SolidColorBrush myColor;
         private SolidColorBrush opponentColor;
@@ -40,13 +41,17 @@ namespace Client
         private SolidColorBrush redColorPiece = new SolidColorBrush(Color.FromArgb(150, (byte)255, (byte)0, (byte)0));
         private SolidColorBrush blueColorPiece = new SolidColorBrush(Color.FromArgb(150, (byte)0, (byte)0, (byte)255));
 
-
-        public GameWindow(int chosenSize, int chosenLevel, bool v)
+        private bool StartAnimation = true;
+        //timers
+        DispatcherTimer animationTimer;
+        public GameWindow(int chosenSize, Level chosenLevel, bool myTurn)
         {
             //assuming
             BoardSize = chosenSize;
-            this.chosenLevel = chosenLevel;
-            MyTurn = v;
+            ChosenLevel = chosenLevel;
+            MyTurn = myTurn;
+
+            pcPlayer = new ComputerMove(Level.Easy);
             Init();
         }
 
@@ -54,15 +59,21 @@ namespace Client
         {
             BoardSize = 10;
             MyTurn = true;
+            pcPlayer = new ComputerMove(Level.Hard);
             Init();
         }
 
         private void Init()
         {
+            animationTimer = new DispatcherTimer();
+            animationTimer.Interval = new TimeSpan(0, 0, 0, 0, 60);
+            animationTimer.Start();
+
             myColor = (MyTurn) ? redColorPiece : blueColorPiece;
             opponentColor = (MyTurn) ? blueColorPiece : redColorPiece;
 
-            Game = new Board(BoardSize, (MyTurn) ? Direction.Down : Direction.Up);
+            //get eatmode from user
+            Game = new Board(BoardSize, (MyTurn) ? Direction.Down : Direction.Up,true);
 
             InitializeComponent();
         }
@@ -147,8 +158,7 @@ namespace Client
             chosenPiece = GetEllipse(position);
 
             Piece selectedPiece = Game.GetPieceAt(position);
-            selectedPiece.CalculatePossibleMoves(Game);
-            List<Path> paths = selectedPiece.OptionalPaths;
+            List<Path> paths = selectedPiece.GetPossibleMoves(Game);
 
             btnGroup = new ObservableCollection<Button>();
             for (int i = 0; i < paths.Count; i++)
@@ -177,71 +187,96 @@ namespace Client
         {
             Path path = ((Button)sender).Tag as Path;
             btnGroup.Clear();
-
-            (Result, bool) res = Game.MovePiece(Game.GetPieceAt(GetPosition(chosenPiece)), path);
-
+            Piece pToMove = Game.GetPieceAt(GetPosition(chosenPiece));
+            (Result, bool) res = Game.MovePiece(pToMove, path);
+            resO = res.Item1;
+            Game.VerifyCrown(pToMove);
             MakeAnimationMove(GetPosition(chosenPiece), path, res.Item2);
-
-            if (!res.Item2 && Game.GetPieceAt(GetPosition(chosenPiece)).IsKing) AddKingIcon(Game.GetPieceAt(GetPosition(chosenPiece)).Coordinate);
-
-            chosenPiece = null;
-
-            //switch turns
-            MyTurn = false;
-            if (res.Item1 == Result.Continue)
-                MakeComputerTurn();
-            else
-                Console.WriteLine("Result!");
+            
         }
 
+        //need to do function  change turns
+        Result resO;
+        Point firstP;
+        Path pathP = null;
         private void MakeAnimationMove(Point currentPosition, Path path, bool isBurn)
         {
             if (isBurn)
+            {
                 RemoveEllipse(currentPosition);
+                MyTurn = !MyTurn;
+                chosenPiece = null;
+
+                //switch turns
+                if (resO == Result.Continue && MyTurn == false)
+                    MakeComputerTurn();
+                else
+                {
+                    if (resO != Result.Continue)
+                        Console.WriteLine("Result!");
+                }
+            }
             else
             {
-                for (int i = 0; i < path.PathOfPiece.Count; i++)
+                animationTimer.Tick += Animation;
+                firstP = currentPosition;
+                pathP = path;
+            }
+        }
+
+        private void Animation(object sender, EventArgs e)
+        {
+/*            if (StartAnimation && liveBoard[reqRow, reqCol].Fill.Equals(myColor) && res == MoveResult.GameOn.ToString())
+            {
+                SwitchTurns();
+                StartAnimation = false;
+            }
+*/
+            if (pathP.PathOfPiece.Count!=0)
+            {
+                Point next = pathP.GetNextPositin();
+                MoveEllipse(firstP, next);
+                firstP = next;
+                if (pathP.EatenPieces.Count != 0)
                 {
-                    MoveEllipse(currentPosition, path.PathOfPiece[i]);
-                    currentPosition = path.PathOfPiece[i];
-                    if (path.EatenPieces.Count != 0)
-                    {
-                        RemoveEllipse(path.EatenPieces[0]);
-                        path.EatenPieces.RemoveAt(0);
-                    }
+                    RemoveEllipse(pathP.EatenPieces[0]);
+                    pathP.EatenPieces.RemoveAt(0);
                 }
+            }
+            else
+            {
+                animationTimer.Tick -= Animation;
+                MyTurn = !MyTurn;
+                if (Game.GetPieceAt(GetPosition(chosenPiece)).IsKing) AddKingIcon(Game.GetPieceAt(GetPosition(chosenPiece)).Coordinate);
+
+                chosenPiece = null;
+
+                //switch turns
+                if (resO == Result.Continue&& MyTurn==false) 
+                    MakeComputerTurn();
+                else
+                {
+                    if(resO != Result.Continue)
+                    Console.WriteLine("Result!");
+                }
+                    
             }
         }
 
         private void MakeComputerTurn()
         {
-            var camputerPieces = Game.OpponentTeamPieces;
-            (Piece, Path) reqPiece = (null, null);
-            List<(Piece, Path)> forRandomChoose = new List<(Piece, Path)>();
-            foreach (Piece p in camputerPieces)
-            {
-                p.CalculatePossibleMoves(Game);
-                foreach (Path path in p.OptionalPaths)
-                {
-                    forRandomChoose.Add((p, path));
-                    if (reqPiece.Item1 == null || path.EatenPieces.Count > reqPiece.Item2.EatenPieces.Count)
-                    {
-                        reqPiece.Item1 = p; reqPiece.Item2 = path;
-                    }
-                }
-            }
-            if (reqPiece.Item2.EatenPieces.Count == 0)
-            {
-                int rInt = (new Random(DateTime.Now.Millisecond)).Next(1, forRandomChoose.Count + 1);
-                reqPiece.Item1 = forRandomChoose.ElementAt(rInt - 1).Item1;
-                reqPiece.Item2 = forRandomChoose.ElementAt(rInt - 1).Item2;
-            }
-            Point location = reqPiece.Item1.Coordinate;
-            var res = Game.MovePiece(reqPiece.Item1, reqPiece.Item2);
-            MakeAnimationMove(location, reqPiece.Item2, res.Item2);
+            var move = pcPlayer.getNextMove(Game);
+            Point location = move.Item1.Coordinate;
+            chosenPiece = GetEllipse(location);
 
-            if (!res.Item2 && reqPiece.Item1.IsKing) AddKingIcon(reqPiece.Item1.Coordinate);
-            MyTurn = true;
+            var res = Game.MovePiece(move.Item1, move.Item2);
+            resO = res.Item1;
+
+            Game.VerifyCrown(move.Item1);
+
+            MakeAnimationMove(location, move.Item2, res.Item2);
+
+           // if (!res.Item2 && Game.GetPieceAt(move.Item1.Coordinate).IsKing) AddKingIcon(move.Item1.Coordinate);
             //do something with result
         }
 

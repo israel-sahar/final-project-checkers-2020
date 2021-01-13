@@ -9,22 +9,22 @@ namespace Client
 {
     public enum Team { Me, Opponent }
     public enum Direction { Up = -1, Down = 1 }
-    public enum Result { Win,Lost,Tie,Continue }
-    
+    public enum Result { Win, Lost, Tie, Continue }
+
     public class Board
     {
-        private readonly int MAX_MOVES_WITHOUT_EATING = 15;
+        private static readonly int MAX_MOVES_WITHOUT_EATING = 15;
 
         private Piece[,] board;
-        private Direction ownBoardDirection;
-        public int BoardSize { get; }
 
         public List<Piece> MyTeamPieces { get; set; }
         public List<Piece> OpponentTeamPieces { get; set; }
 
-        private int withoutEatingCounter=0;
-        private bool onlyKingsLeft;
-
+        public bool EatMode { get; set; }
+        private int withoutEatingCounter = 0;
+        private bool onlyKingsLeft = false;
+        private Direction ownBoardDirection;
+        public int BoardSize { get; }
 
         /*         //this builder for testing.build the board only
          *        private Board(int boardSize, Direction ownBoardDirection,bool testing)
@@ -67,18 +67,33 @@ namespace Client
                         OpponentTeamPieces.Add(k);
                 }*/
 
-        public Board(Board boardToCopy) {
-            this.ownBoardDirection = boardToCopy.ownBoardDirection;
-            this.BoardSize = boardToCopy.BoardSize;
+        public Board(Board boardToCopy)
+        {
+            EatMode = boardToCopy.EatMode;
+            ownBoardDirection = boardToCopy.ownBoardDirection;
+            BoardSize = boardToCopy.BoardSize;
+            withoutEatingCounter = boardToCopy.withoutEatingCounter;
+            onlyKingsLeft = boardToCopy.onlyKingsLeft;
+
+            board = new Piece[BoardSize, BoardSize];
+
+            for (int i = 0; i < BoardSize; i++)
+            {
+                for (int j = 0; j < BoardSize; j++)
+                    board[i, j] = null;
+            }
+
             MyTeamPieces = new List<Piece>();
-            foreach (Piece p in boardToCopy.MyTeamPieces) { 
-            if(p.IsKing)
+            OpponentTeamPieces = new List<Piece>();
+
+            foreach (Piece p in boardToCopy.MyTeamPieces)
+            {
+                if (p.IsKing)
                     MyTeamPieces.Add(new King((King)p));
-            else
+                else
                     MyTeamPieces.Add(new Checker((Checker)p));
             }
-                
-            OpponentTeamPieces = new List<Piece>();
+
             foreach (Piece p in boardToCopy.OpponentTeamPieces)
             {
                 if (p.IsKing)
@@ -87,26 +102,17 @@ namespace Client
                     OpponentTeamPieces.Add(new Checker((Checker)p));
             }
 
-            board = new Piece[BoardSize, BoardSize];
+            foreach (Piece p in MyTeamPieces)
+                board[(int)p.Coordinate.X, (int)p.Coordinate.Y] = p;
 
-            for (int i = 0; i < BoardSize; i++)
-            {
-                for (int j = 0; j < BoardSize; j++)
-                    board[i,j] = null;
-            }
-
-            foreach (Piece p in MyTeamPieces) {
-                board[(int)p.Coordinate.X,(int) p.Coordinate.Y] = p;
-            }
 
             foreach (Piece p in OpponentTeamPieces)
-            {
                 board[(int)p.Coordinate.X, (int)p.Coordinate.Y] = p;
-            }
         }
 
-        public Board(int boardSize, Direction ownBoardDirection)
+        public Board(int boardSize, Direction ownBoardDirection, bool eatMode)
         {
+            EatMode = eatMode;
             BoardSize = boardSize;
             this.ownBoardDirection = ownBoardDirection;
             board = new Piece[BoardSize, BoardSize];
@@ -131,13 +137,13 @@ namespace Client
                 if (i % 2 == 1) j = 0;
                 for (; j < BoardSize; j += 2)
                 {
-                    Piece pieces = new Checker(ownBoardDirection == Direction.Down ? Team.Me : Team.Opponent, ownBoardDirection, new Point(i, j));
+                    Piece piece = new Checker(ownBoardDirection == Direction.Down ? Team.Me : Team.Opponent, ownBoardDirection, new Point(i, j));
 
-                    board[i, j] = pieces;
+                    board[i, j] = piece;
                     if (ownBoardDirection == Direction.Down)
-                        MyTeamPieces.Add(pieces);
+                        MyTeamPieces.Add(piece);
                     else
-                        OpponentTeamPieces.Add(pieces);
+                        OpponentTeamPieces.Add(piece);
                 }
             }
 
@@ -148,59 +154,62 @@ namespace Client
                 if (i % 2 == 1) j = 0;
                 for (; j < BoardSize; j += 2)
                 {
-                    Piece pieces = new Checker(ownBoardDirection == Direction.Down ? Team.Opponent : Team.Me, negetiveDir, new Point(i, j));
+                    Piece piece = new Checker(ownBoardDirection == Direction.Down ? Team.Opponent : Team.Me, negetiveDir, new Point(i, j));
 
-                    board[i, j] = pieces;
+                    board[i, j] = piece;
                     if (ownBoardDirection == Direction.Down)
-                        OpponentTeamPieces.Add(pieces);
+                        OpponentTeamPieces.Add(piece);
                     else
-                        MyTeamPieces.Add(pieces);
+                        MyTeamPieces.Add(piece);
                 }
             }
         }
 
 
-        //if need to eat and not.the piece go out from the game
-        public (Result,bool) MovePiece(Piece pieceToMove, Path path)
+        public (Result, bool) MovePiece(Piece pieceToMove, Path path)
         {
             if (path.EatenPieces.Count != 0)
             {
                 foreach (Point pToEat in path.EatenPieces)
                     RemovePieceFromBoard(this.GetPieceAt(pToEat));
             }
-            else {
-                bool isAnyPathToEat = false;
-                //we need to check if there is a path he can eat. if true, the piece should be out the game
-                foreach(Piece piece in pieceToMove.Team==Team.Me?MyTeamPieces:OpponentTeamPieces)
+            else
+            {
+                if (EatMode)
                 {
-                    if (piece == pieceToMove)
+                    bool isAnyPathToEat = false;
+                    //we need to check if there is a path he can eat. if true, the piece should be out the game
+                    foreach (Piece piece in pieceToMove.Team == Team.Me ? MyTeamPieces : OpponentTeamPieces)
                     {
-                        foreach (var p in pieceToMove.OptionalPaths)
-                            if (path != p && p.EatenPieces.Count != 0) { isAnyPathToEat = true; break; }
-                    }
-                    piece.CalculatePossibleMoves(this);
-                    foreach (var p in piece.OptionalPaths)
-                        if (p.EatenPieces.Count != 0) { isAnyPathToEat = true; break; }
+                        //check paths for current piece
+                        if (piece == pieceToMove)
+                        {
+                            var paths = pieceToMove.GetPossibleMoves(this);
+                            foreach (var p in paths)
+                                if (path != p && p.EatenPieces.Count != 0) { isAnyPathToEat = true; break; }
+                        }
+                        else
+                        {
+                            //check paths for other pieces
+                            var paths = piece.GetPossibleMoves(this);
+                            foreach (var p in paths)
+                                if (p.EatenPieces.Count != 0) { isAnyPathToEat = true; break; }
 
+                        }
+
+                    }
                     if (isAnyPathToEat)
                     {
                         RemovePieceFromBoard(pieceToMove);
-                        return (CheckResultGame(pieceToMove.Team), true);
+                        return (CheckResultGame(), true);
                     }
                 }
-                foreach (var p in pieceToMove.OptionalPaths)
-                    if (path != p && p.EatenPieces.Count != 0) { isAnyPathToEat = true;break; }
-                if (isAnyPathToEat)
-                {
-                    RemovePieceFromBoard(pieceToMove);
-                    return (CheckResultGame(pieceToMove.Team),true);
-                }
             }
 
-            SetPieceAt(pieceToMove, path.getLastPosition());
+            SetPieceAt(pieceToMove, path.GetLastPosition());
 
-            VerifyCrown(pieceToMove);
-            if (isKingsOnlyLeft() && path.EatenPieces.Count == 0)
+            //VerifyCrown(pieceToMove);
+            if (IsKingsOnlyLeft() && path.EatenPieces.Count == 0)
             {
                 withoutEatingCounter++;
             }
@@ -209,31 +218,16 @@ namespace Client
                 withoutEatingCounter = 0;
             }
 
-            return (CheckResultGame(pieceToMove.Team),false);
+            return (CheckResultGame(), false);
         }
 
-        public void MovePieceWithoutResult(Piece pieceToMove, Point To, List<Point> piecesToEat)
-        {
-            foreach (Point pToEat in piecesToEat)
-                RemovePieceFromBoard(this.GetPieceAt(pToEat));
-            SetPieceAt(pieceToMove, To);
-
-            VerifyCrown(pieceToMove);
-            if (isKingsOnlyLeft() && piecesToEat.Count == 0)
-            {
-                withoutEatingCounter++;
-            }
-            else
-            {
-                withoutEatingCounter = 0;
-            }
-        }
-
-        private bool isKingsOnlyLeft()
+        private bool IsKingsOnlyLeft()
         {
             if (onlyKingsLeft) return true;
-            else {
-                foreach (Piece p in MyTeamPieces) {
+            else
+            {
+                foreach (Piece p in MyTeamPieces)
+                {
                     if (p.IsKing == false) return false;
                 }
                 foreach (Piece p in OpponentTeamPieces)
@@ -254,36 +248,31 @@ namespace Client
             board[(int)pieceToRemove.Coordinate.X, (int)pieceToRemove.Coordinate.Y] = null;
         }
 
-        private Result CheckResultGame(Team teamTurn)
+        //check scenario when cpu cant move
+        public Result CheckResultGame()
         {
-            if (Team.Me == teamTurn)
-            {
-                if (GetOpponentPiecesCount() == 0) return Result.Win;
-                if (GetMyPiecesCount() == 0) return Result.Lost;
-            }
-            else
-            {
-                if (GetOpponentPiecesCount() == 0) return Result.Lost;
-                if (GetMyPiecesCount() == 0) return Result.Win;
-            }
+            if (GetOpponentPiecesCount() == 0) return Result.Win;
+            if (GetMyPiecesCount() == 0) return Result.Lost;
+
             bool moreMovesLeft = false;
             foreach (Piece p in MyTeamPieces)
             {
-                p.CalculatePossibleMoves(this);
-                if (p.OptionalPaths.Count != 0) { moreMovesLeft = true;break; }
+                var possibleMoves = p.GetPossibleMoves(this);
+                if (possibleMoves.Count != 0) { moreMovesLeft = true; break; }
 
             }
             if (moreMovesLeft == false) return Result.Lost;
+
             foreach (Piece p in OpponentTeamPieces)
             {
-                p.CalculatePossibleMoves(this);
-                if (p.OptionalPaths.Count != 0) { moreMovesLeft = true; break; }
+                var possibleMoves = p.GetPossibleMoves(this);
+                if (possibleMoves.Count != 0) { moreMovesLeft = true; break; }
 
             }
             if (moreMovesLeft == false) return Result.Win;
-            
+
             if (withoutEatingCounter == MAX_MOVES_WITHOUT_EATING) return Result.Tie;
-            
+
             return Result.Continue;
         }
 
@@ -297,7 +286,7 @@ namespace Client
             return OpponentTeamPieces.Count;
         }
 
-        private void VerifyCrown(Piece piece)
+        public void VerifyCrown(Piece piece)
         {
             if (piece.IsKing) return;
             if (piece.Team == Team.Me)
@@ -357,7 +346,8 @@ namespace Client
             pieceToMove.Coordinate = to;
         }
 
-        public ref Piece GetPieceAt(Point position) {
+        public ref Piece GetPieceAt(Point position)
+        {
             return ref board[(int)position.X, (int)position.Y];
         }
 
@@ -366,30 +356,57 @@ namespace Client
             return (pointToCheck.X >= 0 && pointToCheck.Y >= 0 && pointToCheck.X < BoardSize && pointToCheck.Y < BoardSize);
         }
 
+        public bool IsEnemeyOnSquare(Point pointTeam, Point pointOpp)
+        {
+            return IsCoordinateOnBoard(pointOpp) &&
+                   !IsSqaureEmpty(pointOpp) &&
+                   GetPieceAt(pointOpp).Team != GetPieceAt(pointTeam).Team;
+        }
+        public bool IsFreeToLand(Point point)
+        {
+            return IsCoordinateOnBoard(point) && IsSqaureEmpty(point);
+        }
+
         public bool IsSqaureEmpty(Point coord)
         {
             return board[(int)coord.X, (int)coord.Y] == null;
         }
 
+        //this about a way to be more complex
+        public double Evaluate()
+        {
+            return GetOpponentPiecesCount() - GetMyPiecesCount() + (GetOpponentKingsCount() * 0.5 - GetMyKingsCount() * 0.5);
+        }
+
+        private int GetOpponentKingsCount()
+        {
+            return OpponentTeamPieces.FindAll(x => x.IsKing).Count;
+        }
+
+        private int GetMyKingsCount()
+        {
+            return MyTeamPieces.FindAll(x => x.IsKing).Count;
+        }
+
         static void Main(string[] args)
         {
-/*            Board newB = new Board(10, Direction.Down,true);
+            /*            Board newB = new Board(10, Direction.Down,true);
 
-            newB.addKing(Team.Me, 3, 6);
-            newB.addChecker(Team.Opponent, 4, 7);
-            newB.addChecker(Team.Opponent, 6, 7);
-            //newB.addChecker(Team.Opponent, 8, 7);
-            //newB.addKing(Team.Me, 9, 6);
+                        newB.addKing(Team.Me, 3, 6);
+                        newB.addChecker(Team.Opponent, 4, 7);
+                        newB.addChecker(Team.Opponent, 6, 7);
+                        //newB.addChecker(Team.Opponent, 8, 7);
+                        //newB.addKing(Team.Me, 9, 6);
 
-            Piece p = newB.GetPieceAt(new Point(3, 6));
-            
-            p.CalculatePossibleMoves(newB);
-            Path last =p.OptionalPaths.Last();
-            foreach(Path pat in p.OptionalPaths)
-              Console.WriteLine(pat);
-            //Result res = newB.MovePiece(p, last);
-           // Console.WriteLine(res);
-*/
+                        Piece p = newB.GetPieceAt(new Point(3, 6));
+
+                        p.CalculatePossibleMoves(newB);
+                        Path last =p.OptionalPaths.Last();
+                        foreach(Path pat in p.OptionalPaths)
+                          Console.WriteLine(pat);
+                        //Result res = newB.MovePiece(p, last);
+                       // Console.WriteLine(res);
+            */
         }
     }
 }
