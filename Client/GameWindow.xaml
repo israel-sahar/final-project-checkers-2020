@@ -113,8 +113,10 @@
             </Border>
         </Canvas>
         <Border BorderThickness="7" BorderBrush="Black" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="5">
-            <StackPanel Background="BurlyWood" >
-
+            <StackPanel Orientation="Horizontal" Background="BurlyWood">
+                <Ellipse Name="ellipse" Fill="Black" Width="50" Height="50"/>
+                <TextBlock Name="Turn" VerticalAlignment="Center" Margin="5" FontSize="20">
+                </TextBlock>
             </StackPanel>
         </Border>
            
@@ -135,5 +137,7 @@
 
         <Button Name="leaveBtn" Content="LEAVE"  Grid.Column="7" Grid.ColumnSpan="2"
                 Click="leaveBtn_Click" Style="{DynamicResource RoundedButtonStyle}"/>
+
+        <RichTextBox Name="activityList"  Foreground="BurlyWood"  Margin="30,10"  IsReadOnly="True" Grid.Column="6" Grid.Row="6" Grid.ColumnSpan="4" Grid.RowSpan="4"/>
     </Grid>
 </Window>

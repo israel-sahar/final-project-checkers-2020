@@ -50,7 +50,7 @@ namespace Client
             BoardSize = chosenSize;
             ChosenLevel = chosenLevel;
             MyTurn = myTurn;
-
+            
             pcPlayer = new ComputerMove(Level.Easy);
             Init();
         }
@@ -65,8 +65,9 @@ namespace Client
 
         private void Init()
         {
+
             animationTimer = new DispatcherTimer();
-            animationTimer.Interval = new TimeSpan(0, 0, 0, 0, 60);
+            animationTimer.Interval = new TimeSpan(0, 0, 0, 0, 80);
             animationTimer.Start();
 
             myColor = (MyTurn) ? redColorPiece : blueColorPiece;
@@ -76,6 +77,17 @@ namespace Client
             Game = new Board(BoardSize, (MyTurn) ? Direction.Down : Direction.Up,true);
 
             InitializeComponent();
+
+            if (MyTurn)
+            {
+                Turn.Text = "This is Your Turn";
+            }
+            else
+            {
+                Turn.Text = "This is Computer Turn";
+            }
+
+            ellipse.Fill = MyTurn ? myColor: opponentColor;
         }
 
         private void CheckerBord_Initialized(object sender, EventArgs e)
@@ -188,6 +200,7 @@ namespace Client
             Path path = ((Button)sender).Tag as Path;
             btnGroup.Clear();
             Piece pToMove = Game.GetPieceAt(GetPosition(chosenPiece));
+            Console.WriteLine($"Me:{pToMove.Coordinate} to {path.GetLastPosition()}");
             (Result, bool) res = Game.MovePiece(pToMove, path);
             resO = res.Item1;
             Game.VerifyCrown(pToMove);
@@ -204,23 +217,14 @@ namespace Client
             if (isBurn)
             {
                 RemoveEllipse(currentPosition);
-                MyTurn = !MyTurn;
-                chosenPiece = null;
-
-                //switch turns
-                if (resO == Result.Continue && MyTurn == false)
-                    MakeComputerTurn();
-                else
-                {
-                    if (resO != Result.Continue)
-                        Console.WriteLine("Result!");
-                }
+                SwitchTurns();
             }
             else
             {
-                animationTimer.Tick += Animation;
                 firstP = currentPosition;
                 pathP = path;
+                animationTimer.Tick += Animation;
+
             }
         }
 
@@ -246,35 +250,25 @@ namespace Client
             else
             {
                 animationTimer.Tick -= Animation;
-                MyTurn = !MyTurn;
+                
                 if (Game.GetPieceAt(GetPosition(chosenPiece)).IsKing) AddKingIcon(Game.GetPieceAt(GetPosition(chosenPiece)).Coordinate);
-
-                chosenPiece = null;
-
-                //switch turns
-                if (resO == Result.Continue&& MyTurn==false) 
-                    MakeComputerTurn();
-                else
-                {
-                    if(resO != Result.Continue)
-                    Console.WriteLine("Result!");
-                }
-                    
+                SwitchTurns();
             }
         }
 
         private void MakeComputerTurn()
         {
             var move = pcPlayer.getNextMove(Game);
-            Point location = move.Item1.Coordinate;
-            chosenPiece = GetEllipse(location);
-
-            var res = Game.MovePiece(move.Item1, move.Item2);
+            
+            Piece pieceToMove = Game.GetPieceAt(move.Item1.Coordinate);
+            chosenPiece = GetEllipse(pieceToMove.Coordinate);
+            Console.WriteLine($"PC:{move.Item1.Coordinate} to {move.Item2.GetLastPosition()}");
+            var res = Game.MovePiece(pieceToMove, move.Item2);
             resO = res.Item1;
 
             Game.VerifyCrown(move.Item1);
 
-            MakeAnimationMove(location, move.Item2, res.Item2);
+            MakeAnimationMove(GetPosition(chosenPiece), move.Item2, res.Item2);
 
            // if (!res.Item2 && Game.GetPieceAt(move.Item1.Coordinate).IsKing) AddKingIcon(move.Item1.Coordinate);
             //do something with result
@@ -367,6 +361,31 @@ namespace Client
                 Image kingImgToMove = GetImage(pointFrom);
                 Grid.SetColumn(kingImgToMove, (int)pointTo.Y);
                 Grid.SetRow(kingImgToMove, (int)pointTo.X);
+            }
+        }
+
+        private void SwitchTurns()
+        {
+            chosenPiece = null;
+
+            if (!MyTurn)
+            {
+                Turn.Text = "This is Your Turn";
+            }
+            else
+            {
+                Turn.Text = "This is Computer Turn";
+            }
+
+            ellipse.Fill = MyTurn ? opponentColor : myColor;
+            MyTurn = !MyTurn;
+            //switched turns
+            if (resO == Result.Continue && MyTurn == false)
+                MakeComputerTurn();
+            else
+            {
+                if (resO != Result.Continue)
+                    Console.WriteLine("Result!");
             }
         }
 

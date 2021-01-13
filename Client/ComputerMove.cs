@@ -30,11 +30,11 @@ namespace Client
 
         private (Piece, Path) GetHardNextMove(Board game)
         {
-            var nextMove = MiniMaxAlgorithm(game,null,null, DEPTH_NUM, Team.Opponent);
+            var nextMove = MiniMaxAlgorithm(game,null,null, DEPTH_NUM, Team.Opponent,Double.NegativeInfinity,Double.PositiveInfinity);
             return (nextMove.Item2, nextMove.Item3);
         }
 
-        private (double,Piece, Path) MiniMaxAlgorithm(Board game,Piece currentPiece,Path currentPath, int depth, Team turn)
+        private (double,Piece, Path) MiniMaxAlgorithm(Board game,Piece currentPiece,Path currentPath, int depth, Team turn,double alpha, double beta)
         {
             if (depth == 0 || game.CheckResultGame() != Result.Continue)
                 return (game.Evaluate(), currentPiece, currentPath);
@@ -43,7 +43,7 @@ namespace Client
             {
                 Path bestPath=null;
                 Piece bestPiece=null;
-                double max = Double.NegativeInfinity;
+                double value = Double.NegativeInfinity;
                 var all_pieces = game.OpponentTeamPieces;
                 List<(Piece, Path)> allPaths = new List<(Piece, Path)>();
                 foreach (var piece in all_pieces)
@@ -56,22 +56,26 @@ namespace Client
                     Board tempBoard = new Board(game);
                     tempBoard.MovePiece(tempBoard.GetPieceAt(pp.Item1.Coordinate), pp.Item2);
 
-                    double eval = MiniMaxAlgorithm(tempBoard, pp.Item1, pp.Item2, depth - 1, Team.Me).Item1;
-                    max = max > eval ? max : eval;
-                    if (max == eval) {
+                    double eval = MiniMaxAlgorithm(tempBoard, pp.Item1, pp.Item2, depth - 1, Team.Me,alpha,beta).Item1;
+
+                    if (eval > value)
+                    {
+                        value = eval;
                         bestPath = pp.Item2;
                         bestPiece = pp.Item1;
                     }
+                    if (eval >= beta) return (value,bestPiece,bestPath);
+                    if (eval > alpha) alpha = eval;
 
                 }
 
-                return (max, bestPiece,bestPath);
+                return (value, bestPiece,bestPath);
             }
             else
             {
                 Path bestPath = null;
                 Piece bestPiece = null;
-                double min = Double.PositiveInfinity;
+                double value = Double.PositiveInfinity;
                 var all_pieces = game.MyTeamPieces;
                 List<(Piece, Path)> allPaths = new List<(Piece, Path)>();
                 foreach (var piece in all_pieces)
@@ -85,17 +89,18 @@ namespace Client
                     Board tempBoard = new Board(game);
                     tempBoard.MovePiece(tempBoard.GetPieceAt(pp.Item1.Coordinate), pp.Item2);
 
-                    double eval = MiniMaxAlgorithm(tempBoard, pp.Item1, pp.Item2, depth - 1, Team.Opponent).Item1;
-                    min = min < eval ? min : eval;
-                    if (min == eval)
+                    double eval = MiniMaxAlgorithm(tempBoard, pp.Item1, pp.Item2, depth - 1, Team.Opponent,alpha,beta).Item1;
+                    value = value < eval ? value : eval;
+                    if (eval < value)
                     {
-                        bestPath = pp.Item2;
-                        bestPiece = pp.Item1;
+                        value = eval;
                     }
+                    if (eval <= alpha) return (value, bestPiece, bestPath);
+                    if (eval < beta) beta = eval;
 
                 }
 
-                return (min, bestPiece, bestPath);
+                return (value, bestPiece, bestPath);
             }
         }
 
