@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Client.CheckersServiceReference;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Client
 {
@@ -20,15 +23,22 @@ namespace Client
     public partial class WelcomeWindow : Window
     {
         int choosenSize, choosenLevel;
+        public ClientCallback Callback { set; get; }
+        public CheckersServiceClient Client { get; set; }
+
 
         public WelcomeWindow()
         {
             InitializeComponent();
+            Callback = new ClientCallback();
+            Client = new CheckersServiceClient(new InstanceContext(Callback));
         }
 
         private void loginBtn_Click(object sender, RoutedEventArgs e)
         {
             LoginWindow window = new LoginWindow();
+            window.Client = Client;
+            window.Callback = Callback;
             window.Show();
             this.Close();
         }

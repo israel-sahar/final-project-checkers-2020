@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CheckersDBModelStoreContainer" CdmEntityContainer="CheckersDBEntities">
+    <EntitySetMapping Name="Games">
+      <EntityTypeMapping TypeName="CheckersDBModel.Game">
+        <MappingFragment StoreEntitySet="Games">
+          <ScalarProperty Name="GameId" ColumnName="GameId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Moves">
+      <EntityTypeMapping TypeName="CheckersDBModel.Move">
+        <MappingFragment StoreEntitySet="Moves">
+          <ScalarProperty Name="MoveId" ColumnName="MoveId" />
+          <ScalarProperty Name="RecordTime" ColumnName="RecordTime" />
+          <ScalarProperty Name="Email" ColumnName="User_Email" />
+          <ScalarProperty Name="GameId" ColumnName="Game_GameId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Points">
+      <EntityTypeMapping TypeName="CheckersDBModel.Point">
+        <MappingFragment StoreEntitySet="Points">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Row" ColumnName="Row" />
+          <ScalarProperty Name="Column" ColumnName="Column" />
+          <ScalarProperty Name="EatPointId" ColumnName="Move_MoveId" />
+          <ScalarProperty Name="MovePointId" ColumnName="Move_MoveId1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="CheckersDBModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="HashedPassword" ColumnName="HashedPassword" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="UserGames" TypeName="CheckersDBModel.UserGames" StoreEntitySet="UserGames">
+      <EndProperty Name="Games">
+        <ScalarProperty Name="GameId" ColumnName="Game_GameId" />
+      </EndProperty>
+      <EndProperty Name="Users">
+        <ScalarProperty Name="Email" ColumnName="User_Email" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

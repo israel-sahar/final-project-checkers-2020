@@ -100,7 +100,7 @@
                FontSize="36"
                FontWeight="DemiBold"
                Foreground="Black"/>
-        <Label Content="Email:" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
+        <Label Content="UserName:" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
                FontFamily="Arial"
                FontSize="21"
                FontWeight="DemiBold"
@@ -111,7 +111,7 @@
                FontWeight="DemiBold"
                Foreground="Wheat"/>
 
-        <TextBox Name="emailTextBox" Margin="5,30" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
+        <TextBox Name="usrNameTextBox" Margin="5,30" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
                  VerticalContentAlignment="Center"
                  FontSize="21"
                  FontFamily="Arial"
@@ -135,9 +135,9 @@
                 </Style>
             </TextBlock.Resources>
         </TextBlock>
-        <Button Name="connectBtn" Content="CONNECT"  Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" Click="loginBtn_Click"
+        <Button Name="connectBtn" Content="CONNECT"  Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" Click="loginBtn_Click"
                 Style="{DynamicResource RoundedButtonStyle}"/>
-        <Button Name="backBtn" Content="BACK"  Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" Click="backBtn_Click"
+        <Button Name="backBtn" Content="BACK"  Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" Click="backBtn_Click"
                 Style="{DynamicResource RoundedButtonStyle}"/>
         <StackPanel Grid.Row="1" Grid.Column="3"
                     Grid.ColumnSpan="2" Grid.RowSpan="2">
@@ -161,6 +161,9 @@
                Width="170"
                Height="50"/>
         </StackPanel>
+        <Label Grid.Row="4" Content="Service Status:" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" FontSize="16"></Label>
+        <Label Name="statusLabel"  Grid.Row="4" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" FontSize="16" FontWeight="Bold"></Label>
+
     </Grid>
 
 </Window>

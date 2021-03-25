@@ -15,7 +15,7 @@ namespace Client
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            GameWindow st = new GameWindow();
+            WelcomeWindow st = new WelcomeWindow();
             st.Show();
         }
     }

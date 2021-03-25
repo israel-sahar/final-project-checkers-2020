@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="Chesser Game" Height="500" Width="600">
+        Title="Checkers Game" Height="500" Width="600">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -107,6 +107,8 @@
             <Button Margin="6,12" Name="hardBtn" Tag="Hard" Content="Hard" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseLevelGameClick"/>
             <Button Margin="6,12" Name="backLevelBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backLevelBtn_Click"/>
         </StackPanel>
+        <Label Grid.Row="4" Content="Service Status:" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" FontSize="16"></Label>
+        <Label Name="statusLabel"  Grid.Row="4" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" FontSize="16" FontWeight="Bold"></Label>
     </Grid>
 
 </Window>

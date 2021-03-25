@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.CheckersServiceReference;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,10 @@ namespace Client
     {
         private int chosenSize;
         private int chosenLevel;
+
+        public CheckersServiceClient Client { get; internal set; }
+        public ClientCallback Callback { get; internal set; }
+        public User User { get; internal set; }
 
         public MenuWindow()
         {

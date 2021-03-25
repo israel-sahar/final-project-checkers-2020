@@ -1,0 +1,12 @@
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\bin\Debug\Database.exe.config
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\bin\Debug\Database.exe
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\bin\Debug\Database.pdb
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\bin\Debug\EntityFramework.dll
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\bin\Debug\EntityFramework.xml
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\obj\Debug\Database.csprojAssemblyReference.cache
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\obj\Debug\Database.csproj.CoreCompileInputs.cache
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\obj\Debug\Database.csproj.CopyComplete
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\obj\Debug\Database.exe
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Database\obj\Debug\Database.pdb

@@ -1,0 +1,12 @@
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\bin\Debug\CheckersService.dll.config
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\bin\Debug\CheckersService.dll
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\bin\Debug\CheckersService.pdb
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\obj\Debug\CheckersService.csprojAssemblyReference.cache
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\obj\Debug\CheckersService.csproj.CoreCompileInputs.cache
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\obj\Debug\CheckersService.dll
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\obj\Debug\CheckersService.pdb
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\bin\Debug\EntityFramework.dll
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\bin\Debug\EntityFramework.xml
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\CheckersService\obj\Debug\CheckersService.csproj.CopyComplete
