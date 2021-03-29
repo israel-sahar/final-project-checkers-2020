@@ -205,7 +205,7 @@ namespace CheckersService
         {
             var fromAddress = new MailAddress("spamforme55@gmail.com‬", "‪spam spamy");
             var toAddress = new MailAddress(usr.Email,"Sahar");
-            const string fromPassword = "135426Abc";
+            const string fromPassword = "";
             const string subject = "A new Password to log-in";
             string body = $"Dear {usr.UserName},\n This is the new password to login the application:{password}";
 
