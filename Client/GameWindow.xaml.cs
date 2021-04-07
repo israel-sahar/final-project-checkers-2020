@@ -1,4 +1,5 @@
 ﻿
+using Client.CheckersServiceReference;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Point = System.Windows.Point;
 
 namespace Client
 {
@@ -24,50 +26,47 @@ namespace Client
     /// </summary>
     public partial class GameWindow : Window
     {
+        //if Client is null so the game is offline
+        public CheckersServiceClient Client { get; internal set; }
+        public ClientCallback Callback { get; internal set; }
+
         public int BoardSize { get; set; }
         public bool MyTurn { get; set; }
 
-        
         private Board Game { get; set; }
+        public int GameId { get; internal set; }
+        public string UserName { get; internal set; }
+        public string OpponentUserName { get; internal set; }
 
-        public Level ChosenLevel { get; set; }
+
         ComputerMove pcPlayer;
         //colors
         private SolidColorBrush myColor;
         private SolidColorBrush opponentColor;
 
-        private SolidColorBrush brownBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#dbbd97"));
-        private SolidColorBrush blackBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000"));
-        private SolidColorBrush redColorPiece = new SolidColorBrush(Color.FromArgb(150, (byte)255, (byte)0, (byte)0));
-        private SolidColorBrush blueColorPiece = new SolidColorBrush(Color.FromArgb(150, (byte)0, (byte)0, (byte)255));
+        private readonly SolidColorBrush redColorPiece = new SolidColorBrush(Color.FromArgb(150, (byte)255, (byte)0, (byte)0));
+        private readonly SolidColorBrush blueColorPiece = new SolidColorBrush(Color.FromArgb(150, (byte)0, (byte)0, (byte)255));
 
-        private bool StartAnimation = true;
         //timers
         DispatcherTimer animationTimer;
         public GameWindow(int chosenSize, Level chosenLevel, bool myTurn)
         {
-            //assuming
-            BoardSize = chosenSize;
-            ChosenLevel = chosenLevel;
-            MyTurn = myTurn;
             
-            pcPlayer = new ComputerMove(Level.Easy);
-            Init();
-        }
+            BoardSize = chosenSize;
+            MyTurn = myTurn;
 
-        public GameWindow()
-        {
-            BoardSize = 10;
-            MyTurn = true;
-            pcPlayer = new ComputerMove(Level.Hard);
+            if (chosenLevel != Level.Human)
+            {
+                OpponentUserName = "Computer";
+            }
+            pcPlayer = new ComputerMove(chosenLevel);
             Init();
         }
 
         private void Init()
         {
-
             animationTimer = new DispatcherTimer();
-            animationTimer.Interval = new TimeSpan(0, 0, 0, 0, 80);
+            animationTimer.Interval = new TimeSpan(0, 0, 0, 0, 400);
             animationTimer.Start();
 
             myColor = (MyTurn) ? redColorPiece : blueColorPiece;
@@ -77,17 +76,7 @@ namespace Client
             Game = new Board(BoardSize, (MyTurn) ? Direction.Down : Direction.Up,true);
 
             InitializeComponent();
-
-            if (MyTurn)
-            {
-                Turn.Text = "This is Your Turn";
-            }
-            else
-            {
-                Turn.Text = "This is Computer Turn";
-            }
-
-            ellipse.Fill = MyTurn ? myColor: opponentColor;
+            SwitchTurns(true);
         }
 
         private void CheckerBord_Initialized(object sender, EventArgs e)
@@ -106,7 +95,7 @@ namespace Client
                 {
                     Rectangle square = new Rectangle
                     {
-                        Fill = (i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0) ? brownBrush : blackBrush
+                        Fill = (i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0) ? Brushes.SandyBrown : Brushes.Black
                     };
 
                     AddObject(square, new Point(i, j));
@@ -118,7 +107,7 @@ namespace Client
 
         private void InitializePieces()
         {
-            //Initialize my team
+            //Initialize first team
             for (int i = 0; i < (BoardSize / 2) - 1; i++)
             {
                 int j = 1;
@@ -129,7 +118,7 @@ namespace Client
                     {
                         Fill = MyTurn ? myColor : opponentColor,
                         Margin = new Thickness(5),
-                        Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("White")),
+                        Stroke = Brushes.White,
                         StrokeThickness = 1,
                         Tag = false
                     };
@@ -150,7 +139,7 @@ namespace Client
                     {
                         Fill = MyTurn ? opponentColor : myColor,
                         Margin = new Thickness(5),
-                        Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("White")),
+                        Stroke = Brushes.White,
                         StrokeThickness = 1,
                         Tag = false
                     };
@@ -205,11 +194,12 @@ namespace Client
             resO = res.Item1;
             Game.VerifyCrown(pToMove);
             MakeAnimationMove(GetPosition(chosenPiece), path, res.Item2);
-            
+            if(Client!=null)
+                Client.MakeMove(UserName, GameId, DateTime.Now, path.PathOfPiece, path.EatenPieces, resO);
         }
 
         //need to do function  change turns
-        Result resO;
+        Result resO = Result.Continue;
         Point firstP;
         Path pathP = null;
         private void MakeAnimationMove(Point currentPosition, Path path, bool isBurn)
@@ -217,25 +207,18 @@ namespace Client
             if (isBurn)
             {
                 RemoveEllipse(currentPosition);
-                SwitchTurns();
+                SwitchTurns(false);
             }
             else
             {
                 firstP = currentPosition;
                 pathP = path;
                 animationTimer.Tick += Animation;
-
             }
         }
 
         private void Animation(object sender, EventArgs e)
         {
-/*            if (StartAnimation && liveBoard[reqRow, reqCol].Fill.Equals(myColor) && res == MoveResult.GameOn.ToString())
-            {
-                SwitchTurns();
-                StartAnimation = false;
-            }
-*/
             if (pathP.PathOfPiece.Count!=0)
             {
                 Point next = pathP.GetNextPositin();
@@ -252,7 +235,7 @@ namespace Client
                 animationTimer.Tick -= Animation;
                 
                 if (Game.GetPieceAt(GetPosition(chosenPiece)).IsKing) AddKingIcon(Game.GetPieceAt(GetPosition(chosenPiece)).Coordinate);
-                SwitchTurns();
+                SwitchTurns(false);
             }
         }
 
@@ -270,7 +253,10 @@ namespace Client
 
             MakeAnimationMove(GetPosition(chosenPiece), move.Item2, res.Item2);
 
-           // if (!res.Item2 && Game.GetPieceAt(move.Item1.Coordinate).IsKing) AddKingIcon(move.Item1.Coordinate);
+            if(Client!=null)
+                Client.MakeMove("PC", GameId, DateTime.Now, move.Item2.PathOfPiece, move.Item2.EatenPieces, resO);
+
+            // if (!res.Item2 && Game.GetPieceAt(move.Item1.Coordinate).IsKing) AddKingIcon(move.Item1.Coordinate);
             //do something with result
         }
 
@@ -364,28 +350,33 @@ namespace Client
             }
         }
 
-        private void SwitchTurns()
+        private void SwitchTurns(bool isInit)
         {
             chosenPiece = null;
 
-            if (!MyTurn)
-            {
+            if ((isInit && MyTurn) || (!isInit&&!MyTurn))
                 Turn.Text = "This is Your Turn";
-            }
             else
-            {
-                Turn.Text = "This is Computer Turn";
-            }
+                Turn.Text = $"This is {OpponentUserName} Turn";
 
-            ellipse.Fill = MyTurn ? opponentColor : myColor;
-            MyTurn = !MyTurn;
+
+            ellipse.Fill = (isInit && MyTurn) || (!isInit && !MyTurn) ? myColor: opponentColor;
+            MyTurn = isInit?MyTurn:!MyTurn;
             //switched turns
             if (resO == Result.Continue && MyTurn == false)
                 MakeComputerTurn();
             else
             {
-                if (resO != Result.Continue)
-                    Console.WriteLine("Result!");
+                if (resO != Result.Continue) {
+                    if(MyTurn && resO == Result.Lost || !MyTurn && resO == Result.Win)
+                        Turn.Text = "Great! You Won!";
+                    if(resO == Result.Tie)
+                        Turn.Text = "is Tie!";
+                    if (MyTurn && resO == Result.Win || !MyTurn && resO == Result.Lost)
+                        Turn.Text = "Try next time!";
+
+                    MessageBox.Show("The Game is ended!");
+                }
             }
         }
 
@@ -420,9 +411,21 @@ namespace Client
         private void leaveBtn_Click(object sender, RoutedEventArgs e)
         {
             //handle things before closing the game
+            if (Client == null) {
+                WelcomeWindow win = new WelcomeWindow();
+                win.Show();
+            }
+            else
+            {
+                if(resO == Result.Continue)
+                    Client.CloseUnFinishedGame(GameId, UserName);
+                MenuWindow window = new MenuWindow();
+                window.Client = Client;
+                window.User = UserName;
+                window.Callback = Callback;
+                window.Show();
+            }
 
-            MenuWindow window = new MenuWindow();
-            window.Show();
             this.Close();
         }
     }

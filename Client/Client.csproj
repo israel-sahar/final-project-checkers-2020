@@ -162,9 +162,6 @@
     <None Include="Connected Services\CheckersServiceReference\Client.CheckersServiceReference.Move.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\CheckersServiceReference\Client.CheckersServiceReference.User.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Connected Services\CheckersServiceReference\item.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -172,6 +169,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\CheckersServiceReference\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CheckersServiceReference\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\CheckersServiceReference\item4.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />

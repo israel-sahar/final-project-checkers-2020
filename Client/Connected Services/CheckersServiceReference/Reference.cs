@@ -15,9 +15,192 @@ namespace Client.CheckersServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="User", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserAlreadyLoginFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
     [System.SerializableAttribute()]
-    public partial class User : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class UserAlreadyLoginFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string usrNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string usrName {
+            get {
+                return this.usrNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.usrNameField, value) != true)) {
+                    this.usrNameField = value;
+                    this.RaisePropertyChanged("usrName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserNotExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    [System.SerializableAttribute()]
+    public partial class UserNotExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string usrNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string usrName {
+            get {
+                return this.usrNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.usrNameField, value) != true)) {
+                    this.usrNameField = value;
+                    this.RaisePropertyChanged("usrName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="WrongPasswordFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    [System.SerializableAttribute()]
+    public partial class WrongPasswordFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string usrNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string usrName {
+            get {
+                return this.usrNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.usrNameField, value) != true)) {
+                    this.usrNameField = value;
+                    this.RaisePropertyChanged("usrName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserAlreadyExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    [System.SerializableAttribute()]
+    public partial class UserAlreadyExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -26,16 +209,7 @@ namespace Client.CheckersServiceReference {
         private string EmailField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<Client.CheckersServiceReference.Game> GamesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string HashedPasswordField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<Client.CheckersServiceReference.Move> MovesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string UserNameField;
+        private string MessageField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -61,53 +235,75 @@ namespace Client.CheckersServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<Client.CheckersServiceReference.Game> Games {
+        public string Message {
             get {
-                return this.GamesField;
+                return this.MessageField;
             }
             set {
-                if ((object.ReferenceEquals(this.GamesField, value) != true)) {
-                    this.GamesField = value;
-                    this.RaisePropertyChanged("Games");
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserNameAlreadyExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    [System.SerializableAttribute()]
+    public partial class UserNameAlreadyExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string EmailField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Email {
+            get {
+                return this.EmailField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EmailField, value) != true)) {
+                    this.EmailField = value;
+                    this.RaisePropertyChanged("Email");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string HashedPassword {
+        public string Message {
             get {
-                return this.HashedPasswordField;
+                return this.MessageField;
             }
             set {
-                if ((object.ReferenceEquals(this.HashedPasswordField, value) != true)) {
-                    this.HashedPasswordField = value;
-                    this.RaisePropertyChanged("HashedPassword");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<Client.CheckersServiceReference.Move> Moves {
-            get {
-                return this.MovesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MovesField, value) != true)) {
-                    this.MovesField = value;
-                    this.RaisePropertyChanged("Moves");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string UserName {
-            get {
-                return this.UserNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.UserNameField, value) != true)) {
-                    this.UserNameField = value;
-                    this.RaisePropertyChanged("UserName");
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
                 }
             }
         }
@@ -390,6 +586,115 @@ namespace Client.CheckersServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="User", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    [System.SerializableAttribute()]
+    public partial class User : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string EmailField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<Client.CheckersServiceReference.Game> GamesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string HashedPasswordField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<Client.CheckersServiceReference.Move> MovesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string UserNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Email {
+            get {
+                return this.EmailField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EmailField, value) != true)) {
+                    this.EmailField = value;
+                    this.RaisePropertyChanged("Email");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<Client.CheckersServiceReference.Game> Games {
+            get {
+                return this.GamesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.GamesField, value) != true)) {
+                    this.GamesField = value;
+                    this.RaisePropertyChanged("Games");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string HashedPassword {
+            get {
+                return this.HashedPasswordField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.HashedPasswordField, value) != true)) {
+                    this.HashedPasswordField = value;
+                    this.RaisePropertyChanged("HashedPassword");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<Client.CheckersServiceReference.Move> Moves {
+            get {
+                return this.MovesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MovesField, value) != true)) {
+                    this.MovesField = value;
+                    this.RaisePropertyChanged("Moves");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string UserName {
+            get {
+                return this.UserNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserNameField, value) != true)) {
+                    this.UserNameField = value;
+                    this.RaisePropertyChanged("UserName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Point", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
     [System.SerializableAttribute()]
     public partial class Point : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -531,320 +836,15 @@ namespace Client.CheckersServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserAlreadyLoginFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GameIdNotExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
     [System.SerializableAttribute()]
-    public partial class UserAlreadyLoginFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class GameIdNotExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DetailsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string usrNameField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Details {
-            get {
-                return this.DetailsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DetailsField, value) != true)) {
-                    this.DetailsField = value;
-                    this.RaisePropertyChanged("Details");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string usrName {
-            get {
-                return this.usrNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.usrNameField, value) != true)) {
-                    this.usrNameField = value;
-                    this.RaisePropertyChanged("usrName");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserNotExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-    [System.SerializableAttribute()]
-    public partial class UserNotExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DetailsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string usrNameField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Details {
-            get {
-                return this.DetailsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DetailsField, value) != true)) {
-                    this.DetailsField = value;
-                    this.RaisePropertyChanged("Details");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string usrName {
-            get {
-                return this.usrNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.usrNameField, value) != true)) {
-                    this.usrNameField = value;
-                    this.RaisePropertyChanged("usrName");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="WrongPasswordFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-    [System.SerializableAttribute()]
-    public partial class WrongPasswordFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DetailsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string usrNameField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Details {
-            get {
-                return this.DetailsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DetailsField, value) != true)) {
-                    this.DetailsField = value;
-                    this.RaisePropertyChanged("Details");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string usrName {
-            get {
-                return this.usrNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.usrNameField, value) != true)) {
-                    this.usrNameField = value;
-                    this.RaisePropertyChanged("usrName");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserAlreadyExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-    [System.SerializableAttribute()]
-    public partial class UserAlreadyExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DetailsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string EmailField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Details {
-            get {
-                return this.DetailsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DetailsField, value) != true)) {
-                    this.DetailsField = value;
-                    this.RaisePropertyChanged("Details");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Email {
-            get {
-                return this.EmailField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EmailField, value) != true)) {
-                    this.EmailField = value;
-                    this.RaisePropertyChanged("Email");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserNameAlreadyExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-    [System.SerializableAttribute()]
-    public partial class UserNameAlreadyExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DetailsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string EmailField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Details {
-            get {
-                return this.DetailsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DetailsField, value) != true)) {
-                    this.DetailsField = value;
-                    this.RaisePropertyChanged("Details");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Email {
-            get {
-                return this.EmailField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EmailField, value) != true)) {
-                    this.EmailField = value;
-                    this.RaisePropertyChanged("Email");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="GameIdNotExists", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-    [System.SerializableAttribute()]
-    public partial class GameIdNotExists : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DetailsField;
+        private string MessageField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int gameIdField;
@@ -860,14 +860,14 @@ namespace Client.CheckersServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Details {
+        public string Message {
             get {
-                return this.DetailsField;
+                return this.MessageField;
             }
             set {
-                if ((object.ReferenceEquals(this.DetailsField, value) != true)) {
-                    this.DetailsField = value;
-                    this.RaisePropertyChanged("Details");
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
                 }
             }
         }
@@ -909,6 +909,23 @@ namespace Client.CheckersServiceReference {
         Playing = 2,
     }
     
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Result", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    public enum Result : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Win = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Lost = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Tie = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Continue = 3,
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CheckersServiceReference.ICheckersService", CallbackContract=typeof(Client.CheckersServiceReference.ICheckersServiceCallback))]
     public interface ICheckersService {
@@ -917,10 +934,10 @@ namespace Client.CheckersServiceReference {
         [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.UserAlreadyLoginFault), Action="http://tempuri.org/ICheckersService/ConnectUserAlreadyLoginFaultFault", Name="UserAlreadyLoginFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
         [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.UserNotExistsFault), Action="http://tempuri.org/ICheckersService/ConnectUserNotExistsFaultFault", Name="UserNotExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
         [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.WrongPasswordFault), Action="http://tempuri.org/ICheckersService/ConnectWrongPasswordFaultFault", Name="WrongPasswordFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-        Client.CheckersServiceReference.User Connect(string usrName, string hashedPassword);
+        void Connect(string usrName, string hashedPassword);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/Connect", ReplyAction="http://tempuri.org/ICheckersService/ConnectResponse")]
-        System.Threading.Tasks.Task<Client.CheckersServiceReference.User> ConnectAsync(string usrName, string hashedPassword);
+        System.Threading.Tasks.Task ConnectAsync(string usrName, string hashedPassword);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/Register", ReplyAction="http://tempuri.org/ICheckersService/RegisterResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.UserAlreadyExistsFault), Action="http://tempuri.org/ICheckersService/RegisterUserAlreadyExistsFaultFault", Name="UserAlreadyExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
@@ -931,7 +948,7 @@ namespace Client.CheckersServiceReference {
         System.Threading.Tasks.Task RegisterAsync(string email, string userName, string hashedPassword);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetGame", ReplyAction="http://tempuri.org/ICheckersService/GetGameResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.GameIdNotExists), Action="http://tempuri.org/ICheckersService/GetGameGameIdNotExistsFault", Name="GameIdNotExists", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.GameIdNotExistsFault), Action="http://tempuri.org/ICheckersService/GetGameGameIdNotExistsFaultFault", Name="GameIdNotExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
         Client.CheckersServiceReference.Game GetGame(int gameId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetGame", ReplyAction="http://tempuri.org/ICheckersService/GetGameResponse")]
@@ -944,16 +961,16 @@ namespace Client.CheckersServiceReference {
         System.Threading.Tasks.Task DisconnectAsync(string usrName, Client.CheckersServiceReference.Mode userMode, int numGame);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/MakeMove", ReplyAction="http://tempuri.org/ICheckersService/MakeMoveResponse")]
-        void MakeMove(Client.CheckersServiceReference.Move move);
+        void MakeMove(string UserName, int GameId, System.DateTime time, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/MakeMove", ReplyAction="http://tempuri.org/ICheckersService/MakeMoveResponse")]
-        System.Threading.Tasks.Task MakeMoveAsync(Client.CheckersServiceReference.Move move);
+        System.Threading.Tasks.Task MakeMoveAsync(string UserName, int GameId, System.DateTime time, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/JoinGame", ReplyAction="http://tempuri.org/ICheckersService/JoinGameResponse")]
-        void JoinGame(Client.CheckersServiceReference.User user);
+        System.ValueTuple<int, string> JoinGame(string user, bool isVsCPU, int boardSize);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/JoinGame", ReplyAction="http://tempuri.org/ICheckersService/JoinGameResponse")]
-        System.Threading.Tasks.Task JoinGameAsync(Client.CheckersServiceReference.User user);
+        System.Threading.Tasks.Task<System.ValueTuple<int, string>> JoinGameAsync(string user, bool isVsCPU, int boardSize);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/WatchGame", ReplyAction="http://tempuri.org/ICheckersService/WatchGameResponse")]
         Client.CheckersServiceReference.Game WatchGame(string usrName, int gameId);
@@ -985,13 +1002,19 @@ namespace Client.CheckersServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/ResetPassword", ReplyAction="http://tempuri.org/ICheckersService/ResetPasswordResponse")]
         System.Threading.Tasks.Task ResetPasswordAsync(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/IsUserNameTaken", ReplyAction="http://tempuri.org/ICheckersService/IsUserNameTakenResponse")]
+        bool IsUserNameTaken(string userName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/IsUserNameTaken", ReplyAction="http://tempuri.org/ICheckersService/IsUserNameTakenResponse")]
+        System.Threading.Tasks.Task<bool> IsUserNameTakenAsync(string userName);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface ICheckersServiceCallback {
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICheckersService/Test")]
-        void Test();
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICheckersService/SendOpponentMove")]
+        void SendOpponentMove(System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1022,11 +1045,11 @@ namespace Client.CheckersServiceReference {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public Client.CheckersServiceReference.User Connect(string usrName, string hashedPassword) {
-            return base.Channel.Connect(usrName, hashedPassword);
+        public void Connect(string usrName, string hashedPassword) {
+            base.Channel.Connect(usrName, hashedPassword);
         }
         
-        public System.Threading.Tasks.Task<Client.CheckersServiceReference.User> ConnectAsync(string usrName, string hashedPassword) {
+        public System.Threading.Tasks.Task ConnectAsync(string usrName, string hashedPassword) {
             return base.Channel.ConnectAsync(usrName, hashedPassword);
         }
         
@@ -1054,20 +1077,20 @@ namespace Client.CheckersServiceReference {
             return base.Channel.DisconnectAsync(usrName, userMode, numGame);
         }
         
-        public void MakeMove(Client.CheckersServiceReference.Move move) {
-            base.Channel.MakeMove(move);
+        public void MakeMove(string UserName, int GameId, System.DateTime time, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result) {
+            base.Channel.MakeMove(UserName, GameId, time, PathOfPiece, EatenPieces, result);
         }
         
-        public System.Threading.Tasks.Task MakeMoveAsync(Client.CheckersServiceReference.Move move) {
-            return base.Channel.MakeMoveAsync(move);
+        public System.Threading.Tasks.Task MakeMoveAsync(string UserName, int GameId, System.DateTime time, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result) {
+            return base.Channel.MakeMoveAsync(UserName, GameId, time, PathOfPiece, EatenPieces, result);
         }
         
-        public void JoinGame(Client.CheckersServiceReference.User user) {
-            base.Channel.JoinGame(user);
+        public System.ValueTuple<int, string> JoinGame(string user, bool isVsCPU, int boardSize) {
+            return base.Channel.JoinGame(user, isVsCPU, boardSize);
         }
         
-        public System.Threading.Tasks.Task JoinGameAsync(Client.CheckersServiceReference.User user) {
-            return base.Channel.JoinGameAsync(user);
+        public System.Threading.Tasks.Task<System.ValueTuple<int, string>> JoinGameAsync(string user, bool isVsCPU, int boardSize) {
+            return base.Channel.JoinGameAsync(user, isVsCPU, boardSize);
         }
         
         public Client.CheckersServiceReference.Game WatchGame(string usrName, int gameId) {
@@ -1108,6 +1131,14 @@ namespace Client.CheckersServiceReference {
         
         public System.Threading.Tasks.Task ResetPasswordAsync(string email) {
             return base.Channel.ResetPasswordAsync(email);
+        }
+        
+        public bool IsUserNameTaken(string userName) {
+            return base.Channel.IsUserNameTaken(userName);
+        }
+        
+        public System.Threading.Tasks.Task<bool> IsUserNameTakenAsync(string userName) {
+            return base.Channel.IsUserNameTakenAsync(userName);
         }
     }
 }

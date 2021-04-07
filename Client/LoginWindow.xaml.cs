@@ -48,7 +48,7 @@ namespace Client
             User user=null;
             try
             {
-                user = Client.Connect(usrName, HashValue(pass));
+                Client.Connect(usrName, HashValue(pass));
             }
             catch (FaultException<UserAlreadyLoginFault>) {
                 MessageBox.Show("The User already connected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -68,7 +68,7 @@ namespace Client
                 return;
             }
             MenuWindow window = new MenuWindow();
-            window.User = user;
+            window.User = usrName;
             window.Callback = Callback;
             window.Client = Client;
             window.Show();

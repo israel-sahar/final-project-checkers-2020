@@ -356,7 +356,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_GetGame_GameIdNotExistsFault_Fault">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_GetGame_GameIdNotExistsFaultFault_Fault">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -770,7 +770,53 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_Test_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_IsUserNameTaken_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_IsUserNameTaken_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_SendOpponentMove_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -798,6 +844,8 @@
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CheckersService" />
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Windows" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="ICheckersService_Connect_InputMessage">
@@ -833,8 +881,8 @@
   <wsdl:message name="ICheckersService_GetGame_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetGameResponse" />
   </wsdl:message>
-  <wsdl:message name="ICheckersService_GetGame_GameIdNotExistsFault_FaultMessage">
-    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/CheckersService" name="detail" element="q6:GameIdNotExists" />
+  <wsdl:message name="ICheckersService_GetGame_GameIdNotExistsFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/CheckersService" name="detail" element="q6:GameIdNotExistsFault" />
   </wsdl:message>
   <wsdl:message name="ICheckersService_Disconnect_InputMessage">
     <wsdl:part name="parameters" element="tns:Disconnect" />
@@ -887,8 +935,14 @@
   <wsdl:message name="ICheckersService_ResetPassword_UserNotExistsFaultFault_FaultMessage">
     <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/CheckersService" name="detail" element="q7:UserNotExistsFault" />
   </wsdl:message>
-  <wsdl:message name="ICheckersService_Test_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:Test" />
+  <wsdl:message name="ICheckersService_IsUserNameTaken_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsUserNameTaken" />
+  </wsdl:message>
+  <wsdl:message name="ICheckersService_IsUserNameTaken_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsUserNameTakenResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICheckersService_SendOpponentMove_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendOpponentMove" />
   </wsdl:message>
   <wsdl:portType name="ICheckersService">
     <wsdl:operation name="Connect">
@@ -907,7 +961,7 @@
     <wsdl:operation name="GetGame">
       <wsdl:input wsaw:Action="http://tempuri.org/ICheckersService/GetGame" message="tns:ICheckersService_GetGame_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICheckersService/GetGameResponse" message="tns:ICheckersService_GetGame_OutputMessage" />
-      <wsdl:fault wsaw:Action="http://tempuri.org/ICheckersService/GetGameGameIdNotExistsFault" name="GameIdNotExistsFault" message="tns:ICheckersService_GetGame_GameIdNotExistsFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ICheckersService/GetGameGameIdNotExistsFaultFault" name="GameIdNotExistsFaultFault" message="tns:ICheckersService_GetGame_GameIdNotExistsFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="Disconnect">
       <wsdl:input wsaw:Action="http://tempuri.org/ICheckersService/Disconnect" message="tns:ICheckersService_Disconnect_InputMessage" />
@@ -942,8 +996,12 @@
       <wsdl:output wsaw:Action="http://tempuri.org/ICheckersService/ResetPasswordResponse" message="tns:ICheckersService_ResetPassword_OutputMessage" />
       <wsdl:fault wsaw:Action="http://tempuri.org/ICheckersService/ResetPasswordUserNotExistsFaultFault" name="UserNotExistsFaultFault" message="tns:ICheckersService_ResetPassword_UserNotExistsFaultFault_FaultMessage" />
     </wsdl:operation>
-    <wsdl:operation name="Test">
-      <wsdl:output wsaw:Action="http://tempuri.org/ICheckersService/Test" message="tns:ICheckersService_Test_OutputCallbackMessage" />
+    <wsdl:operation name="IsUserNameTaken">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICheckersService/IsUserNameTaken" message="tns:ICheckersService_IsUserNameTaken_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICheckersService/IsUserNameTakenResponse" message="tns:ICheckersService_IsUserNameTaken_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendOpponentMove">
+      <wsdl:output wsaw:Action="http://tempuri.org/ICheckersService/SendOpponentMove" message="tns:ICheckersService_SendOpponentMove_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WSDualHttpBinding_ICheckersService" type="tns:ICheckersService">
@@ -1001,9 +1059,9 @@
         <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_GetGame_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
-      <wsdl:fault name="GameIdNotExistsFault">
-        <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_GetGame_GameIdNotExistsFault_Fault" />
-        <soap12:fault use="literal" name="GameIdNotExistsFault" namespace="" />
+      <wsdl:fault name="GameIdNotExistsFaultFault">
+        <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_GetGame_GameIdNotExistsFaultFault_Fault" />
+        <soap12:fault use="literal" name="GameIdNotExistsFaultFault" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="Disconnect">
@@ -1098,10 +1156,21 @@
         <soap12:fault use="literal" name="UserNotExistsFaultFault" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="Test">
-      <soap12:operation soapAction="http://tempuri.org/ICheckersService/Test" style="document" />
+    <wsdl:operation name="IsUserNameTaken">
+      <soap12:operation soapAction="http://tempuri.org/ICheckersService/IsUserNameTaken" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_IsUserNameTaken_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_Test_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_IsUserNameTaken_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendOpponentMove">
+      <soap12:operation soapAction="http://tempuri.org/ICheckersService/SendOpponentMove" style="document" />
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_SendOpponentMove_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CheckersService" />
+  <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Windows" />
+  <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System" />
   <xs:element name="Connect">
     <xs:complexType>
       <xs:sequence>
@@ -11,9 +13,7 @@
   </xs:element>
   <xs:element name="ConnectResponse">
     <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="ConnectResult" nillable="true" type="q1:User" />
-      </xs:sequence>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
   <xs:element name="Register">
@@ -40,7 +40,7 @@
   <xs:element name="GetGameResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="GetGameResult" nillable="true" type="q2:Game" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="GetGameResult" nillable="true" type="q1:Game" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -48,7 +48,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="usrName" nillable="true" type="xs:string" />
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="userMode" type="q3:Mode" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="userMode" type="q2:Mode" />
         <xs:element minOccurs="0" name="numGame" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
@@ -61,7 +61,12 @@
   <xs:element name="MakeMove">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="move" nillable="true" type="q4:Move" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="GameId" type="xs:int" />
+        <xs:element minOccurs="0" name="time" type="xs:dateTime" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/System.Windows" minOccurs="0" name="PathOfPiece" nillable="true" type="q3:ArrayOfPoint" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/System.Windows" minOccurs="0" name="EatenPieces" nillable="true" type="q4:ArrayOfPoint" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="result" type="q5:Result" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -73,13 +78,17 @@
   <xs:element name="JoinGame">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="user" nillable="true" type="q5:User" />
+        <xs:element minOccurs="0" name="user" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="isVsCPU" type="xs:boolean" />
+        <xs:element minOccurs="0" name="boardSize" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="JoinGameResponse">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="JoinGameResult" type="q6:ValueTupleOfintstring" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="WatchGame">
@@ -93,7 +102,7 @@
   <xs:element name="WatchGameResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="WatchGameResult" nillable="true" type="q6:Game" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="WatchGameResult" nillable="true" type="q7:Game" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -113,14 +122,14 @@
   <xs:element name="GetAllMoves">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="game" nillable="true" type="q7:Game" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="game" nillable="true" type="q8:Game" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetAllMovesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="GetAllMovesResult" nillable="true" type="q8:ArrayOfMove" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="GetAllMovesResult" nillable="true" type="q9:ArrayOfMove" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -148,9 +157,27 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="Test">
+  <xs:element name="IsUserNameTaken">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IsUserNameTakenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="IsUserNameTakenResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendOpponentMove">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/System.Windows" minOccurs="0" name="PathOfPiece" nillable="true" type="q10:ArrayOfPoint" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/System.Windows" minOccurs="0" name="EatenPieces" nillable="true" type="q11:ArrayOfPoint" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="result" type="q12:Result" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 </xs:schema>

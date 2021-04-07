@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Client.CheckersServiceReference;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +22,9 @@ namespace Client
     /// </summary>
     public partial class RegisterWindow : Window
     {
+        public CheckersServiceClient Client { get; internal set; }
+        public ClientCallback Callback { get; internal set; }
+
         public RegisterWindow()
         {
             InitializeComponent();
@@ -33,16 +39,42 @@ namespace Client
         private void createBtn_Click(object sender, RoutedEventArgs e)
         {
             //after create and add to database
+            string email = emailTextBox.Text.Trim();
+            string usrName = usrNameTextBox.Text.Trim();
+            string password = passwordTextBox.Password.Trim();
+            try {
+            Client.Register(email, usrName, HashValue(password));
+                MessageBox.Show("Your registration was successful");
+                MenuWindow window = new MenuWindow();
+                window.User = usrName;
+                window.Callback = Callback;
+                window.Client = Client;
+                window.Show();
+                this.Close();
+            }
+            catch(FaultException<UserAlreadyExistsFault> ex)
+            {
+                MessageBox.Show(ex.Detail.Message);
 
-            MenuWindow window = new MenuWindow();
-            window.Show();
-            this.Close();
+            }
+            catch (FaultException<UserNameAlreadyExistsFault> ex)
+            {
+                {
+                    MessageBox.Show(ex.Detail.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
 
         private void haveAnAccount_MouseDown(object sender, MouseButtonEventArgs e)
         {
             LoginWindow window = new LoginWindow();
+            window.Client = Client;
+            window.Callback = Callback;
             window.Show();
             this.Close();
         }
@@ -52,6 +84,20 @@ namespace Client
             WelcomeWindow window = new WelcomeWindow();
             window.Show();
             this.Close();
+        }
+
+        private string HashValue(string password)
+        {
+            using (SHA256 hashObject = SHA256.Create())
+            {
+                byte[] hashBytes = hashObject.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                foreach (byte b in hashBytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
     }
 }

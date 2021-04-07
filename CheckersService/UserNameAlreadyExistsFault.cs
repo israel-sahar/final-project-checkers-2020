@@ -6,7 +6,7 @@ namespace CheckersService
     public class UserNameAlreadyExistsFault
     {
         [DataMember]
-        public string Details { get; set; }
+        public string Message { get; set; }
         [DataMember]
         public string Email { get; set; }
     }

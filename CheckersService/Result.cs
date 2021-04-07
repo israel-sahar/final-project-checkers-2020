@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 namespace CheckersService
 {
     [DataContract]
-    public class WrongPasswordFault
+    public enum Result
     {
-        [DataMember]
-        public string Message { get;set; }
-        [DataMember]
-        public string usrName { get;set; }
+        [EnumMember]
+        Win,
+        [EnumMember]
+        Lost,
+        [EnumMember]
+        Tie,
+        [EnumMember]
+        Continue
     }
 }

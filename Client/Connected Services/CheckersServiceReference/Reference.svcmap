@@ -24,10 +24,12 @@
     <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="8bd20fe0-a822-4f1a-a499-69c3933ef3ec" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd1" />
-    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="3de87dfc-6cdb-46ee-b924-7b5eaea8f703" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd0" />
     <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="f5f9b226-0b03-4164-bce7-dd98c957e16d" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd2" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="3de87dfc-6cdb-46ee-b924-7b5eaea8f703" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd0" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="8bd20fe0-a822-4f1a-a499-69c3933ef3ec" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd1" />
     <MetadataFile FileName="item.disco" MetadataType="Disco" ID="c9ebf93f-57ba-4c60-bcc8-36dc8b40f527" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?disco" />
+    <MetadataFile FileName="item3.xsd" MetadataType="Schema" ID="713750ac-9c61-48bf-bc4a-fe92de69ac9e" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd3" />
+    <MetadataFile FileName="item4.xsd" MetadataType="Schema" ID="d41aad33-7317-46d8-b047-766e01f49468" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd4" />
     <MetadataFile FileName="CheckersService1.wsdl" MetadataType="Wsdl" ID="a222d70e-a994-4e8f-898f-f4c2ab7fe20a" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?wsdl" />
   </Metadata>
   <Extensions>

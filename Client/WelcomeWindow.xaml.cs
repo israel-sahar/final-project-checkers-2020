@@ -22,7 +22,7 @@ namespace Client
     /// </summary>
     public partial class WelcomeWindow : Window
     {
-        int choosenSize, choosenLevel;
+        int choosenSize;
         public ClientCallback Callback { set; get; }
         public CheckersServiceClient Client { get; set; }
 
@@ -46,6 +46,8 @@ namespace Client
         private void registerBtn_Click(object sender, RoutedEventArgs e)
         {
             RegisterWindow window = new RegisterWindow();
+            window.Client = Client;
+            window.Callback = Callback;
             window.Show();
             this.Close();
         }
@@ -72,9 +74,24 @@ namespace Client
         //handle level
         private void chooseLevelGameClick(object sender, RoutedEventArgs e)
         {
-            choosenLevel = Int32.Parse(((Button)sender).Tag.ToString());
-
-            GameWindow window = new GameWindow(choosenSize, Level.Easy, true);
+            string level = ((Button)sender).Tag.ToString();
+            Level selectedLevel=Level.Human;
+            switch (level)
+            {
+                case ("Easy"):
+                    selectedLevel = Level.Easy;
+                    break;
+                case ("Medium"):
+                    selectedLevel = Level.Medium;
+                    break;
+                case ("Hard"):
+                    selectedLevel = Level.Hard;
+                    break;
+            }
+            GameWindow window = new GameWindow(choosenSize, selectedLevel, true);
+            window.Client = null;
+            window.Callback = null;
+            window.UserName = null;
             window.Show();
             this.Close();
         }

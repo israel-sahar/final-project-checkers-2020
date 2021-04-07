@@ -2,7 +2,12 @@
 {
     public class UserContact
     {
-        public ICheckersCallback callback { get; set; }
-        public string usrName { get; set; }
+        public UserContact(string userName, ICheckersCallback checkersCallback)
+        {
+            UserName = userName;
+            CheckersCallback = checkersCallback;
+        }
+        public string UserName { get; }
+        public ICheckersCallback CheckersCallback { get; }
     }
 }

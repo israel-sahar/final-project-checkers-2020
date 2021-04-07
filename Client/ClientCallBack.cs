@@ -9,9 +9,14 @@ namespace Client
 {
     public class ClientCallback : ICheckersServiceCallback
     {
+        public void SendOpponentMove(List<System.Windows.Point> PathOfPiece, List<System.Windows.Point> EatenPieces, Result result)
+        {
+
+        }
+
         public void Test()
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

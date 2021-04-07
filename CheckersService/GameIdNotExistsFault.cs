@@ -3,10 +3,10 @@
 namespace CheckersService
 {
     [DataContract]
-    public class GameIdNotExists
+    public class GameIdNotExistsFault
     {
         [DataMember]
-        public string Details { get; internal set; }
+        public string Message { get; internal set; }
         [DataMember]
         public int gameId { get; internal set; }
     }

@@ -9,7 +9,7 @@ namespace Client
 {
     public enum Team { Me, Opponent }
     public enum Direction { Up = -1, Down = 1 }
-    public enum Result { Win, Lost, Tie, Continue }
+    //public enum Result { Win, Lost, Tie, Continue }
 
     public class Board
     {
@@ -166,7 +166,7 @@ namespace Client
         }
 
 
-        public (Result, bool) MovePiece(Piece pieceToMove, Path path)
+        public (CheckersServiceReference.Result, bool) MovePiece(Piece pieceToMove, Path path)
         {
             if (path.EatenPieces.Count != 0)
             {
@@ -249,10 +249,10 @@ namespace Client
         }
 
         //check scenario when cpu cant move
-        public Result CheckResultGame()
+        public CheckersServiceReference.Result CheckResultGame()
         {
-            if (GetOpponentPiecesCount() == 0) return Result.Win;
-            if (GetMyPiecesCount() == 0) return Result.Lost;
+            if (GetOpponentPiecesCount() == 0) return CheckersServiceReference.Result.Win;
+            if (GetMyPiecesCount() == 0) return CheckersServiceReference.Result.Lost;
 
             bool moreMovesLeft = false;
             foreach (Piece p in MyTeamPieces)
@@ -261,7 +261,7 @@ namespace Client
                 if (possibleMoves.Count != 0) { moreMovesLeft = true; break; }
 
             }
-            if (moreMovesLeft == false) return Result.Lost;
+            if (moreMovesLeft == false) return CheckersServiceReference.Result.Lost;
 
             foreach (Piece p in OpponentTeamPieces)
             {
@@ -269,11 +269,11 @@ namespace Client
                 if (possibleMoves.Count != 0) { moreMovesLeft = true; break; }
 
             }
-            if (moreMovesLeft == false) return Result.Win;
+            if (moreMovesLeft == false) return CheckersServiceReference.Result.Win;
 
-            if (withoutEatingCounter == MAX_MOVES_WITHOUT_EATING) return Result.Tie;
+            if (withoutEatingCounter == MAX_MOVES_WITHOUT_EATING) return CheckersServiceReference.Result.Tie;
 
-            return Result.Continue;
+            return CheckersServiceReference.Result.Continue;
         }
 
         private int GetMyPiecesCount()

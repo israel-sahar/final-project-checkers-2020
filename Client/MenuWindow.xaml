@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="Chesser Game" Height="500" Width="600">
+        Title="Checker Game" Height="500" Width="600">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -91,33 +91,35 @@
         <Label Grid.Column="1" Grid.ColumnSpan="3" FontSize="60" HorizontalAlignment="Center" FontWeight="ExtraBold" Foreground="Brown">MENU</Label>
         <Button Name="cmpBtn" Content="VS. COMPUTER" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Click="vsComputer_Click" 
                 Style="{DynamicResource RoundedButtonStyle}"/>
-        <Button Name="playerBtn" Content="VS. PLAYER" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Click="vsPlayer_Click"
-                Style="{DynamicResource RoundedButtonStyle}"/>
-        <Button Name="prevGamesBtn" Content="PREVIOUS GAMES" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3"
-                Click="watchPrevGame_Click" Style="{DynamicResource RoundedButtonStyle}"/>
-
         <StackPanel Visibility="Hidden" Name="tableSizeCPUGrid" Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3">
             <Label Content="size:" VerticalAlignment="Center" FontWeight="Black" FontSize="24"/>
-            <Button Margin="7,12" Name="eightCPUBtn" Content="8x8" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseSizeTableClick"/>
-            <Button Margin="6,12" Name="tenCPUBtn" Content="10x10" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseSizeTableClick"/>
+            <Button Margin="7,12" Tag="8" Name="eightCPUBtn" Content="8x8" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseSizeTableClick"/>
+            <Button Margin="6,12" Tag="10" Name="tenCPUBtn" Content="10x10" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseSizeTableClick"/>
             <Button Margin="6,12" Name="backCPUBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backCPUBtn_Click"/>
-
         </StackPanel>
-
-        <StackPanel Visibility="Hidden" Name="tableSizePlayerGrid" Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3">
-            <Label Content="size:" VerticalAlignment="Center" FontWeight="Black" FontSize="24"/>
-            <Button Margin="7,12" Name="eightPlayerBtn" Content="8x8" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseSizeTablePlayerClick"/>
-            <Button Margin="6,12" Name="tenPlayerBtn" Content="10x10" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseSizeTablePlayerClick"/>
-            <Button Margin="6,12" Name="backPlayerBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backPlayerBtn_Click"/>
-
-        </StackPanel>
-
         <StackPanel Visibility="Hidden" Name="gameLevelGrid" Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3">
             <Button Margin="7,12" Name="easyBtn" Tag="Easy" Content="Easy" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseLevelGameClick"/>
             <Button Margin="6,12" Name="mediumBtn" Tag="Medium" Content="Med" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseLevelGameClick"/>
             <Button Margin="6,12" Name="hardBtn" Tag="Hard" Content="Hard" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseLevelGameClick"/>
             <Button Margin="6,12" Name="backLevelBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backLevelBtn_Click"/>
         </StackPanel>
+        
+        <Button Name="playerBtn" Content="VS. PLAYER" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" 
+                Click="vsPlayer_Click"
+                Style="{DynamicResource RoundedButtonStyle}"/>
+        <StackPanel Visibility="Hidden" Name="tableSizePlayerGrid" Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3">
+            <Label Content="size:" VerticalAlignment="Center" FontWeight="Black" FontSize="24"/>
+            <Button Margin="7,12" Tag="8" Name="eightPlayerBtn" Content="8x8" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseSizeTablePlayerClick"/>
+            <Button Margin="6,12" Tag="10" Name="tenPlayerBtn" Content="10x10" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseSizeTablePlayerClick"/>
+            <Button Margin="6,12" Name="backPlayerBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backPlayerBtn_Click"/>
+        </StackPanel>
+
+
+        <Button Name="prevGamesBtn" Content="PREVIOUS GAMES" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3"
+                Click="watchPrevGame_Click" Style="{DynamicResource RoundedButtonStyle}"/>
+        <Button Name="liveGamesBtn" Content="LIVE GAMES" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3"
+                Click="watchLiveGame_Click" Style="{DynamicResource RoundedButtonStyle}"/>
+
     </Grid>
 
 </Window>

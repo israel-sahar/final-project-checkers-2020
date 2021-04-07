@@ -11,7 +11,7 @@ namespace CheckersService
     public class UserNotExistsFault
     {
         [DataMember]
-        public string Details { get;set; }
+        public string Message { get;set; }
         [DataMember]
         public string usrName { get;set; }
     }

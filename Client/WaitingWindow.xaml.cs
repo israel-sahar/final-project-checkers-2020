@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.CheckersServiceReference;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,19 @@ namespace Client
         {
             InitializeComponent();
         }
+
+        public WaitingWindow(int chosenSize, Level human, bool v)
+        {
+            ChosenSize = chosenSize;
+            Human = human;
+            V = v;
+        }
+
+        public int ChosenSize { get; }
+        public Level Human { get; }
+        public bool V { get; }
+        public ClientCallback Callback { get; internal set; }
+        public CheckersServiceClient Client { get; internal set; }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {

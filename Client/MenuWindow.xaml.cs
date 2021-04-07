@@ -21,50 +21,58 @@ namespace Client
     public partial class MenuWindow : Window
     {
         private int chosenSize;
-        private int chosenLevel;
+        private Level chosenLevel;
 
         public CheckersServiceClient Client { get; internal set; }
         public ClientCallback Callback { get; internal set; }
-        public User User { get; internal set; }
+        public string User { get; internal set; }
 
         public MenuWindow()
         {
             InitializeComponent();
         }
 
-        private void backPlayerBtn_Click(object sender, RoutedEventArgs e)
+        private void vsComputer_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Hidden;
-            playerBtn.Visibility = Visibility.Visible;
+            cmpBtn.Visibility = Visibility.Hidden;
+            tableSizeCPUGrid.Visibility = Visibility.Visible;
         }
 
         private void backCPUBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Hidden;
+            tableSizeCPUGrid.Visibility = Visibility.Hidden;
             cmpBtn.Visibility = Visibility.Visible;
         }
 
         private void chooseSizeTableClick(object sender, RoutedEventArgs e)
         {
-            chosenSize = Int32.Parse(this.Tag.ToString());
+            chosenSize = Int32.Parse(((Button)sender).Tag.ToString());
             tableSizeCPUGrid.Visibility = Visibility.Hidden;
             gameLevelGrid.Visibility = Visibility.Visible;
         }
 
-        //handle level
         private void chooseLevelGameClick(object sender, RoutedEventArgs e)
         {
-            chosenLevel = Int32.Parse(this.Tag.ToString());
-
-            GameWindow window = new GameWindow(chosenSize, Level.Easy,true);
+            string level = ((Button)sender).Tag.ToString();
+            switch (level)
+            {
+                case ("Easy"):chosenLevel = Level.Easy;
+                    break;
+                case ("Medium"):
+                    chosenLevel = Level.Medium;
+                    break;
+                case ("Hard"):
+                    chosenLevel = Level.Hard;
+                    break;
+            }
+            GameWindow window = new GameWindow(chosenSize, chosenLevel, true);
+            window.Client = Client;
+            window.Callback = Callback;
+            var gameDetails = Client.JoinGame(User, true, chosenSize);
+            window.GameId = gameDetails.Item1;
+            window.UserName = User;
             window.Show();
             this.Close();
-        }
-
-        private void gameLevelGrid_MouseLeave(object sender, MouseEventArgs e)
-        {
-            gameLevelGrid.Visibility = Visibility.Hidden;
-            cmpBtn.Visibility = Visibility.Visible;
         }
 
         private void backLevelBtn_Click(object sender, RoutedEventArgs e)
@@ -73,37 +81,27 @@ namespace Client
             cmpBtn.Visibility = Visibility.Visible;
         }
 
-        private void tableSizeGrid_MouseLeave(object sender, MouseEventArgs e)
-        {
-            this.Visibility = Visibility.Hidden;
-            cmpBtn.Visibility = Visibility.Visible;
-        }
-
-        private void vsComputer_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Hidden;
-            tableSizeCPUGrid.Visibility = Visibility.Visible;
-        }
-
         private void vsPlayer_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Hidden;
+            playerBtn.Visibility = Visibility.Hidden;
             tableSizePlayerGrid.Visibility = Visibility.Visible;
         }
 
-        private void tableSizePlayerGrid_MouseLeave(object sender, MouseEventArgs e)
+
+        private void backPlayerBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Hidden;
+            tableSizePlayerGrid.Visibility = Visibility.Hidden;
             playerBtn.Visibility = Visibility.Visible;
         }
 
-        //handle level
+
         private void chooseSizeTablePlayerClick(object sender, RoutedEventArgs e)
         {
-            chosenSize = Int32.Parse(this.Tag.ToString());
+            chosenSize = Int32.Parse(((Button)sender).Tag.ToString());
 
-            //chosen level should be null
-            GameWindow window = new GameWindow(chosenSize,Level.Easy, false);
+            WaitingWindow window = new WaitingWindow(chosenSize, Level.Human, false);
+            window.Callback = Callback;
+            window.Client = Client;
             window.Show();
             this.Close();
         }
@@ -113,6 +111,11 @@ namespace Client
             PrevsGamesWindow window = new PrevsGamesWindow();
             window.Show();
             this.Close();
+        }
+
+        private void watchLiveGame_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

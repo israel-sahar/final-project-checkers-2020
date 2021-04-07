@@ -6,7 +6,7 @@ namespace CheckersService
     public class UserAlreadyLoginFault
     {
         [DataMember]
-        public string Details { get; set; }
+        public string Message { get; set; }
         [DataMember]
         public string usrName { get; set; }
     }
