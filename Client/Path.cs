@@ -19,6 +19,12 @@ namespace Client
             EatenPieces = new List<Point>();
         }
 
+        public Path(List<Point> pathOfPiece, List<Point> eatenPieces)
+        {
+            PathOfPiece = new List<Point>(pathOfPiece);
+            EatenPieces = new List<Point>(eatenPieces);
+        }
+
         public Path(Path path)
         {
             PathOfPiece = new List<Point>();

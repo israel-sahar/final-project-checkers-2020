@@ -13,18 +13,22 @@ namespace CheckersService
     public enum Status { Unfinished,OneWon, TwoWon,isTie,}
     //lecture 13_3 -43:48 make a thread to connect with users
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
-        ConcurrencyMode =ConcurrencyMode.Multiple)]
+        ConcurrencyMode =ConcurrencyMode.Reentrant)]
     public class CheckersService : ICheckersService
     {
         private readonly int PASS_LENGTH = 8;
 
         Dictionary<string, ICheckersCallback> onlineUsers = new Dictionary<string, ICheckersCallback>();
-        List<UserContact> waitingEightRoom = new List<UserContact>();
-        List<UserContact> waitingTenRoom = new List<UserContact>();
+        Dictionary<int, List<UserContact>> waitingRoom = new Dictionary<int, List<UserContact>>();
 
         Dictionary<int, (UserContact, UserContact)> runningGame = new Dictionary<int, (UserContact, UserContact)>();
         //Dictionary<int, Dictionary<string, ICheckersCallback>> watchingGames = new Dictionary<int, Dictionary<string, ICheckersCallback>>(); 
 
+        public CheckersService()
+        {
+            waitingRoom.Add(8, new List<UserContact>());
+            waitingRoom.Add(10, new List<UserContact>());
+        }
         public void Connect(string usrName, string hashedPassword)
         {
             if(onlineUsers.ContainsKey(usrName)){
@@ -125,7 +129,7 @@ namespace CheckersService
             }
         }
 
-        public (int,string) JoinGame(string user,bool isVsCPU,int boardSize)
+        public (int,string, bool) JoinGame(string user,bool isVsCPU,int boardSize)
         {
             using (var ctx = new CheckersDBContext()) {
 
@@ -143,13 +147,51 @@ namespace CheckersService
                     ctx.SaveChanges();
                     runningGame.Add(Game.GameId, (new UserContact(usr.UserName, onlineUsers[usr.UserName]), null));
                     onlineUsers.Remove(usr.UserName);
-                    return (Game.GameId,null);
+                    return (Game.GameId,null,true);
                 }
-                return (0,null);
+                else
+                {
+                    //playing against human
+                    if (waitingRoom[boardSize].Count == 0) {
+                        waitingRoom[boardSize].Add(new UserContact(user, onlineUsers[user]));
+                        onlineUsers.Remove(user);
+                    }
+                    else
+                    {
+                        var OpponentPlayer = waitingRoom[boardSize].First();
+                        waitingRoom[boardSize].RemoveAt(0);
+
+                        var Game = new Game
+                        {
+                            Date = DateTime.Now,
+                            Status = (int)Status.Unfinished
+                        };
+                        var usrOne = (from u in ctx.Users
+                                   where u.UserName == user
+                                   select u).FirstOrDefault();
+                        var usrTwo = (from u in ctx.Users
+                                      where u.UserName == OpponentPlayer.UserName
+                                      select u).FirstOrDefault();
+                        Game.Users.Add(usrOne);
+                        Game.Users.Add(usrTwo);
+
+                        ctx.Games.Add(Game);
+                        ctx.SaveChanges();
+                        OpponentPlayer.CheckersCallback.StartGame(Game.GameId, user, false);
+                        runningGame.Add(Game.GameId, (new UserContact(usrOne.UserName, onlineUsers[usrOne.UserName]),
+                                                        OpponentPlayer));
+                        onlineUsers.Remove(user);
+
+
+                        return (Game.GameId, OpponentPlayer.UserName, true);
+                    }
+                    
+                }
+                return (-1,null,false);
             }
         }
 
-        public void MakeMove(string UserName,int GameId,DateTime time,List<System.Windows.Point> PathOfPiece, List<System.Windows.Point> EatenPieces,Result result)
+        public void MakeMove(string UserName,int GameId,DateTime time, System.Windows.Point correntCord, List<System.Windows.Point> PathOfPiece, List<System.Windows.Point> EatenPieces,Result result)
         {
             using(var ctx = new CheckersDBContext())
             {
@@ -159,6 +201,8 @@ namespace CheckersService
                 User CurrentUser = UserName.Equals("PC")?null:game.Users.Where(x => x.UserName == UserName).First();
                 if (game.Users.Count() == 2)
                     OtherUser = game.Users.Where(x => x.UserName != UserName).First();
+
+                PathOfPiece.Insert(0, correntCord);
                 var move = new Move
                 {
                     EatenPieces = Convert(EatenPieces),
@@ -172,7 +216,7 @@ namespace CheckersService
 
                 if (OtherUser != null)
                 {
-                    UserContact sentTo = runningGame[GameId].Item1.UserName == UserName ? runningGame[GameId].Item1 : runningGame[GameId].Item2;
+                    UserContact sentTo = runningGame[GameId].Item1.UserName == UserName ? runningGame[GameId].Item2 : runningGame[GameId].Item1;
                     sentTo.CheckersCallback.SendOpponentMove(PathOfPiece, EatenPieces, result);
                 }
 
@@ -357,6 +401,15 @@ namespace CheckersService
         public void CloseUnFinishedGame(int GameId, string UserName)
         {
             throw new NotImplementedException();
+        }
+
+        public void StopWaitingGame(string UserName, int boardSize)
+        {
+            var playerToRemove = (from u in waitingRoom[boardSize]
+                                  where u.UserName == UserName
+                                  select u).First();
+            waitingRoom[boardSize].Remove(playerToRemove);
+            onlineUsers.Add(playerToRemove.UserName, playerToRemove.CheckersCallback);
         }
     }
 }

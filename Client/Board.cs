@@ -147,14 +147,13 @@ namespace Client
                 }
             }
 
-            Direction negetiveDir = ownBoardDirection == Direction.Down ? Direction.Up : Direction.Down;
             for (int i = (BoardSize / 2) + 1; i < BoardSize; i++)
             {
                 int j = 1;
                 if (i % 2 == 1) j = 0;
                 for (; j < BoardSize; j += 2)
                 {
-                    Piece piece = new Checker(ownBoardDirection == Direction.Down ? Team.Opponent : Team.Me, negetiveDir, new Point(i, j));
+                    Piece piece = new Checker(ownBoardDirection == Direction.Down ? Team.Opponent : Team.Me, ownBoardDirection, new Point(i, j));
 
                     board[i, j] = piece;
                     if (ownBoardDirection == Direction.Down)

@@ -25,9 +25,9 @@ namespace CheckersService
         [OperationContract]
         void Disconnect(string usrName, Mode userMode, int numGame = -1);
         [OperationContract]
-        void MakeMove(string UserName, int GameId, DateTime time, List<System.Windows.Point> PathOfPiece, List<System.Windows.Point> EatenPieces, Result result);
+        void MakeMove(string UserName, int GameId, DateTime time, System.Windows.Point correntCord, List<System.Windows.Point> PathOfPiece, List<System.Windows.Point> EatenPieces, Result result);
         [OperationContract]
-        (int, string) JoinGame(string user, bool isVsCPU, int boardSize);
+        (int, string, bool) JoinGame(string user, bool isVsCPU, int boardSize);
         [OperationContract]
         Game WatchGame(string usrName, int gameId);
         [OperationContract]
@@ -43,10 +43,14 @@ namespace CheckersService
         void ResetPassword(string email);
         [OperationContract]
         bool IsUserNameTaken(string userName);
+        [OperationContract]
+        void StopWaitingGame(string UserName,int boardSize);
     }
 
     public interface ICheckersCallback {
         [OperationContract(IsOneWay = true)]
         void SendOpponentMove(List<System.Windows.Point> PathOfPiece, List<System.Windows.Point> EatenPieces, Result result);
+        [OperationContract(IsOneWay = true)]
+        void StartGame(int GameId, string OpponentName, bool MyTurn);
     }
 }

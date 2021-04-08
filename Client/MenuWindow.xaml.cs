@@ -99,10 +99,7 @@ namespace Client
         {
             chosenSize = Int32.Parse(((Button)sender).Tag.ToString());
 
-            WaitingWindow window = new WaitingWindow(chosenSize, Level.Human, false);
-            window.Callback = Callback;
-            window.Client = Client;
-            window.Show();
+            WaitingWindow window = new WaitingWindow(Callback,Client, User, chosenSize, Level.Human);
             this.Close();
         }
 

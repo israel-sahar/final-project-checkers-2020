@@ -961,22 +961,28 @@ namespace Client.CheckersServiceReference {
         System.Threading.Tasks.Task DisconnectAsync(string usrName, Client.CheckersServiceReference.Mode userMode, int numGame);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/MakeMove", ReplyAction="http://tempuri.org/ICheckersService/MakeMoveResponse")]
-        void MakeMove(string UserName, int GameId, System.DateTime time, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result);
+        void MakeMove(string UserName, int GameId, System.DateTime time, System.Windows.Point correntCord, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/MakeMove", ReplyAction="http://tempuri.org/ICheckersService/MakeMoveResponse")]
-        System.Threading.Tasks.Task MakeMoveAsync(string UserName, int GameId, System.DateTime time, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result);
+        System.Threading.Tasks.Task MakeMoveAsync(string UserName, int GameId, System.DateTime time, System.Windows.Point correntCord, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/JoinGame", ReplyAction="http://tempuri.org/ICheckersService/JoinGameResponse")]
-        System.ValueTuple<int, string> JoinGame(string user, bool isVsCPU, int boardSize);
+        System.ValueTuple<int, string, bool> JoinGame(string user, bool isVsCPU, int boardSize);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/JoinGame", ReplyAction="http://tempuri.org/ICheckersService/JoinGameResponse")]
-        System.Threading.Tasks.Task<System.ValueTuple<int, string>> JoinGameAsync(string user, bool isVsCPU, int boardSize);
+        System.Threading.Tasks.Task<System.ValueTuple<int, string, bool>> JoinGameAsync(string user, bool isVsCPU, int boardSize);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/WatchGame", ReplyAction="http://tempuri.org/ICheckersService/WatchGameResponse")]
         Client.CheckersServiceReference.Game WatchGame(string usrName, int gameId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/WatchGame", ReplyAction="http://tempuri.org/ICheckersService/WatchGameResponse")]
         System.Threading.Tasks.Task<Client.CheckersServiceReference.Game> WatchGameAsync(string usrName, int gameId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/CloseUnFinishedGame", ReplyAction="http://tempuri.org/ICheckersService/CloseUnFinishedGameResponse")]
+        void CloseUnFinishedGame(int GameId, string UserName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/CloseUnFinishedGame", ReplyAction="http://tempuri.org/ICheckersService/CloseUnFinishedGameResponse")]
+        System.Threading.Tasks.Task CloseUnFinishedGameAsync(int GameId, string UserName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/StopWatchGame", ReplyAction="http://tempuri.org/ICheckersService/StopWatchGameResponse")]
         void StopWatchGame(string usrName, int gameId);
@@ -1008,6 +1014,12 @@ namespace Client.CheckersServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/IsUserNameTaken", ReplyAction="http://tempuri.org/ICheckersService/IsUserNameTakenResponse")]
         System.Threading.Tasks.Task<bool> IsUserNameTakenAsync(string userName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/StopWaitingGame", ReplyAction="http://tempuri.org/ICheckersService/StopWaitingGameResponse")]
+        void StopWaitingGame(string UserName, int boardSize);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/StopWaitingGame", ReplyAction="http://tempuri.org/ICheckersService/StopWaitingGameResponse")]
+        System.Threading.Tasks.Task StopWaitingGameAsync(string UserName, int boardSize);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1015,6 +1027,9 @@ namespace Client.CheckersServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICheckersService/SendOpponentMove")]
         void SendOpponentMove(System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ICheckersService/StartGame")]
+        void StartGame(int GameId, string OpponentName, bool MyTurn);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1077,19 +1092,19 @@ namespace Client.CheckersServiceReference {
             return base.Channel.DisconnectAsync(usrName, userMode, numGame);
         }
         
-        public void MakeMove(string UserName, int GameId, System.DateTime time, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result) {
-            base.Channel.MakeMove(UserName, GameId, time, PathOfPiece, EatenPieces, result);
+        public void MakeMove(string UserName, int GameId, System.DateTime time, System.Windows.Point correntCord, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result) {
+            base.Channel.MakeMove(UserName, GameId, time, correntCord, PathOfPiece, EatenPieces, result);
         }
         
-        public System.Threading.Tasks.Task MakeMoveAsync(string UserName, int GameId, System.DateTime time, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result) {
-            return base.Channel.MakeMoveAsync(UserName, GameId, time, PathOfPiece, EatenPieces, result);
+        public System.Threading.Tasks.Task MakeMoveAsync(string UserName, int GameId, System.DateTime time, System.Windows.Point correntCord, System.Collections.Generic.List<System.Windows.Point> PathOfPiece, System.Collections.Generic.List<System.Windows.Point> EatenPieces, Client.CheckersServiceReference.Result result) {
+            return base.Channel.MakeMoveAsync(UserName, GameId, time, correntCord, PathOfPiece, EatenPieces, result);
         }
         
-        public System.ValueTuple<int, string> JoinGame(string user, bool isVsCPU, int boardSize) {
+        public System.ValueTuple<int, string, bool> JoinGame(string user, bool isVsCPU, int boardSize) {
             return base.Channel.JoinGame(user, isVsCPU, boardSize);
         }
         
-        public System.Threading.Tasks.Task<System.ValueTuple<int, string>> JoinGameAsync(string user, bool isVsCPU, int boardSize) {
+        public System.Threading.Tasks.Task<System.ValueTuple<int, string, bool>> JoinGameAsync(string user, bool isVsCPU, int boardSize) {
             return base.Channel.JoinGameAsync(user, isVsCPU, boardSize);
         }
         
@@ -1099,6 +1114,14 @@ namespace Client.CheckersServiceReference {
         
         public System.Threading.Tasks.Task<Client.CheckersServiceReference.Game> WatchGameAsync(string usrName, int gameId) {
             return base.Channel.WatchGameAsync(usrName, gameId);
+        }
+        
+        public void CloseUnFinishedGame(int GameId, string UserName) {
+            base.Channel.CloseUnFinishedGame(GameId, UserName);
+        }
+        
+        public System.Threading.Tasks.Task CloseUnFinishedGameAsync(int GameId, string UserName) {
+            return base.Channel.CloseUnFinishedGameAsync(GameId, UserName);
         }
         
         public void StopWatchGame(string usrName, int gameId) {
@@ -1139,6 +1162,14 @@ namespace Client.CheckersServiceReference {
         
         public System.Threading.Tasks.Task<bool> IsUserNameTakenAsync(string userName) {
             return base.Channel.IsUserNameTakenAsync(userName);
+        }
+        
+        public void StopWaitingGame(string UserName, int boardSize) {
+            base.Channel.StopWaitingGame(UserName, boardSize);
+        }
+        
+        public System.Threading.Tasks.Task StopWaitingGameAsync(string UserName, int boardSize) {
+            return base.Channel.StopWaitingGameAsync(UserName, boardSize);
         }
     }
 }

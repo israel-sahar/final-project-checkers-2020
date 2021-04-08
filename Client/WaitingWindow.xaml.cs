@@ -20,16 +20,26 @@ namespace Client
     /// </summary>
     public partial class WaitingWindow : Window
     {
-        public WaitingWindow()
+
+        public WaitingWindow(ClientCallback callback,CheckersServiceClient client,string userName, int chosenSize, Level human)
         {
             InitializeComponent();
-        }
-
-        public WaitingWindow(int chosenSize, Level human, bool v)
-        {
             ChosenSize = chosenSize;
             Human = human;
-            V = v;
+            Client = client;
+            UserName = userName;
+            Callback = callback;
+            Callback.OpenNewGame = CreateGameWindow;
+            //need to get from client turn,gameid,OpponentName
+            //the second player will get this return value the first one will get -1
+            (int, string, bool) gameId_OppName_Turn = Client.JoinGame(userName, false, chosenSize);
+            if(gameId_OppName_Turn.Item1!=-1)
+                CreateGameWindow(gameId_OppName_Turn.Item1, gameId_OppName_Turn.Item2, gameId_OppName_Turn.Item3);
+            
+            else
+            
+                this.Show();
+            
         }
 
         public int ChosenSize { get; }
@@ -37,10 +47,24 @@ namespace Client
         public bool V { get; }
         public ClientCallback Callback { get; internal set; }
         public CheckersServiceClient Client { get; internal set; }
+        public string UserName { get; internal set; }
 
+        public void CreateGameWindow(int gameId, string OpponentName, bool myTurn)
+        {
+            GameWindow window = new GameWindow(Client, Callback, gameId, UserName, OpponentName,ChosenSize, myTurn);
+
+            window.Show();
+            this.Close();
+        }
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            Client.StopWaitingGame(UserName, ChosenSize);
+            MenuWindow win = new MenuWindow();
+            win.Client = Client;
+            win.Content = Content;
+            win.User = UserName;
+            win.Show();
+            this.Close();
         }
     }
 }
