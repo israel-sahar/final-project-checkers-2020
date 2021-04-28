@@ -38,6 +38,7 @@
   <xs:complexType name="Game">
     <xs:sequence>
       <xs:element minOccurs="0" name="Date" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EatMode" type="xs:boolean" />
       <xs:element minOccurs="0" name="GameId" type="xs:int" />
       <xs:element minOccurs="0" name="Moves" nillable="true" type="tns:ArrayOfMove" />
       <xs:element minOccurs="0" name="Status" type="xs:int" />
@@ -53,35 +54,18 @@
   <xs:element name="ArrayOfMove" nillable="true" type="tns:ArrayOfMove" />
   <xs:complexType name="Move">
     <xs:sequence>
-      <xs:element minOccurs="0" name="EatenPieces" nillable="true" type="tns:ArrayOfPoint" />
-      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Game" nillable="true" type="tns:Game" />
-      <xs:element minOccurs="0" name="GameId" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Game_GameId" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="MoveId" type="xs:int" />
-      <xs:element minOccurs="0" name="PointsToMove" nillable="true" type="tns:ArrayOfPoint" />
       <xs:element minOccurs="0" name="RecordTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="User" nillable="true" type="tns:User" />
+      <xs:element minOccurs="0" name="User_Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="pathIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="posX" type="xs:int" />
+      <xs:element minOccurs="0" name="posY" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Move" nillable="true" type="tns:Move" />
-  <xs:complexType name="ArrayOfPoint">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Point" nillable="true" type="tns:Point" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfPoint" nillable="true" type="tns:ArrayOfPoint" />
-  <xs:complexType name="Point">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Column" type="xs:int" />
-      <xs:element minOccurs="0" name="EatPointId" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="Id" type="xs:int" />
-      <xs:element minOccurs="0" name="MovePointId" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="PointToEat" nillable="true" type="tns:Move" />
-      <xs:element minOccurs="0" name="PointToMove" nillable="true" type="tns:Move" />
-      <xs:element minOccurs="0" name="Row" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Point" nillable="true" type="tns:Point" />
   <xs:complexType name="User">
     <xs:sequence>
       <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />

@@ -13,10 +13,4 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Point" nillable="true" type="tns:Point" />
-  <xs:complexType name="ArrayOfPoint">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Point" type="tns:Point" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfPoint" nillable="true" type="tns:ArrayOfPoint" />
 </xs:schema>

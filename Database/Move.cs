@@ -17,7 +17,8 @@ namespace Database
         public User User { get; set; }
         public DateTime RecordTime { get; set; }
 
-        public ICollection<Point> EatenPieces { get; set; }
-        public ICollection<Point> PointsToMove { get; set; }
+        public int posX { get; set; }
+        public int posY { get; set; }
+        public int pathIndex { get; set; }
     }
 }

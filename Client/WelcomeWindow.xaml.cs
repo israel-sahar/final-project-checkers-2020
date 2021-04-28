@@ -72,10 +72,10 @@ namespace Client
         }
 
         //handle level
+        Level selectedLevel = Level.Human;
         private void chooseLevelGameClick(object sender, RoutedEventArgs e)
         {
             string level = ((Button)sender).Tag.ToString();
-            Level selectedLevel=Level.Human;
             switch (level)
             {
                 case ("Easy"):
@@ -88,18 +88,40 @@ namespace Client
                     selectedLevel = Level.Hard;
                     break;
             }
-            GameWindow window = new GameWindow(choosenSize, selectedLevel, true);
-            window.Client = null;
-            window.Callback = null;
-            window.UserName = null;
-            window.Show();
-            this.Close();
+
+            gameLevelGrid.Visibility = Visibility.Hidden;
+            eatModeGrid.Visibility = Visibility.Visible;
         }
 
         private void backLevelBtn_Click(object sender, RoutedEventArgs e)
         {
             gameLevelGrid.Visibility = Visibility.Hidden;
             playOfflineButton.Visibility = Visibility.Visible;
+        }
+
+        private void chooseEatModeClick(object sender, RoutedEventArgs e)
+        {
+            string mode = ((Button)sender).Tag.ToString();
+            bool EatMode=true;
+            switch (mode)
+            {
+                case ("True"):
+                    EatMode = true;
+                    break;
+                case ("False"):
+                    EatMode = false;
+                    break;
+            }
+            GameWindow window = new GameWindow(choosenSize, selectedLevel, true, EatMode);
+            
+            window.Show();
+            this.Close();
+        }
+
+        private void backEatBtn_Click(object sender, RoutedEventArgs e)
+        {
+            eatModeGrid.Visibility = Visibility.Hidden;
+            gameLevelGrid.Visibility = Visibility.Visible;
         }
     }
 }

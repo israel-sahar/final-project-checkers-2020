@@ -7,6 +7,7 @@
     <Property Name="GameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Status" Type="Int32" Nullable="false" />
     <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EatMode" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Moves" Relationship="Self.FK_dbo_Moves_dbo_Games_Game_GameId" FromRole="Games" ToRole="Moves" />
     <NavigationProperty Name="Users" Relationship="Self.UserGames" FromRole="Games" ToRole="Users" />
   </EntityType>
@@ -16,24 +17,13 @@
     </Key>
     <Property Name="MoveId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="RecordTime" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="GameId" Type="Int32" />
+    <Property Name="posX" Type="Int32" Nullable="false" />
+    <Property Name="posY" Type="Int32" Nullable="false" />
+    <Property Name="pathIndex" Type="Int32" Nullable="false" />
+    <Property Name="User_Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Game_GameId" Type="Int32" />
     <NavigationProperty Name="Game" Relationship="Self.FK_dbo_Moves_dbo_Games_Game_GameId" FromRole="Moves" ToRole="Games" />
     <NavigationProperty Name="User" Relationship="Self.FK_dbo_Moves_dbo_Users_User_Email" FromRole="Moves" ToRole="Users" />
-    <NavigationProperty Name="EatenPieces" Relationship="Self.FK_dbo_Points_dbo_Moves_Move_MoveId" FromRole="Moves" ToRole="Points" />
-    <NavigationProperty Name="PointsToMove" Relationship="Self.FK_dbo_Points_dbo_Moves_Move_MoveId1" FromRole="Moves" ToRole="Points" />
-  </EntityType>
-  <EntityType Name="Point">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Row" Type="Int32" Nullable="false" />
-    <Property Name="Column" Type="Int32" Nullable="false" />
-    <Property Name="EatPointId" Type="Int32" />
-    <Property Name="MovePointId" Type="Int32" />
-    <NavigationProperty Name="PointToEat" Relationship="Self.FK_dbo_Points_dbo_Moves_Move_MoveId" FromRole="Points" ToRole="Moves" />
-    <NavigationProperty Name="PointToMove" Relationship="Self.FK_dbo_Points_dbo_Moves_Move_MoveId1" FromRole="Points" ToRole="Moves" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -53,7 +43,7 @@
         <PropertyRef Name="GameId" />
       </Principal>
       <Dependent Role="Moves">
-        <PropertyRef Name="GameId" />
+        <PropertyRef Name="Game_GameId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -65,31 +55,7 @@
         <PropertyRef Name="Email" />
       </Principal>
       <Dependent Role="Moves">
-        <PropertyRef Name="Email" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_dbo_Points_dbo_Moves_Move_MoveId">
-    <End Role="Moves" Type="Self.Move" Multiplicity="0..1" />
-    <End Role="Points" Type="Self.Point" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Moves">
-        <PropertyRef Name="MoveId" />
-      </Principal>
-      <Dependent Role="Points">
-        <PropertyRef Name="EatPointId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_dbo_Points_dbo_Moves_Move_MoveId1">
-    <End Role="Moves" Type="Self.Move" Multiplicity="0..1" />
-    <End Role="Points" Type="Self.Point" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Moves">
-        <PropertyRef Name="MoveId" />
-      </Principal>
-      <Dependent Role="Points">
-        <PropertyRef Name="MovePointId" />
+        <PropertyRef Name="User_Email" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -97,10 +63,9 @@
     <End Role="Games" Type="Self.Game" Multiplicity="*" />
     <End Role="Users" Type="Self.User" Multiplicity="*" />
   </Association>
-  <EntityContainer Name="CheckersDBEntities" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="CheckersDB" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Games" EntityType="Self.Game" />
     <EntitySet Name="Moves" EntityType="Self.Move" />
-    <EntitySet Name="Points" EntityType="Self.Point" />
     <EntitySet Name="Users" EntityType="Self.User" />
     <AssociationSet Name="FK_dbo_Moves_dbo_Games_Game_GameId" Association="Self.FK_dbo_Moves_dbo_Games_Game_GameId">
       <End Role="Games" EntitySet="Games" />
@@ -109,14 +74,6 @@
     <AssociationSet Name="FK_dbo_Moves_dbo_Users_User_Email" Association="Self.FK_dbo_Moves_dbo_Users_User_Email">
       <End Role="Users" EntitySet="Users" />
       <End Role="Moves" EntitySet="Moves" />
-    </AssociationSet>
-    <AssociationSet Name="FK_dbo_Points_dbo_Moves_Move_MoveId" Association="Self.FK_dbo_Points_dbo_Moves_Move_MoveId">
-      <End Role="Moves" EntitySet="Moves" />
-      <End Role="Points" EntitySet="Points" />
-    </AssociationSet>
-    <AssociationSet Name="FK_dbo_Points_dbo_Moves_Move_MoveId1" Association="Self.FK_dbo_Points_dbo_Moves_Move_MoveId1">
-      <End Role="Moves" EntitySet="Moves" />
-      <End Role="Points" EntitySet="Points" />
     </AssociationSet>
     <AssociationSet Name="UserGames" Association="Self.UserGames">
       <End Role="Games" EntitySet="Games" />

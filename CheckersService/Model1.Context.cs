@@ -13,10 +13,10 @@ namespace CheckersService
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class CheckersDBContext : DbContext
+    public partial class CheckersDB : DbContext
     {
-        public CheckersDBContext()
-            : base("name=CheckersDBEntities")
+        public CheckersDB()
+            : base("name=CheckersDB")
         {
         }
     
@@ -27,7 +27,6 @@ namespace CheckersService
     
         public virtual DbSet<Game> Games { get; set; }
         public virtual DbSet<Move> Moves { get; set; }
-        public virtual DbSet<Point> Points { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace Client
     public partial class WaitingWindow : Window
     {
 
-        public WaitingWindow(ClientCallback callback,CheckersServiceClient client,string userName, int chosenSize, Level human)
+        public WaitingWindow(ClientCallback callback,CheckersServiceClient client,string userName, int chosenSize, Level human, bool eatMode)
         {
             InitializeComponent();
             ChosenSize = chosenSize;
@@ -30,9 +30,10 @@ namespace Client
             UserName = userName;
             Callback = callback;
             Callback.OpenNewGame = CreateGameWindow;
+            EatMode = eatMode;
             //need to get from client turn,gameid,OpponentName
             //the second player will get this return value the first one will get -1
-            (int, string, bool) gameId_OppName_Turn = Client.JoinGame(userName, false, chosenSize);
+            (int, string, bool) gameId_OppName_Turn = Client.JoinGame(userName, false, chosenSize, eatMode);
             if(gameId_OppName_Turn.Item1!=-1)
                 CreateGameWindow(gameId_OppName_Turn.Item1, gameId_OppName_Turn.Item2, gameId_OppName_Turn.Item3);
             
@@ -48,10 +49,11 @@ namespace Client
         public ClientCallback Callback { get; internal set; }
         public CheckersServiceClient Client { get; internal set; }
         public string UserName { get; internal set; }
+        public bool EatMode { get; private set; }
 
         public void CreateGameWindow(int gameId, string OpponentName, bool myTurn)
         {
-            GameWindow window = new GameWindow(Client, Callback, gameId, UserName, OpponentName,ChosenSize, myTurn);
+            GameWindow window = new GameWindow(Client, Callback, gameId, UserName, OpponentName,ChosenSize, myTurn,EatMode);
 
             window.Show();
             this.Close();

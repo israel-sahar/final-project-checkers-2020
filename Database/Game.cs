@@ -16,6 +16,7 @@ namespace Database
         public ICollection<User> Players { get; set; }
         public ICollection<Move> Moves { get; set; }
         public int Status { get; set; }
-        public DateTime Date { get; set; }   
+        public DateTime Date { get; set; }  
+        public bool EatMode { get; set; }
     }
 }

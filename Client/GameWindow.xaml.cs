@@ -32,7 +32,7 @@ namespace Client
 
         public int BoardSize { get; set; }
         public bool MyTurn { get; set; }
-
+        public bool EatMode { get; private set; }
         private Board Game { get; set; }
         public int GameId { get; internal set; }
         public string UserName { get; internal set; }
@@ -49,19 +49,22 @@ namespace Client
 
         //timers
         DispatcherTimer animationTimer;
-        public GameWindow(int chosenSize, Level chosenLevel, bool myTurn)
+        public GameWindow(int chosenSize, Level chosenLevel, bool myTurn,bool eatMode)
         {
             Client = null;
+            Callback = null;
+            UserName = null;
             BoardSize = chosenSize;
             MyTurn = myTurn;
-
+            EatMode = eatMode;
             OpponentUserName = "Computer";
             pcPlayer = new ComputerMove(chosenLevel);
             Init();
         }
 
-        public GameWindow(CheckersServiceClient client, ClientCallback callback, int gameId, string userName, string opponentName, int chosenSize, bool myTurn)
+        public GameWindow(CheckersServiceClient client, ClientCallback callback, int gameId, string userName, string opponentName, int chosenSize, bool myTurn, bool eatMode)
         {
+            EatMode = eatMode;
             Client = client;
             Callback = callback;
             GameId = gameId;
@@ -91,13 +94,15 @@ namespace Client
         {
             Path path = ((Button)sender).Tag as Path;
             btnGroup.Clear();
-            Piece pToMove = Game.GetPieceAt(GetPosition(chosenPiece));
+            var lastP = GetPosition(chosenPiece);
+            Piece pToMove = Game.GetPieceAt(lastP);
+            
             (Result, bool) res = Game.MovePiece(pToMove, path);
             resO = res.Item1;
             Game.VerifyCrown(pToMove);
-            MakeAnimationMove(GetPosition(chosenPiece), path, res.Item2);
+            MakeAnimationMove(lastP, path, res.Item2);
             if (Client != null)
-                Client.MakeMove(UserName, GameId, DateTime.Now, GetPosition(chosenPiece), path.PathOfPiece, path.EatenPieces, resO);
+                Client.MakeMove(UserName, GameId, DateTime.Now, lastP, path.PathOfPiece, path.EatenPieces, resO);
         }
 
         private void MakeComputerTurn()
@@ -172,7 +177,7 @@ namespace Client
             opponentColor = (MyTurn) ? blueColorPiece : redColorPiece;
 
             //get eatmode from user
-            Game = new Board(BoardSize, (MyTurn) ? Direction.Down : Direction.Up,true);
+            Game = new Board(BoardSize, (MyTurn) ? Direction.Down : Direction.Up,EatMode);
 
             InitializeComponent();
             SwitchTurns(true);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.Windows;
 
 namespace CheckersService
 {
@@ -25,9 +26,9 @@ namespace CheckersService
         [OperationContract]
         void Disconnect(string usrName, Mode userMode, int numGame = -1);
         [OperationContract]
-        void MakeMove(string UserName, int GameId, DateTime time, System.Windows.Point correntCord, List<System.Windows.Point> PathOfPiece, List<System.Windows.Point> EatenPieces, Result result);
+        void MakeMove(string UserName, int GameId, DateTime time, Point correntPos, int indexPath, Result result);
         [OperationContract]
-        (int, string, bool) JoinGame(string user, bool isVsCPU, int boardSize);
+        (int, string, bool) JoinGame(string user, bool isVsCPU, int boardSize,bool EatMode);
         [OperationContract]
         Game WatchGame(string usrName, int gameId);
         [OperationContract]
@@ -49,7 +50,7 @@ namespace CheckersService
 
     public interface ICheckersCallback {
         [OperationContract(IsOneWay = true)]
-        void SendOpponentMove(List<System.Windows.Point> PathOfPiece, List<System.Windows.Point> EatenPieces, Result result);
+        void SendOpponentMove(Point correntPos, int indexPath, Result result);
         [OperationContract(IsOneWay = true)]
         void StartGame(int GameId, string OpponentName, bool MyTurn);
     }

@@ -5,8 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameHost"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Initialized="Window_Initialized">
+        Title="MainWindow" Height="297.2" Width="321.6" Initialized="Window_Initialized">
+    <Window.Background>
+        <ImageBrush ImageSource="assets\background.jpg" Opacity="0.5"/>
+    </Window.Background>
     <Grid>
-        <Label Name="StatusLabel"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Name="StatusLabel" HorizontalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="4" FontSize="50"/>
+        <Button Name="onB" Content="ON" Grid.Row="2" Grid.Column="1" Margin="10" Click="onB_Click"/>
+        <Button Name="offB" Content="OFF" Grid.Row="2" Grid.Column="2" Margin="10" Click="offB_Click"/>
+        <Button Name="restartB" Content="RESTART" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" Click="restartB_Click"/>
+
     </Grid>
 </Window>

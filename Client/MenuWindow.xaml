@@ -103,7 +103,14 @@
             <Button Margin="6,12" Name="hardBtn" Tag="Hard" Content="Hard" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseLevelGameClick"/>
             <Button Margin="6,12" Name="backLevelBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backLevelBtn_Click"/>
         </StackPanel>
-        
+
+        <StackPanel Visibility="Hidden" Name="eatModePCGrid" Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Margin="0.333,0,96.333,0">
+            <Label Content="B-Mode:" VerticalAlignment="Center" FontWeight="Black" FontSize="24"/>
+            <Button Margin="7,12" Name="Yes" Tag="True" Content="Yes" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseEatModePCClick"/>
+            <Button Margin="6,12" Name="No" Tag="False" Content="No" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseEatModePCClick"/>
+            <Button Margin="6,12" Name="backEatBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backEatPCBtn_Click"/>
+        </StackPanel>
+
         <Button Name="playerBtn" Content="VS. PLAYER" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" 
                 Click="vsPlayer_Click"
                 Style="{DynamicResource RoundedButtonStyle}"/>
@@ -112,6 +119,12 @@
             <Button Margin="7,12" Tag="8" Name="eightPlayerBtn" Content="8x8" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseSizeTablePlayerClick"/>
             <Button Margin="6,12" Tag="10" Name="tenPlayerBtn" Content="10x10" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseSizeTablePlayerClick"/>
             <Button Margin="6,12" Name="backPlayerBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backPlayerBtn_Click"/>
+        </StackPanel>
+        <StackPanel Visibility="Hidden" Name="eatModePlayerGrid" Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0.333,0,96.333,0">
+            <Label Content="B-Mode:" VerticalAlignment="Center" FontWeight="Black" FontSize="24"/>
+            <Button Margin="7,12" Name="YesP" Tag="True" Content="Yes" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseEatModePlayerClick"/>
+            <Button Margin="6,12" Name="NoP" Tag="False" Content="No" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseEatModePlayerClick"/>
+            <Button Margin="6,12" Name="backEatPBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backEatPlayerBtn_Click"/>
         </StackPanel>
 
 

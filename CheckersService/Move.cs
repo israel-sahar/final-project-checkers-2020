@@ -14,23 +14,15 @@ namespace CheckersService
     
     public partial class Move
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Move()
-        {
-            this.EatenPieces = new HashSet<Point>();
-            this.PointsToMove = new HashSet<Point>();
-        }
-    
         public int MoveId { get; set; }
         public System.DateTime RecordTime { get; set; }
-        public string Email { get; set; }
-        public Nullable<int> GameId { get; set; }
+        public int posX { get; set; }
+        public int posY { get; set; }
+        public int pathIndex { get; set; }
+        public string User_Email { get; set; }
+        public Nullable<int> Game_GameId { get; set; }
     
         public virtual Game Game { get; set; }
         public virtual User User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Point> EatenPieces { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Point> PointsToMove { get; set; }
     }
 }

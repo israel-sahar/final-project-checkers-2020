@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Description;
@@ -36,7 +37,40 @@ namespace GameHost
             try
             {
                 host.Open();
-                StatusLabel.Content = "Service is Running";
+                StatusLabel.Content = "RUNNING";
+                StatusLabel.Foreground = Brushes.Green;
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        private void onB_Click(object sender, RoutedEventArgs e)
+        {
+            if (host.State == CommunicationState.Opened) return;
+            host = new ServiceHost(typeof(CheckersService.CheckersService));
+            host.Description.Behaviors.Add(new ServiceMetadataBehavior { HttpGetEnabled = true });
+            try
+            {
+                host.Open();
+                StatusLabel.Content = "RUNNING";
+                StatusLabel.Foreground = Brushes.Green;
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        private void restartB_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(Process.GetCurrentProcess().MainModule.FileName);
+            Application.Current.Shutdown();
+        }
+
+        private void offB_Click(object sender, RoutedEventArgs e)
+        {
+            if (host.State == CommunicationState.Closed) return;
+            try
+            {
+                host.Close();
+                StatusLabel.Content = "CLOSED";
+                StatusLabel.Foreground = Brushes.Red;
             }
             catch (Exception ex) { throw ex; }
         }

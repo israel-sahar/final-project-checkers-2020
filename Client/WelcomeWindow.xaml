@@ -107,8 +107,12 @@
             <Button Margin="6,12" Name="hardBtn" Tag="Hard" Content="Hard" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseLevelGameClick"/>
             <Button Margin="6,12" Name="backLevelBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backLevelBtn_Click"/>
         </StackPanel>
-        <Label Grid.Row="4" Content="Service Status:" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" FontSize="16"></Label>
-        <Label Name="statusLabel"  Grid.Row="4" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" FontSize="16" FontWeight="Bold"></Label>
+        <StackPanel Visibility="Hidden" Name="eatModeGrid" Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" Margin="0.333,0,96.333,0">
+            <Label Content="B-Mode:" VerticalAlignment="Center" FontWeight="Black" FontSize="24"/>
+            <Button Margin="7,12" Name="Yes" Tag="True" Content="Yes" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseEatModeClick"/>
+            <Button Margin="6,12" Name="No" Tag="False" Content="No" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="chooseEatModeClick"/>
+            <Button Margin="6,12" Name="backEatBtn" Content="BACK" Style="{DynamicResource RoundedButtonStyle}" Width="77" Click="backEatBtn_Click"/>
+        </StackPanel>
     </Grid>
 
 </Window>

@@ -65,14 +65,9 @@ namespace Client
                     chosenLevel = Level.Hard;
                     break;
             }
-            GameWindow window = new GameWindow(chosenSize, chosenLevel, true);
-            window.Client = Client;
-            window.Callback = Callback;
-            var gameDetails = Client.JoinGame(User, true, chosenSize);
-            window.GameId = gameDetails.Item1;
-            window.UserName = User;
-            window.Show();
-            this.Close();
+
+            gameLevelGrid.Visibility = Visibility.Hidden;
+            eatModePCGrid.Visibility = Visibility.Visible;
         }
 
         private void backLevelBtn_Click(object sender, RoutedEventArgs e)
@@ -99,9 +94,10 @@ namespace Client
         {
             chosenSize = Int32.Parse(((Button)sender).Tag.ToString());
 
-            WaitingWindow window = new WaitingWindow(Callback,Client, User, chosenSize, Level.Human);
-            this.Close();
+            tableSizePlayerGrid.Visibility = Visibility.Hidden;
+            eatModePlayerGrid.Visibility = Visibility.Visible;
         }
+        
 
         private void watchPrevGame_Click(object sender, RoutedEventArgs e)
         {
@@ -113,6 +109,60 @@ namespace Client
         private void watchLiveGame_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+        bool EatMode = true;
+        private void chooseEatModePCClick(object sender, RoutedEventArgs e)
+        {
+            string eatMode = ((Button)sender).Tag.ToString();
+            switch (eatMode)
+            {
+                case ("True"):
+                    EatMode = true;
+                    break;
+                case ("False"):
+                    EatMode = false;
+                    break;
+            }
+
+            GameWindow window = new GameWindow(chosenSize, chosenLevel, true, EatMode);
+            window.Client = Client;
+            window.Callback = Callback;
+            
+            var gameDetails = Client.JoinGame(User, true, chosenSize,EatMode);
+            window.GameId = gameDetails.Item1;
+            window.UserName = User;
+            window.Show();
+            this.Close();
+        }
+
+        private void backEatPCBtn_Click(object sender, RoutedEventArgs e)
+        {
+            eatModePCGrid.Visibility = Visibility.Hidden;
+            gameLevelGrid.Visibility = Visibility.Visible;
+        }
+
+        private void chooseEatModePlayerClick(object sender, RoutedEventArgs e)
+        {
+            string eatMode = ((Button)sender).Tag.ToString();
+            switch (eatMode)
+            {
+                case ("True"):
+                    EatMode = true;
+                    break;
+                case ("False"):
+                    EatMode = false;
+                    break;
+            }
+
+            WaitingWindow window = new WaitingWindow(Callback, Client, User, chosenSize, Level.Human,EatMode);
+            //window.Show();
+            this.Close();
+        }
+
+        private void backEatPlayerBtn_Click(object sender, RoutedEventArgs e)
+        {
+            eatModePlayerGrid.Visibility = Visibility.Hidden;
+            tableSizePlayerGrid.Visibility = Visibility.Visible;
         }
     }
 }

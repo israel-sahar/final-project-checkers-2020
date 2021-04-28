@@ -7,10 +7,11 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.ServiceModel;
 using System.Text;
+using System.Windows;
 
 namespace CheckersService
 {
-    public enum Status { Unfinished,OneWon, TwoWon,isTie,}
+    public enum Status { Unfinished,OneWon, TwoWon,isTie}
     //lecture 13_3 -43:48 make a thread to connect with users
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
         ConcurrencyMode =ConcurrencyMode.Reentrant)]
@@ -26,8 +27,10 @@ namespace CheckersService
 
         public CheckersService()
         {
-            waitingRoom.Add(8, new List<UserContact>());
-            waitingRoom.Add(10, new List<UserContact>());
+            waitingRoom.Add(80, new List<UserContact>()); // size 8 without eating
+            waitingRoom.Add(81, new List<UserContact>());// size 8 with eating
+            waitingRoom.Add(100, new List<UserContact>());// size 10 without eating
+            waitingRoom.Add(101, new List<UserContact>());// size 10 with eating
         }
         public void Connect(string usrName, string hashedPassword)
         {
@@ -39,7 +42,7 @@ namespace CheckersService
                 throw new FaultException<UserAlreadyLoginFault>(fault);
             }
             User user;
-            using (var ctx = new CheckersDBContext()){
+            using (var ctx = new CheckersDB()){
                 user = (from u in ctx.Users where u.UserName == usrName select u).FirstOrDefault();
                 if (user == null){
                     UserNotExistsFault fault = new UserNotExistsFault{
@@ -66,7 +69,7 @@ namespace CheckersService
         public void Register(string email,string userName, string hashedPassword)
         {
             User user;
-            using (var ctx = new CheckersDBContext()) {
+            using (var ctx = new CheckersDB()) {
                 user = (from u in ctx.Users where u.Email == email select u).FirstOrDefault();
                 if (user != null)
                 {
@@ -101,7 +104,7 @@ namespace CheckersService
         }
         public bool IsUserNameTaken(string userName)
         {
-            using (var ctx = new CheckersDBContext())
+            using (var ctx = new CheckersDB())
             {
                 var user = (from u in ctx.Users where u.UserName==userName select u).FirstOrDefault();
                 if (user != null)
@@ -112,7 +115,7 @@ namespace CheckersService
 
         public Game GetGame(int gameId)
         {
-            using (var ctx = new CheckersDBContext()) {
+            using (var ctx = new CheckersDB()) {
                 var game = (from u in ctx.Games
                  where gameId == u.GameId
                  select u).FirstOrDefault();
@@ -129,15 +132,16 @@ namespace CheckersService
             }
         }
 
-        public (int,string, bool) JoinGame(string user,bool isVsCPU,int boardSize)
+        public (int,string, bool) JoinGame(string user,bool isVsCPU,int boardSize, bool EatMode)
         {
-            using (var ctx = new CheckersDBContext()) {
+            using (var ctx = new CheckersDB()) {
 
                 if (isVsCPU) {
                     var Game = new Game
                     {
                         Date = DateTime.Now,
-                        Status = (int)Status.Unfinished
+                        Status = (int)Status.Unfinished,
+                        EatMode = EatMode
                     };
                     var usr = (from u in ctx.Users
                                where u.UserName == user
@@ -152,19 +156,21 @@ namespace CheckersService
                 else
                 {
                     //playing against human
-                    if (waitingRoom[boardSize].Count == 0) {
-                        waitingRoom[boardSize].Add(new UserContact(user, onlineUsers[user]));
+                    int key = boardSize * 10 + (EatMode ? 1 : 0);
+                    if (waitingRoom[key].Count == 0) {
+                        waitingRoom[key].Add(new UserContact(user, onlineUsers[user]));
                         onlineUsers.Remove(user);
                     }
                     else
                     {
-                        var OpponentPlayer = waitingRoom[boardSize].First();
-                        waitingRoom[boardSize].RemoveAt(0);
+                        var OpponentPlayer = waitingRoom[key].First();
+                        waitingRoom[key].RemoveAt(0);
 
                         var Game = new Game
                         {
                             Date = DateTime.Now,
-                            Status = (int)Status.Unfinished
+                            Status = (int)Status.Unfinished,
+                            EatMode = EatMode
                         };
                         var usrOne = (from u in ctx.Users
                                    where u.UserName == user
@@ -191,9 +197,9 @@ namespace CheckersService
             }
         }
 
-        public void MakeMove(string UserName,int GameId,DateTime time, System.Windows.Point correntCord, List<System.Windows.Point> PathOfPiece, List<System.Windows.Point> EatenPieces,Result result)
+        public void MakeMove(string UserName, int GameId, DateTime time, Point correntPos, int indexPath, Result result)
         {
-            using(var ctx = new CheckersDBContext())
+            using(var ctx = new CheckersDB())
             {
                 Game game = (from u in ctx.Games where u.GameId == GameId select u).First();
                 User OtherUser = null;
@@ -202,14 +208,14 @@ namespace CheckersService
                 if (game.Users.Count() == 2)
                     OtherUser = game.Users.Where(x => x.UserName != UserName).First();
 
-                PathOfPiece.Insert(0, correntCord);
                 var move = new Move
                 {
-                    EatenPieces = Convert(EatenPieces),
                     Game = game,
-                    PointsToMove = Convert(PathOfPiece),
                     RecordTime = time,
-                    User = CurrentUser
+                    User = CurrentUser,
+                    pathIndex = indexPath,
+                    posX = (int)correntPos.X,
+                    posY = (int)correntPos.Y
                 };
                 ctx.Moves.Add(move) ;
                 ctx.SaveChanges();
@@ -217,7 +223,7 @@ namespace CheckersService
                 if (OtherUser != null)
                 {
                     UserContact sentTo = runningGame[GameId].Item1.UserName == UserName ? runningGame[GameId].Item2 : runningGame[GameId].Item1;
-                    sentTo.CheckersCallback.SendOpponentMove(PathOfPiece, EatenPieces, result);
+                    sentTo.CheckersCallback.SendOpponentMove(correntPos, indexPath, result);
                 }
 
                 if (result != Result.Continue)
@@ -250,20 +256,6 @@ namespace CheckersService
             }
         }
 
-        private ICollection<Point> Convert(List<System.Windows.Point> listToConvert)
-        {
-            ICollection<Point> newList = new List<Point>();
-            foreach (var item in listToConvert) {
-                Point p = new Point()
-                {
-                    Column = (int)item.Y,
-                    Row = (int)item.X
-                };
-                newList.Add(p);
-            }
-            return newList;
-        }
-
         public bool Ping()
         {
             return true;
@@ -294,7 +286,7 @@ namespace CheckersService
         {
             //need to check if is playing,watching, or in lobby
             User usr;
-            using (var ctx = new CheckersDBContext())
+            using (var ctx = new CheckersDB())
             {
                 usr = (from u in ctx.Users
                        where u.UserName == usrName
@@ -322,7 +314,7 @@ namespace CheckersService
         public void ResetPassword(string email)
         {
             User usr = null;
-            using (var ctx = new CheckersDBContext())
+            using (var ctx = new CheckersDB())
             {
                 usr = (from u in ctx.Users
                        where u.Email == email

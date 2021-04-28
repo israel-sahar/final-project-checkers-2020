@@ -137,7 +137,7 @@ namespace Client
                 if (i % 2 == 1) j = 0;
                 for (; j < BoardSize; j += 2)
                 {
-                    Piece piece = new Checker(ownBoardDirection == Direction.Down ? Team.Me : Team.Opponent, ownBoardDirection, new Point(i, j));
+                    Piece piece = new Checker(ownBoardDirection == Direction.Down ? Team.Me : Team.Opponent, Direction.Down, new Point(i, j));
 
                     board[i, j] = piece;
                     if (ownBoardDirection == Direction.Down)
@@ -153,7 +153,7 @@ namespace Client
                 if (i % 2 == 1) j = 0;
                 for (; j < BoardSize; j += 2)
                 {
-                    Piece piece = new Checker(ownBoardDirection == Direction.Down ? Team.Opponent : Team.Me, ownBoardDirection, new Point(i, j));
+                    Piece piece = new Checker(ownBoardDirection == Direction.Down ? Team.Opponent : Team.Me, Direction.Up, new Point(i, j));
 
                     board[i, j] = piece;
                     if (ownBoardDirection == Direction.Down)
