@@ -318,6 +318,115 @@ namespace Client.CheckersServiceReference {
         }
     }
     
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Status", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    public enum Status : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Unfinished = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        OneWon = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        TwoWon = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        isTie = 3,
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GameIdNotExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    [System.SerializableAttribute()]
+    public partial class GameIdNotExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int gameIdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int gameId {
+            get {
+                return this.gameIdField;
+            }
+            set {
+                if ((this.gameIdField.Equals(value) != true)) {
+                    this.gameIdField = value;
+                    this.RaisePropertyChanged("gameId");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Mode", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    public enum Mode : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Lobby = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Watching = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Playing = 2,
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Result", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
+    public enum Result : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Win = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Lost = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Tie = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Continue = 3,
+    }
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Game", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
@@ -326,6 +435,9 @@ namespace Client.CheckersServiceReference {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int BoardSizeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime DateField;
@@ -352,6 +464,19 @@ namespace Client.CheckersServiceReference {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int BoardSize {
+            get {
+                return this.BoardSizeField;
+            }
+            set {
+                if ((this.BoardSizeField.Equals(value) != true)) {
+                    this.BoardSizeField = value;
+                    this.RaisePropertyChanged("BoardSize");
+                }
             }
         }
         
@@ -725,98 +850,6 @@ namespace Client.CheckersServiceReference {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="GameIdNotExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-    [System.SerializableAttribute()]
-    public partial class GameIdNotExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string MessageField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int gameIdField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Message {
-            get {
-                return this.MessageField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
-                    this.MessageField = value;
-                    this.RaisePropertyChanged("Message");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int gameId {
-            get {
-                return this.gameIdField;
-            }
-            set {
-                if ((this.gameIdField.Equals(value) != true)) {
-                    this.gameIdField = value;
-                    this.RaisePropertyChanged("gameId");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Mode", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-    public enum Mode : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Lobby = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Watching = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Playing = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Result", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-    public enum Result : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Win = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Lost = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Tie = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Continue = 3,
-    }
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CheckersServiceReference.ICheckersService", CallbackContract=typeof(Client.CheckersServiceReference.ICheckersServiceCallback))]
     public interface ICheckersService {
@@ -840,10 +873,10 @@ namespace Client.CheckersServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetGame", ReplyAction="http://tempuri.org/ICheckersService/GetGameResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.GameIdNotExistsFault), Action="http://tempuri.org/ICheckersService/GetGameGameIdNotExistsFaultFault", Name="GameIdNotExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-        Client.CheckersServiceReference.Game GetGame(int gameId);
+        System.ValueTuple<int, Client.CheckersServiceReference.Status, System.DateTime, bool, int, string, string> GetGame(int gameId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetGame", ReplyAction="http://tempuri.org/ICheckersService/GetGameResponse")]
-        System.Threading.Tasks.Task<Client.CheckersServiceReference.Game> GetGameAsync(int gameId);
+        System.Threading.Tasks.Task<System.ValueTuple<int, Client.CheckersServiceReference.Status, System.DateTime, bool, int, string, string>> GetGameAsync(int gameId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/Disconnect", ReplyAction="http://tempuri.org/ICheckersService/DisconnectResponse")]
         void Disconnect(string usrName, Client.CheckersServiceReference.Mode userMode, int numGame);
@@ -882,10 +915,10 @@ namespace Client.CheckersServiceReference {
         System.Threading.Tasks.Task StopWatchGameAsync(string usrName, int gameId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetAllMoves", ReplyAction="http://tempuri.org/ICheckersService/GetAllMovesResponse")]
-        System.Collections.Generic.List<Client.CheckersServiceReference.Move> GetAllMoves(Client.CheckersServiceReference.Game game);
+        System.Collections.Generic.List<System.ValueTuple<int, System.DateTime, System.ValueTuple<int, int>, int, string>> GetAllMoves(int gameId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetAllMoves", ReplyAction="http://tempuri.org/ICheckersService/GetAllMovesResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Client.CheckersServiceReference.Move>> GetAllMovesAsync(Client.CheckersServiceReference.Game game);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<System.ValueTuple<int, System.DateTime, System.ValueTuple<int, int>, int, string>>> GetAllMovesAsync(int gameId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/Ping", ReplyAction="http://tempuri.org/ICheckersService/PingResponse")]
         bool Ping();
@@ -911,6 +944,18 @@ namespace Client.CheckersServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/StopWaitingGame", ReplyAction="http://tempuri.org/ICheckersService/StopWaitingGameResponse")]
         System.Threading.Tasks.Task StopWaitingGameAsync(string UserName, int boardSize);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetPlayedGames", ReplyAction="http://tempuri.org/ICheckersService/GetPlayedGamesResponse")]
+        System.Collections.Generic.List<System.ValueTuple<int, string, string, Client.CheckersServiceReference.Status, System.DateTime>> GetPlayedGames(string usrName1, string usrName2);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetPlayedGames", ReplyAction="http://tempuri.org/ICheckersService/GetPlayedGamesResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<System.ValueTuple<int, string, string, Client.CheckersServiceReference.Status, System.DateTime>>> GetPlayedGamesAsync(string usrName1, string usrName2);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetPlayedGamesByDate", ReplyAction="http://tempuri.org/ICheckersService/GetPlayedGamesByDateResponse")]
+        System.Collections.Generic.List<System.ValueTuple<int, string, string, Client.CheckersServiceReference.Status, System.DateTime>> GetPlayedGamesByDate(System.DateTime date);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetPlayedGamesByDate", ReplyAction="http://tempuri.org/ICheckersService/GetPlayedGamesByDateResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<System.ValueTuple<int, string, string, Client.CheckersServiceReference.Status, System.DateTime>>> GetPlayedGamesByDateAsync(System.DateTime date);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -967,11 +1012,11 @@ namespace Client.CheckersServiceReference {
             return base.Channel.RegisterAsync(email, userName, hashedPassword);
         }
         
-        public Client.CheckersServiceReference.Game GetGame(int gameId) {
+        public System.ValueTuple<int, Client.CheckersServiceReference.Status, System.DateTime, bool, int, string, string> GetGame(int gameId) {
             return base.Channel.GetGame(gameId);
         }
         
-        public System.Threading.Tasks.Task<Client.CheckersServiceReference.Game> GetGameAsync(int gameId) {
+        public System.Threading.Tasks.Task<System.ValueTuple<int, Client.CheckersServiceReference.Status, System.DateTime, bool, int, string, string>> GetGameAsync(int gameId) {
             return base.Channel.GetGameAsync(gameId);
         }
         
@@ -1023,12 +1068,12 @@ namespace Client.CheckersServiceReference {
             return base.Channel.StopWatchGameAsync(usrName, gameId);
         }
         
-        public System.Collections.Generic.List<Client.CheckersServiceReference.Move> GetAllMoves(Client.CheckersServiceReference.Game game) {
-            return base.Channel.GetAllMoves(game);
+        public System.Collections.Generic.List<System.ValueTuple<int, System.DateTime, System.ValueTuple<int, int>, int, string>> GetAllMoves(int gameId) {
+            return base.Channel.GetAllMoves(gameId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Client.CheckersServiceReference.Move>> GetAllMovesAsync(Client.CheckersServiceReference.Game game) {
-            return base.Channel.GetAllMovesAsync(game);
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<System.ValueTuple<int, System.DateTime, System.ValueTuple<int, int>, int, string>>> GetAllMovesAsync(int gameId) {
+            return base.Channel.GetAllMovesAsync(gameId);
         }
         
         public bool Ping() {
@@ -1061,6 +1106,22 @@ namespace Client.CheckersServiceReference {
         
         public System.Threading.Tasks.Task StopWaitingGameAsync(string UserName, int boardSize) {
             return base.Channel.StopWaitingGameAsync(UserName, boardSize);
+        }
+        
+        public System.Collections.Generic.List<System.ValueTuple<int, string, string, Client.CheckersServiceReference.Status, System.DateTime>> GetPlayedGames(string usrName1, string usrName2) {
+            return base.Channel.GetPlayedGames(usrName1, usrName2);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<System.ValueTuple<int, string, string, Client.CheckersServiceReference.Status, System.DateTime>>> GetPlayedGamesAsync(string usrName1, string usrName2) {
+            return base.Channel.GetPlayedGamesAsync(usrName1, usrName2);
+        }
+        
+        public System.Collections.Generic.List<System.ValueTuple<int, string, string, Client.CheckersServiceReference.Status, System.DateTime>> GetPlayedGamesByDate(System.DateTime date) {
+            return base.Channel.GetPlayedGamesByDate(date);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<System.ValueTuple<int, string, string, Client.CheckersServiceReference.Status, System.DateTime>>> GetPlayedGamesByDateAsync(System.DateTime date) {
+            return base.Channel.GetPlayedGamesByDateAsync(date);
         }
     }
 }

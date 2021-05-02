@@ -908,6 +908,98 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_GetPlayedGames_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_GetPlayedGames_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_GetPlayedGamesByDate_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_GetPlayedGamesByDate_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSDualHttpBinding_ICheckersService_SendOpponentMove_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -959,8 +1051,8 @@
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CheckersService" />
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Windows" />
-      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System.Windows" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="ICheckersService_Connect_InputMessage">
@@ -1068,6 +1160,18 @@
   <wsdl:message name="ICheckersService_StopWaitingGame_OutputMessage">
     <wsdl:part name="parameters" element="tns:StopWaitingGameResponse" />
   </wsdl:message>
+  <wsdl:message name="ICheckersService_GetPlayedGames_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPlayedGames" />
+  </wsdl:message>
+  <wsdl:message name="ICheckersService_GetPlayedGames_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPlayedGamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICheckersService_GetPlayedGamesByDate_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPlayedGamesByDate" />
+  </wsdl:message>
+  <wsdl:message name="ICheckersService_GetPlayedGamesByDate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPlayedGamesByDateResponse" />
+  </wsdl:message>
   <wsdl:message name="ICheckersService_SendOpponentMove_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:SendOpponentMove" />
   </wsdl:message>
@@ -1137,6 +1241,14 @@
     <wsdl:operation name="StopWaitingGame">
       <wsdl:input wsaw:Action="http://tempuri.org/ICheckersService/StopWaitingGame" message="tns:ICheckersService_StopWaitingGame_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICheckersService/StopWaitingGameResponse" message="tns:ICheckersService_StopWaitingGame_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPlayedGames">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICheckersService/GetPlayedGames" message="tns:ICheckersService_GetPlayedGames_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICheckersService/GetPlayedGamesResponse" message="tns:ICheckersService_GetPlayedGames_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPlayedGamesByDate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICheckersService/GetPlayedGamesByDate" message="tns:ICheckersService_GetPlayedGamesByDate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICheckersService/GetPlayedGamesByDateResponse" message="tns:ICheckersService_GetPlayedGamesByDate_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="SendOpponentMove">
       <wsdl:output wsaw:Action="http://tempuri.org/ICheckersService/SendOpponentMove" message="tns:ICheckersService_SendOpponentMove_OutputCallbackMessage" />
@@ -1327,6 +1439,28 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_StopWaitingGame_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPlayedGames">
+      <soap12:operation soapAction="http://tempuri.org/ICheckersService/GetPlayedGames" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_GetPlayedGames_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_GetPlayedGames_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPlayedGamesByDate">
+      <soap12:operation soapAction="http://tempuri.org/ICheckersService/GetPlayedGamesByDate" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_GetPlayedGamesByDate_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_ICheckersService_GetPlayedGamesByDate_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

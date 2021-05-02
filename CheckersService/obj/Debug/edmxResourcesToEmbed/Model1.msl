@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="CheckersDBModelStoreContainer" CdmEntityContainer="CheckersDB">
+  <EntityContainerMapping StorageEntityContainer="CheckersDBModelStoreContainer" CdmEntityContainer="CheckersDBEntities">
     <EntitySetMapping Name="Games">
       <EntityTypeMapping TypeName="CheckersDBModel.Game">
         <MappingFragment StoreEntitySet="Games">
@@ -8,6 +8,7 @@
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="EatMode" ColumnName="EatMode" />
+          <ScalarProperty Name="BoardSize" ColumnName="BoardSize" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

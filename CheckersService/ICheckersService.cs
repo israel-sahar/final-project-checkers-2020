@@ -22,7 +22,7 @@ namespace CheckersService
         void Register(string email, string userName, string hashedPassword);
         [OperationContract]
        [FaultContract(typeof(GameIdNotExistsFault))]
-        Game GetGame(int gameId);
+        (int, Status, DateTime, bool, int, string, string) GetGame(int gameId);
         [OperationContract]
         void Disconnect(string usrName, Mode userMode, int numGame = -1);
         [OperationContract]
@@ -36,7 +36,7 @@ namespace CheckersService
         [OperationContract]
         void StopWatchGame(string usrName, int gameId);
         [OperationContract]
-        ICollection<Move> GetAllMoves(Game game);
+        ICollection<(int, DateTime, (int, int), int, string)> GetAllMoves(int gameId);
         [OperationContract]
         bool Ping();
         [OperationContract]
@@ -46,6 +46,10 @@ namespace CheckersService
         bool IsUserNameTaken(string userName);
         [OperationContract]
         void StopWaitingGame(string UserName,int boardSize);
+        [OperationContract]
+        ICollection<(int, string, string, Status, DateTime)> GetPlayedGames(string usrName1=null, string usrName2 = null);
+        [OperationContract]
+        ICollection<(int, string, string, Status, DateTime)> GetPlayedGamesByDate(DateTime date);
     }
 
     public interface ICheckersCallback {

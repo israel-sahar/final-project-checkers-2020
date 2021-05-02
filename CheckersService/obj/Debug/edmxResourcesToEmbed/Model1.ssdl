@@ -8,6 +8,7 @@
     <Property Name="Status" Type="int" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="EatMode" Type="bit" Nullable="false" />
+    <Property Name="BoardSize" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Moves">
     <Key>

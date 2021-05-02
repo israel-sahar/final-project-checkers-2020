@@ -18,5 +18,6 @@ namespace Database
         public int Status { get; set; }
         public DateTime Date { get; set; }  
         public bool EatMode { get; set; }
+        public int BoardSize { get; set; }
     }
 }

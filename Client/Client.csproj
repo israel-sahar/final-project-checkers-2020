@@ -92,6 +92,9 @@
     <Compile Include="WaitingWindow.xaml.cs">
       <DependentUpon>WaitingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WatchingGameWindow.xaml.cs">
+      <DependentUpon>WatchingGameWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WelcomeWindow.xaml.cs">
       <DependentUpon>WelcomeWindow.xaml</DependentUpon>
     </Compile>
@@ -131,6 +134,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WatchingGameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WelcomeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -159,7 +166,7 @@
     <None Include="Connected Services\CheckersServiceReference\Client.CheckersServiceReference.Game.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\CheckersServiceReference\Client.CheckersServiceReference.Move.datasource">
+    <None Include="Connected Services\CheckersServiceReference\Client.CheckersServiceReference.Status.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\CheckersServiceReference\item.xsd">

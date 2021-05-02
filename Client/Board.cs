@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.CheckersServiceReference;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,6 @@ namespace Client
 {
     public enum Team { Me, Opponent }
     public enum Direction { Up = -1, Down = 1 }
-    //public enum Result { Win, Lost, Tie, Continue }
 
     public class Board
     {
@@ -25,47 +25,6 @@ namespace Client
         private bool onlyKingsLeft = false;
         private Direction ownBoardDirection;
         public int BoardSize { get; }
-
-        /*         //this builder for testing.build the board only
-         *        private Board(int boardSize, Direction ownBoardDirection,bool testing)
-                {
-                    BoardSize = boardSize;
-                    this.ownBoardDirection = ownBoardDirection;
-                    board = new Piece[BoardSize, BoardSize];
-
-                    for (int i = 0; i < BoardSize; i++)
-                    {
-                        for (int j = 0; j < BoardSize; j++)
-                            board[i, j] = null;
-                    }
-                    MyTeamPieces = new List<Piece>();
-                    OpponentTeamPieces = new List<Piece>();
-                }
-
-                //add checker to the game
-                private void addChecker(Team team, int x, int y) {
-                    Direction negetiveDir = ownBoardDirection == Direction.Down ? Direction.Up : Direction.Down;
-                    Piece p = new Checker(team,team==Team.Me?ownBoardDirection: negetiveDir,new Point(x,y));
-
-                    board[x, y] = p;
-                    if (team == Team.Me)
-                        MyTeamPieces.Add(p);
-                    else
-                        OpponentTeamPieces.Add(p);
-                }
-
-                //add king to the game
-                public void addKing(Team team, int x, int y)
-                {
-                    Direction negetiveDir = ownBoardDirection == Direction.Down ? Direction.Up : Direction.Down;
-                    Piece p = new Checker(team, team == Team.Me ? ownBoardDirection : negetiveDir, new Point(x, y));
-                    Piece k = new King((Checker)p);
-                    board[x, y] = k;
-                    if (team == Team.Me)
-                        MyTeamPieces.Add(k);
-                    else
-                        OpponentTeamPieces.Add(k);
-                }*/
 
         public Board(Board boardToCopy)
         {
@@ -164,8 +123,23 @@ namespace Client
             }
         }
 
+        public int GetPathIndex(Piece pieceToMove, Path path)
+        {
+            var paths = pieceToMove.GetPossibleMoves(this);
+            return paths.IndexOf(path);
+        }
 
-        public (CheckersServiceReference.Result, bool) MovePiece(Piece pieceToMove, Path path)
+        public Path GetPathByIndex(Piece pieceToMove, int pathIndex)
+        {
+            var paths = pieceToMove.GetPossibleMoves(this);
+            return paths[pathIndex];
+        }
+        public (Result, bool) MovePiece(Piece pieceToMove, int pathIndex)
+        {
+            var paths = pieceToMove.GetPossibleMoves(this);
+            return MovePiece(pieceToMove, paths[pathIndex]);
+        }
+        public (Result, bool) MovePiece(Piece pieceToMove, Path path)
         {
             if (path.EatenPieces.Count != 0)
             {
@@ -200,7 +174,7 @@ namespace Client
                     if (isAnyPathToEat)
                     {
                         RemovePieceFromBoard(pieceToMove);
-                        return (CheckResultGame(), true);
+                        return (CheckResultGame(pieceToMove.Team), true);
                     }
                 }
             }
@@ -217,7 +191,7 @@ namespace Client
                 withoutEatingCounter = 0;
             }
 
-            return (CheckResultGame(), false);
+            return (CheckResultGame(pieceToMove.Team), false);
         }
 
         private bool IsKingsOnlyLeft()
@@ -248,10 +222,19 @@ namespace Client
         }
 
         //check scenario when cpu cant move
-        public CheckersServiceReference.Result CheckResultGame()
+        //return result for the current Team
+        public Result CheckResultGame(Team team)
         {
-            if (GetOpponentPiecesCount() == 0) return CheckersServiceReference.Result.Win;
-            if (GetMyPiecesCount() == 0) return CheckersServiceReference.Result.Lost;
+            if (team == Team.Me)
+            {
+                if (GetOpponentPiecesCount() == 0) return Result.Win;
+                if (GetMyPiecesCount() == 0) return Result.Lost;
+            }
+            else
+            {
+                if (GetOpponentPiecesCount() == 0) return Result.Lost;
+                if (GetMyPiecesCount() == 0) return Result.Win;
+            }
 
             bool moreMovesLeft = false;
             foreach (Piece p in MyTeamPieces)
@@ -260,7 +243,12 @@ namespace Client
                 if (possibleMoves.Count != 0) { moreMovesLeft = true; break; }
 
             }
-            if (moreMovesLeft == false) return CheckersServiceReference.Result.Lost;
+            if (moreMovesLeft == false)
+                if(team==Team.Me)
+                return Result.Lost;
+            else
+                    return Result.Win;
+
 
             foreach (Piece p in OpponentTeamPieces)
             {
@@ -268,11 +256,15 @@ namespace Client
                 if (possibleMoves.Count != 0) { moreMovesLeft = true; break; }
 
             }
-            if (moreMovesLeft == false) return CheckersServiceReference.Result.Win;
+            if (moreMovesLeft == false)
+                if (team != Team.Me)
+                    return Result.Lost;
+                else
+                    return Result.Win;
 
-            if (withoutEatingCounter == MAX_MOVES_WITHOUT_EATING) return CheckersServiceReference.Result.Tie;
+            if (withoutEatingCounter == MAX_MOVES_WITHOUT_EATING) return Result.Tie;
 
-            return CheckersServiceReference.Result.Continue;
+            return Result.Continue;
         }
 
         private int GetMyPiecesCount()
@@ -348,6 +340,11 @@ namespace Client
         public ref Piece GetPieceAt(Point position)
         {
             return ref board[(int)position.X, (int)position.Y];
+        }
+
+        public ref Piece GetPieceAt(int x,int y)
+        {
+            return ref board[x, y];
         }
 
         public bool IsCoordinateOnBoard(Point pointToCheck)

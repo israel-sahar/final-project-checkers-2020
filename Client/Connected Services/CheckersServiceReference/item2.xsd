@@ -35,8 +35,42 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="UserNameAlreadyExistsFault" nillable="true" type="tns:UserNameAlreadyExistsFault" />
+  <xs:simpleType name="Status">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Unfinished" />
+      <xs:enumeration value="OneWon" />
+      <xs:enumeration value="TwoWon" />
+      <xs:enumeration value="isTie" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Status" nillable="true" type="tns:Status" />
+  <xs:complexType name="GameIdNotExistsFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="gameId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GameIdNotExistsFault" nillable="true" type="tns:GameIdNotExistsFault" />
+  <xs:simpleType name="Mode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Lobby" />
+      <xs:enumeration value="Watching" />
+      <xs:enumeration value="Playing" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Mode" nillable="true" type="tns:Mode" />
+  <xs:simpleType name="Result">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Win" />
+      <xs:enumeration value="Lost" />
+      <xs:enumeration value="Tie" />
+      <xs:enumeration value="Continue" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Result" nillable="true" type="tns:Result" />
   <xs:complexType name="Game">
     <xs:sequence>
+      <xs:element minOccurs="0" name="BoardSize" type="xs:int" />
       <xs:element minOccurs="0" name="Date" type="xs:dateTime" />
       <xs:element minOccurs="0" name="EatMode" type="xs:boolean" />
       <xs:element minOccurs="0" name="GameId" type="xs:int" />
@@ -88,28 +122,4 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfUser" nillable="true" type="tns:ArrayOfUser" />
-  <xs:complexType name="GameIdNotExistsFault">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="gameId" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="GameIdNotExistsFault" nillable="true" type="tns:GameIdNotExistsFault" />
-  <xs:simpleType name="Mode">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Lobby" />
-      <xs:enumeration value="Watching" />
-      <xs:enumeration value="Playing" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="Mode" nillable="true" type="tns:Mode" />
-  <xs:simpleType name="Result">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Win" />
-      <xs:enumeration value="Lost" />
-      <xs:enumeration value="Tie" />
-      <xs:enumeration value="Continue" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="Result" nillable="true" type="tns:Result" />
 </xs:schema>

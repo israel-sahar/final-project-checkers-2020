@@ -37,7 +37,7 @@ namespace Client
         public int GameId { get; internal set; }
         public string UserName { get; internal set; }
         public string OpponentUserName { get; internal set; }
-
+        public Mode PlayerMode { get; set; }
 
         ComputerMove pcPlayer;
         //colors
@@ -77,15 +77,16 @@ namespace Client
             Init();
         }
 
-        private void MakeOpponentMove(List<Point> PathOfPiece, List<Point> EatenPieces, Result res)
+        private void MakeOpponentMove(Point correntPos, int indexPath, Result res)
         {
-            resO = res;
-            Path newPath = new Path(PathOfPiece, EatenPieces);
-            Piece pieceToMove = Game.GetPieceAt(PathOfPiece.ElementAt(0));
-            chosenPiece = GetEllipse(pieceToMove.Coordinate);
-            (Result, bool) result = Game.MovePiece(pieceToMove, newPath);
-            Game.VerifyCrown(pieceToMove);
-            MakeAnimationMove(GetPosition(chosenPiece), newPath, result.Item2);
+            resO = res;            
+            Piece pToMove = Game.GetPieceAt(correntPos);
+            chosenPiece = GetEllipse(correntPos);
+
+            Path path = Game.GetPathByIndex(pToMove, indexPath);
+            (Result, bool) result = Game.MovePiece(pToMove, indexPath);
+            Game.VerifyCrown(pToMove);
+            MakeAnimationMove(GetPosition(chosenPiece), path, result.Item2);
         }
 
         //Piece to move
@@ -96,22 +97,23 @@ namespace Client
             btnGroup.Clear();
             var lastP = GetPosition(chosenPiece);
             Piece pToMove = Game.GetPieceAt(lastP);
-            
+            int pathIndex = Game.GetPathIndex(pToMove, path);
             (Result, bool) res = Game.MovePiece(pToMove, path);
             resO = res.Item1;
             Game.VerifyCrown(pToMove);
             MakeAnimationMove(lastP, path, res.Item2);
             if (Client != null)
-                Client.MakeMove(UserName, GameId, DateTime.Now, lastP, path.PathOfPiece, path.EatenPieces, resO);
+                Client.MakeMove(UserName, GameId, DateTime.Now, lastP, pathIndex , resO);
         }
 
         private void MakeComputerTurn()
         {
             var move = pcPlayer.getNextMove(Game);
-
             Piece pieceToMove = Game.GetPieceAt(move.Item1.Coordinate);
+            Point tempP = pieceToMove.Coordinate;
+            int pathIndex = Game.GetPathIndex(pieceToMove, move.Item2);
+
             chosenPiece = GetEllipse(pieceToMove.Coordinate);
-            Console.WriteLine($"PC:{move.Item1.Coordinate} to {move.Item2.GetLastPosition()}");
             var res = Game.MovePiece(pieceToMove, move.Item2);
             resO = res.Item1;
 
@@ -120,13 +122,12 @@ namespace Client
             MakeAnimationMove(GetPosition(chosenPiece), move.Item2, res.Item2);
 
             if (Client != null)
-                Client.MakeMove("PC", GameId, DateTime.Now, pieceToMove.Coordinate, move.Item2.PathOfPiece, move.Item2.EatenPieces, resO);
+                Client.MakeMove("Computer", GameId, DateTime.Now, tempP, pathIndex, resO);
 
             // if (!res.Item2 && Game.GetPieceAt(move.Item1.Coordinate).IsKing) AddKingIcon(move.Item1.Coordinate);
             //do something with result
         }
 
-        //need to do function  change turns
         Result resO = Result.Continue;
         Point firstP;
         Path pathP = null;
@@ -376,7 +377,6 @@ namespace Client
             }
         }
 
-        //fix MakeComputerTurn
         private void SwitchTurns(bool isInit)
         {
             chosenPiece = null;
@@ -394,6 +394,7 @@ namespace Client
                 MakeComputerTurn();
             else
             {
+                //fix!
                 if (resO != Result.Continue) {
                     if(MyTurn && resO == Result.Lost || !MyTurn && resO == Result.Win)
                         Turn.Text = "Great! You Won!";

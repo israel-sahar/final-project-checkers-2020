@@ -101,7 +101,8 @@ namespace Client
 
         private void watchPrevGame_Click(object sender, RoutedEventArgs e)
         {
-            PrevsGamesWindow window = new PrevsGamesWindow();
+            PrevsGamesWindow window = new PrevsGamesWindow(Client, Callback,User);
+
             window.Show();
             this.Close();
         }
@@ -127,10 +128,10 @@ namespace Client
             GameWindow window = new GameWindow(chosenSize, chosenLevel, true, EatMode);
             window.Client = Client;
             window.Callback = Callback;
-            
+            window.UserName = User;
+
             var gameDetails = Client.JoinGame(User, true, chosenSize,EatMode);
             window.GameId = gameDetails.Item1;
-            window.UserName = User;
             window.Show();
             this.Close();
         }

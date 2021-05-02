@@ -56,3 +56,5 @@ C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\Clien
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\Client.Properties.Resources.resources
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\Client.csproj.GenerateResource.cache
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\WatchingGameWindow.g.cs
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\WatchingGameWindow.baml

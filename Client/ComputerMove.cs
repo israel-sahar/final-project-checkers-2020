@@ -9,7 +9,7 @@ namespace Client
     public enum Level { Easy, Medium,Hard, Human }
     class ComputerMove
     {
-        private static readonly int DEPTH_NUM = 4;
+        private int DEPTH_NUM = 4;
         private static Level cpuLevel;
         public ComputerMove(Level level)
         {
@@ -22,6 +22,9 @@ namespace Client
             {
                 case Level.Easy:
                     return GetEasyNextMove(game);
+                case Level.Medium:
+                    DEPTH_NUM = 2;
+                    return GetHardNextMove(game);
                 case Level.Hard:
                     return GetHardNextMove(game);
             }
@@ -36,7 +39,7 @@ namespace Client
 
         private (double,Piece, Path) MiniMaxAlgorithm(Board game,Piece currentPiece,Path currentPath, int depth, Team turn,double alpha, double beta)
         {
-            if (depth == 0 || game.CheckResultGame() != CheckersServiceReference.Result.Continue)
+            if (depth == 0 || game.CheckResultGame(turn) != CheckersServiceReference.Result.Continue)
                 return (game.Evaluate(), currentPiece, currentPath);
 
             if (turn == Team.Opponent)

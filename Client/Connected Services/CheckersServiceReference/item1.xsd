@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System" />
   <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CheckersService" />
-  <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Windows" />
-  <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System" />
+  <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System.Windows" />
   <xs:element name="Connect">
     <xs:complexType>
       <xs:sequence>
@@ -40,7 +40,7 @@
   <xs:element name="GetGameResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="GetGameResult" nillable="true" type="q1:Game" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="GetGameResult" type="q1:ValueTupleOfintStatusdateTimebooleanintstringstringcL5AZO_S0" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -136,14 +136,14 @@
   <xs:element name="GetAllMoves">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="game" nillable="true" type="q7:Game" />
+        <xs:element minOccurs="0" name="gameId" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetAllMovesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="GetAllMovesResult" nillable="true" type="q8:ArrayOfMove" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="GetAllMovesResult" nillable="true" type="q7:ArrayOfValueTupleOfintdateTimeValueTupleOfintintintstringdZZoPUbq" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -198,12 +198,41 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetPlayedGames">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="usrName1" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="usrName2" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPlayedGamesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="GetPlayedGamesResult" nillable="true" type="q8:ArrayOfValueTupleOfintstringstringStatusdateTimepGnIEWfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPlayedGamesByDate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="date" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPlayedGamesByDateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="GetPlayedGamesByDateResult" nillable="true" type="q9:ArrayOfValueTupleOfintstringstringStatusdateTimepGnIEWfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="SendOpponentMove">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/System.Windows" minOccurs="0" name="correntPos" type="q9:Point" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/System.Windows" minOccurs="0" name="correntPos" type="q10:Point" />
         <xs:element minOccurs="0" name="indexPath" type="xs:int" />
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="result" type="q10:Result" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="result" type="q11:Result" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -4,8 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="72ad48e2593149c18c1f59e9a24f96dc" Name="Diagram1">
-        <EntityTypeShape EntityType="CheckersDBModel.Game" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+      <Diagram DiagramId="0503467b89d54bddb5fefc04de741b5e" Name="Diagram1">
+        <EntityTypeShape EntityType="CheckersDBModel.Game" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CheckersDBModel.Move" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CheckersDBModel.User" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
         <AssociationConnector Association="CheckersDBModel.FK_dbo_Moves_dbo_Games_Game_GameId" ManuallyRouted="false" />

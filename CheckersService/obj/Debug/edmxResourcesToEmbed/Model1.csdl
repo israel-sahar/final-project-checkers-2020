@@ -8,6 +8,7 @@
     <Property Name="Status" Type="Int32" Nullable="false" />
     <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="EatMode" Type="Boolean" Nullable="false" />
+    <Property Name="BoardSize" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Moves" Relationship="Self.FK_dbo_Moves_dbo_Games_Game_GameId" FromRole="Games" ToRole="Moves" />
     <NavigationProperty Name="Users" Relationship="Self.UserGames" FromRole="Games" ToRole="Users" />
   </EntityType>
@@ -63,7 +64,7 @@
     <End Role="Games" Type="Self.Game" Multiplicity="*" />
     <End Role="Users" Type="Self.User" Multiplicity="*" />
   </Association>
-  <EntityContainer Name="CheckersDB" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="CheckersDBEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Games" EntityType="Self.Game" />
     <EntitySet Name="Moves" EntityType="Self.Move" />
     <EntitySet Name="Users" EntityType="Self.User" />

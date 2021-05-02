@@ -5,18 +5,18 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Client
 {
     public class ClientCallback : ICheckersServiceCallback
     {
         internal Action<int,string, bool> OpenNewGame;
-        internal Action<List<System.Windows.Point>, List<System.Windows.Point>, Result> MakeOpponentMove;
+        internal Action<Point, int, Result> MakeOpponentMove;
 
-
-        public void SendOpponentMove(List<System.Windows.Point> PathOfPiece, List<System.Windows.Point> EatenPieces, Result result)
+        public void SendOpponentMove(Point correntPos, int indexPath, Result result)
         {
-            MakeOpponentMove(PathOfPiece, EatenPieces, result);
+            MakeOpponentMove(correntPos, indexPath, result);
         }
 
         public void StartGame(int GameId, string OpponentName, bool MyTurn)

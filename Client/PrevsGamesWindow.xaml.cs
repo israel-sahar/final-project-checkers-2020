@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.CheckersServiceReference;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,26 +20,125 @@ namespace Client
     /// </summary>
     public partial class PrevsGamesWindow : Window
     {
-        private int a1, a2;
 
-        public PrevsGamesWindow()
+        public CheckersServiceClient Client { get; internal set; }
+        public ClientCallback Callback { get; internal set; }
+        public string UserName { get; internal set; }
+
+        public PrevsGamesWindow(CheckersServiceClient client, ClientCallback callback, string user)
         {
             InitializeComponent();
+            Client = client;
+                Callback = callback;
+                UserName = user;
+            
+            var games = client.GetPlayedGames(null,null);
+            if (games.Count == 0)
+            {
+                NoGamesText.Visibility = Visibility.Visible;
+                gamesList.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                List<GameShow> gamesView = new List<GameShow>();
+                foreach (var game in games)
+                {
+                    string winner="";
+                    switch(game.Item4)
+                    {
+                        case Status.isTie:
+                            winner = "isTie";
+                            break;
+                        case Status.OneWon:
+                            winner = game.Item2;
+                            break;
+                        case Status.TwoWon:
+                            winner = game.Item3;
+                            break;
+                    }
+                    gamesView.Add(new GameShow()
+                    {
+                        GameNumber = game.Item1,
+                        Start = game.Item5,
+                        Player1 = game.Item2,
+                        Player2 = game.Item3,
+                        Winner = winner
+                    });
+                }
+                gamesList.ItemsSource = gamesView;
+            }
         }
 
         private void watchButton_Click(object sender, RoutedEventArgs e)
         {
-            //make user offline
-            //GameWindow window = new GameWindow(a1, a2, true);
-            //window.Show();
+            var p = Client.GetGame(((GameShow)gamesList.SelectedItem).GameNumber);
+            var moves = Client.GetAllMoves(p.Item1);
+            var gameDetails = ConvertGame(p,moves);
+            WatchingGameWindow window = new WatchingGameWindow(gameDetails,Client,Callback,UserName,false);
+            window.Show();
             this.Close();
+        }
+
+        /*(gameId,Status,date,EatMode,boardSize,usr1,usr2,Moves)*/
+        private (Game,string,string) ConvertGame((int, Status, DateTime, bool, int, string, string) p,List<(int, DateTime, (int, int), int, string)> moves)
+        {
+            Game newGame = new Game()
+            {
+                GameId = p.Item1,
+                Status = (int)p.Item2,
+                Date = p.Item3,
+                EatMode = p.Item4,
+                BoardSize = p.Item5,
+                Moves = ConvertMoves(moves)
+            };
+            return (newGame,p.Item6,p.Item7);
+        }
+
+        //(moveId,record,(posX,posY),pathI,usrName)
+
+        private List<Move> ConvertMoves(List<(int, DateTime, (int, int), int, string)> item)
+        {
+            List<Move> move = new List<Move>();
+            foreach(var m in item)
+            {
+                move.Add(new Move()
+                {
+                    MoveId = m.Item1,
+                    RecordTime = m.Item2,
+                    posX = m.Item3.Item1,
+                    posY = m.Item3.Item2,
+                    pathIndex = m.Item4,
+                    User_Email = m.Item5
+                });
+
+            }
+            return move;
+        }
+
+        private void gamesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            watchButton.IsEnabled = gamesList.SelectedItem != null ? true : false;
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
             MenuWindow window = new MenuWindow();
+            window.Callback = Callback;
+                window.Client = Client;
+                window.User = UserName;
             window.Show();
             this.Close();
         }
     }
+
+    class GameShow
+    {
+        public int GameNumber { get; set; }
+        public DateTime Start { get; set; }
+        public string Player1 { get; set; }
+        public string Player2 { get; set; }
+        public string Winner { get; set; }
+    }
+
+
 }
