@@ -19,8 +19,8 @@ namespace CheckersService
         public int posX { get; set; }
         public int posY { get; set; }
         public int pathIndex { get; set; }
-        public string User_Email { get; set; }
-        public Nullable<int> Game_GameId { get; set; }
+        public string UserName { get; set; }
+        public Nullable<int> GameId { get; set; }
     
         public virtual Game Game { get; set; }
         public virtual User User { get; set; }

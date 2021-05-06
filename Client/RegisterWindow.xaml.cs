@@ -32,18 +32,16 @@ namespace Client
 
         private void cleanBtn_Click(object sender, RoutedEventArgs e)
         {
-            emailTextBox.Text = null;
             passwordTextBox.Password = null;
         }
 
         private void createBtn_Click(object sender, RoutedEventArgs e)
         {
             //after create and add to database
-            string email = emailTextBox.Text.Trim();
             string usrName = usrNameTextBox.Text.Trim();
             string password = passwordTextBox.Password.Trim();
             try {
-            Client.Register(email, usrName, HashValue(password));
+            Client.Register(usrName, HashValue(password));
                 MessageBox.Show("Your registration was successful");
                 MenuWindow window = new MenuWindow();
                 window.User = usrName;
@@ -51,11 +49,6 @@ namespace Client
                 window.Client = Client;
                 window.Show();
                 this.Close();
-            }
-            catch(FaultException<UserAlreadyExistsFault> ex)
-            {
-                MessageBox.Show(ex.Detail.Message);
-
             }
             catch (FaultException<UserNameAlreadyExistsFault> ex)
             {

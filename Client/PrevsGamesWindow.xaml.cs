@@ -108,7 +108,7 @@ namespace Client
                     posX = m.Item3.Item1,
                     posY = m.Item3.Item2,
                     pathIndex = m.Item4,
-                    User_Email = m.Item5
+                    UserName = m.Item5
                 });
 
             }

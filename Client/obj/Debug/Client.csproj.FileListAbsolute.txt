@@ -33,7 +33,6 @@ C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\Login
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\MenuWindow.g.cs
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\PrevsGamesWindow.g.cs
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\RegisterWindow.g.cs
-C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\ResetPasswordWindow.g.cs
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\WaitingWindow.g.cs
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\WelcomeWindow.g.cs
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\App.g.cs
@@ -49,7 +48,6 @@ C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\Login
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\MenuWindow.baml
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\PrevsGamesWindow.baml
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\RegisterWindow.baml
-C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\ResetPasswordWindow.baml
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\WaitingWindow.baml
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\WelcomeWindow.baml
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\Client.g.resources

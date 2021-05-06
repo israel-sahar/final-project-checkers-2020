@@ -115,13 +115,13 @@
         <Border BorderThickness="7" BorderBrush="Black" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="5">
             <StackPanel Orientation="Horizontal" Background="BurlyWood">
                 <Ellipse Name="ellipse" Fill="Black" Width="50" Height="50"/>
-                <TextBlock Name="Turn" VerticalAlignment="Center" Margin="5" FontSize="20">
+                <TextBlock Name="Turn" VerticalAlignment="Center" Margin="5,7,5,6.333" FontSize="20" Width="424">
                 </TextBlock>
             </StackPanel>
         </Border>
-           
-            <Label FontSize="28" FontWeight="Bold" Content="Possibles Move:" Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="3" Padding="45,10" />
-       <!-- <ListBox Name="PathsButtonsList" Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="6" Background="Transparent" Margin="10">
+
+        <Label FontSize="28" FontWeight="Bold" Content="Possibles Move:" Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="3" Padding="45,10" />
+        <!-- <ListBox Name="PathsButtonsList" Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="6" Background="Transparent" Margin="10">
                 
             </ListBox>-->
 
@@ -134,10 +134,7 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
 
-
         <Button Name="leaveBtn" Content="LEAVE"  Grid.Column="7" Grid.ColumnSpan="2"
                 Click="leaveBtn_Click" Style="{DynamicResource RoundedButtonStyle}"/>
-
-        <RichTextBox Name="activityList"  Foreground="BurlyWood"  Margin="30,10"  IsReadOnly="True" Grid.Column="6" Grid.Row="6" Grid.ColumnSpan="4" Grid.RowSpan="4"/>
     </Grid>
 </Window>

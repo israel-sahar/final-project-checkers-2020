@@ -32,7 +32,6 @@ namespace Client
 
         public int BoardSize { get; set; }
         public bool MyTurn { get; set; }
-        public bool EatMode { get; private set; }
         private Board Game { get; set; }
         public int GameId { get; internal set; }
         public string UserName { get; internal set; }
@@ -49,22 +48,26 @@ namespace Client
 
         //timers
         DispatcherTimer animationTimer;
-        public GameWindow(int chosenSize, Level chosenLevel, bool myTurn,bool eatMode)
+
+        public Team MyTeam { get; set; }
+        public GameWindow(int chosenSize, Level chosenLevel, bool myTurn,EatMode eatMode)
         {
+            MyTeam = Team.One;
+            
             Client = null;
             Callback = null;
             UserName = null;
+            
             BoardSize = chosenSize;
             MyTurn = myTurn;
-            EatMode = eatMode;
             OpponentUserName = "Computer";
             pcPlayer = new ComputerMove(chosenLevel);
-            Init();
+            Init(eatMode);
         }
 
-        public GameWindow(CheckersServiceClient client, ClientCallback callback, int gameId, string userName, string opponentName, int chosenSize, bool myTurn, bool eatMode)
+        public GameWindow(CheckersServiceClient client, ClientCallback callback, int gameId, string userName, string opponentName, int chosenSize, bool myTurn, EatMode eatMode)
         {
-            EatMode = eatMode;
+            MyTeam = MyTurn ? Team.One : Team.Two;
             Client = client;
             Callback = callback;
             GameId = gameId;
@@ -74,7 +77,7 @@ namespace Client
             BoardSize = chosenSize;
             OpponentUserName = opponentName;
             pcPlayer = null;
-            Init();
+            Init(eatMode);
         }
 
         private void MakeOpponentMove(Point correntPos, int indexPath, Result res)
@@ -168,7 +171,7 @@ namespace Client
             }
         }
 
-        private void Init()
+        private void Init(EatMode eatMode)
         {
             animationTimer = new DispatcherTimer();
             animationTimer.Interval = new TimeSpan(0, 0, 0, 0, 400);
@@ -178,7 +181,7 @@ namespace Client
             opponentColor = (MyTurn) ? blueColorPiece : redColorPiece;
 
             //get eatmode from user
-            Game = new Board(BoardSize, (MyTurn) ? Direction.Down : Direction.Up,EatMode);
+            Game = new Board(BoardSize , eatMode);
 
             InitializeComponent();
             SwitchTurns(true);
@@ -396,7 +399,11 @@ namespace Client
             {
                 //fix!
                 if (resO != Result.Continue) {
-                    if(MyTurn && resO == Result.Lost || !MyTurn && resO == Result.Win)
+                    ellipse.Visibility = Visibility.Collapsed;
+                    Turn.HorizontalAlignment = HorizontalAlignment.Center;
+                    Turn.FontSize = 30;
+                    Turn.FontWeight = FontWeights.Bold;
+                    if (MyTurn && resO == Result.Lost || !MyTurn && resO == Result.Win)
                         Turn.Text = "Great! You Won!";
                     if(resO == Result.Tie)
                         Turn.Text = "is Tie!";

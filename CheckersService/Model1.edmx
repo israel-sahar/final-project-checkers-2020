@@ -24,23 +24,22 @@
           <Property Name="posX" Type="int" Nullable="false" />
           <Property Name="posY" Type="int" Nullable="false" />
           <Property Name="pathIndex" Type="int" Nullable="false" />
-          <Property Name="User_Email" Type="nvarchar" MaxLength="128" />
+          <Property Name="User_UserName" Type="nvarchar" MaxLength="128" />
           <Property Name="Game_GameId" Type="int" />
         </EntityType>
         <EntityType Name="UserGames">
           <Key>
-            <PropertyRef Name="User_Email" />
+            <PropertyRef Name="User_UserName" />
             <PropertyRef Name="Game_GameId" />
           </Key>
-          <Property Name="User_Email" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="User_UserName" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Game_GameId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
-            <PropertyRef Name="Email" />
+            <PropertyRef Name="UserName" />
           </Key>
-          <Property Name="Email" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar(max)" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="HashedPassword" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK_dbo_Moves_dbo_Games_Game_GameId">
@@ -55,15 +54,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Moves_dbo_Users_User_Email">
+        <Association Name="FK_dbo_Moves_dbo_Users_User_UserName">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Moves" Type="Self.Moves" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="Email" />
+              <PropertyRef Name="UserName" />
             </Principal>
             <Dependent Role="Moves">
-              <PropertyRef Name="User_Email" />
+              <PropertyRef Name="User_UserName" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -81,17 +80,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_UserGames_dbo_Users_User_Email">
+        <Association Name="FK_dbo_UserGames_dbo_Users_User_UserName">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="UserGames" Type="Self.UserGames" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="Email" />
+              <PropertyRef Name="UserName" />
             </Principal>
             <Dependent Role="UserGames">
-              <PropertyRef Name="User_Email" />
+              <PropertyRef Name="User_UserName" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -104,7 +103,7 @@
             <End Role="Games" EntitySet="Games" />
             <End Role="Moves" EntitySet="Moves" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Moves_dbo_Users_User_Email" Association="Self.FK_dbo_Moves_dbo_Users_User_Email">
+          <AssociationSet Name="FK_dbo_Moves_dbo_Users_User_UserName" Association="Self.FK_dbo_Moves_dbo_Users_User_UserName">
             <End Role="Users" EntitySet="Users" />
             <End Role="Moves" EntitySet="Moves" />
           </AssociationSet>
@@ -112,7 +111,7 @@
             <End Role="Games" EntitySet="Games" />
             <End Role="UserGames" EntitySet="UserGames" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_UserGames_dbo_Users_User_Email" Association="Self.FK_dbo_UserGames_dbo_Users_User_Email">
+          <AssociationSet Name="FK_dbo_UserGames_dbo_Users_User_UserName" Association="Self.FK_dbo_UserGames_dbo_Users_User_UserName">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserGames" EntitySet="UserGames" />
           </AssociationSet>
@@ -143,19 +142,18 @@
           <Property Name="posX" Type="Int32" Nullable="false" />
           <Property Name="posY" Type="Int32" Nullable="false" />
           <Property Name="pathIndex" Type="Int32" Nullable="false" />
-          <Property Name="User_Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Game_GameId" Type="Int32" />
+          <Property Name="UserName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="GameId" Type="Int32" />
           <NavigationProperty Name="Game" Relationship="Self.FK_dbo_Moves_dbo_Games_Game_GameId" FromRole="Moves" ToRole="Games" />
-          <NavigationProperty Name="User" Relationship="Self.FK_dbo_Moves_dbo_Users_User_Email" FromRole="Moves" ToRole="Users" />
+          <NavigationProperty Name="User" Relationship="Self.FK_dbo_Moves_dbo_Users_User_UserName" FromRole="Moves" ToRole="Users" />
         </EntityType>
         <EntityType Name="User">
           <Key>
-            <PropertyRef Name="Email" />
+            <PropertyRef Name="UserName" />
           </Key>
-          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="HashedPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Moves" Relationship="Self.FK_dbo_Moves_dbo_Users_User_Email" FromRole="Users" ToRole="Moves" />
+          <NavigationProperty Name="Moves" Relationship="Self.FK_dbo_Moves_dbo_Users_User_UserName" FromRole="Users" ToRole="Moves" />
           <NavigationProperty Name="Games" Relationship="Self.UserGames" FromRole="Users" ToRole="Games" />
         </EntityType>
         <Association Name="FK_dbo_Moves_dbo_Games_Game_GameId">
@@ -166,19 +164,19 @@
               <PropertyRef Name="GameId" />
             </Principal>
             <Dependent Role="Moves">
-              <PropertyRef Name="Game_GameId" />
+              <PropertyRef Name="GameId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Moves_dbo_Users_User_Email">
+        <Association Name="FK_dbo_Moves_dbo_Users_User_UserName">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Moves" Type="Self.Move" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="Email" />
+              <PropertyRef Name="UserName" />
             </Principal>
             <Dependent Role="Moves">
-              <PropertyRef Name="User_Email" />
+              <PropertyRef Name="UserName" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -186,7 +184,7 @@
           <End Role="Games" Type="Self.Game" Multiplicity="*" />
           <End Role="Users" Type="Self.User" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="CheckersDBEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="CheckersDBEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Games" EntityType="Self.Game" />
           <EntitySet Name="Moves" EntityType="Self.Move" />
           <EntitySet Name="Users" EntityType="Self.User" />
@@ -194,7 +192,7 @@
             <End Role="Games" EntitySet="Games" />
             <End Role="Moves" EntitySet="Moves" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Moves_dbo_Users_User_Email" Association="Self.FK_dbo_Moves_dbo_Users_User_Email">
+          <AssociationSet Name="FK_dbo_Moves_dbo_Users_User_UserName" Association="Self.FK_dbo_Moves_dbo_Users_User_UserName">
             <End Role="Users" EntitySet="Users" />
             <End Role="Moves" EntitySet="Moves" />
           </AssociationSet>
@@ -208,7 +206,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="CheckersDBModelStoreContainer" CdmEntityContainer="CheckersDBEntities">
+        <EntityContainerMapping StorageEntityContainer="CheckersDBModelStoreContainer" CdmEntityContainer="CheckersDBEntities1">
           <EntitySetMapping Name="Games">
             <EntityTypeMapping TypeName="CheckersDBModel.Game">
               <MappingFragment StoreEntitySet="Games">
@@ -228,15 +226,14 @@
                 <ScalarProperty Name="posX" ColumnName="posX" />
                 <ScalarProperty Name="posY" ColumnName="posY" />
                 <ScalarProperty Name="pathIndex" ColumnName="pathIndex" />
-                <ScalarProperty Name="User_Email" ColumnName="User_Email" />
-                <ScalarProperty Name="Game_GameId" ColumnName="Game_GameId" />
+                <ScalarProperty Name="UserName" ColumnName="User_UserName" />
+                <ScalarProperty Name="GameId" ColumnName="Game_GameId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="CheckersDBModel.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="HashedPassword" ColumnName="HashedPassword" />
               </MappingFragment>
@@ -247,7 +244,7 @@
               <ScalarProperty Name="GameId" ColumnName="Game_GameId" />
             </EndProperty>
             <EndProperty Name="Users">
-              <ScalarProperty Name="Email" ColumnName="User_Email" />
+              <ScalarProperty Name="UserName" ColumnName="User_UserName" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

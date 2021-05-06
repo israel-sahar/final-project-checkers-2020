@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="CheckersDBModelStoreContainer" CdmEntityContainer="CheckersDBEntities">
+  <EntityContainerMapping StorageEntityContainer="CheckersDBModelStoreContainer" CdmEntityContainer="CheckersDBEntities1">
     <EntitySetMapping Name="Games">
       <EntityTypeMapping TypeName="CheckersDBModel.Game">
         <MappingFragment StoreEntitySet="Games">
@@ -20,15 +20,14 @@
           <ScalarProperty Name="posX" ColumnName="posX" />
           <ScalarProperty Name="posY" ColumnName="posY" />
           <ScalarProperty Name="pathIndex" ColumnName="pathIndex" />
-          <ScalarProperty Name="User_Email" ColumnName="User_Email" />
-          <ScalarProperty Name="Game_GameId" ColumnName="Game_GameId" />
+          <ScalarProperty Name="UserName" ColumnName="User_UserName" />
+          <ScalarProperty Name="GameId" ColumnName="Game_GameId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="CheckersDBModel.User">
         <MappingFragment StoreEntitySet="Users">
-          <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />
           <ScalarProperty Name="HashedPassword" ColumnName="HashedPassword" />
         </MappingFragment>
@@ -39,7 +38,7 @@
         <ScalarProperty Name="GameId" ColumnName="Game_GameId" />
       </EndProperty>
       <EndProperty Name="Users">
-        <ScalarProperty Name="Email" ColumnName="User_Email" />
+        <ScalarProperty Name="UserName" ColumnName="User_UserName" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>

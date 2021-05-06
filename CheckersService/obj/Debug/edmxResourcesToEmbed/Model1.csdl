@@ -21,19 +21,18 @@
     <Property Name="posX" Type="Int32" Nullable="false" />
     <Property Name="posY" Type="Int32" Nullable="false" />
     <Property Name="pathIndex" Type="Int32" Nullable="false" />
-    <Property Name="User_Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="Game_GameId" Type="Int32" />
+    <Property Name="UserName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="GameId" Type="Int32" />
     <NavigationProperty Name="Game" Relationship="Self.FK_dbo_Moves_dbo_Games_Game_GameId" FromRole="Moves" ToRole="Games" />
-    <NavigationProperty Name="User" Relationship="Self.FK_dbo_Moves_dbo_Users_User_Email" FromRole="Moves" ToRole="Users" />
+    <NavigationProperty Name="User" Relationship="Self.FK_dbo_Moves_dbo_Users_User_UserName" FromRole="Moves" ToRole="Users" />
   </EntityType>
   <EntityType Name="User">
     <Key>
-      <PropertyRef Name="Email" />
+      <PropertyRef Name="UserName" />
     </Key>
-    <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="UserName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="HashedPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Moves" Relationship="Self.FK_dbo_Moves_dbo_Users_User_Email" FromRole="Users" ToRole="Moves" />
+    <NavigationProperty Name="Moves" Relationship="Self.FK_dbo_Moves_dbo_Users_User_UserName" FromRole="Users" ToRole="Moves" />
     <NavigationProperty Name="Games" Relationship="Self.UserGames" FromRole="Users" ToRole="Games" />
   </EntityType>
   <Association Name="FK_dbo_Moves_dbo_Games_Game_GameId">
@@ -44,19 +43,19 @@
         <PropertyRef Name="GameId" />
       </Principal>
       <Dependent Role="Moves">
-        <PropertyRef Name="Game_GameId" />
+        <PropertyRef Name="GameId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_dbo_Moves_dbo_Users_User_Email">
+  <Association Name="FK_dbo_Moves_dbo_Users_User_UserName">
     <End Role="Users" Type="Self.User" Multiplicity="0..1" />
     <End Role="Moves" Type="Self.Move" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Users">
-        <PropertyRef Name="Email" />
+        <PropertyRef Name="UserName" />
       </Principal>
       <Dependent Role="Moves">
-        <PropertyRef Name="User_Email" />
+        <PropertyRef Name="UserName" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -64,7 +63,7 @@
     <End Role="Games" Type="Self.Game" Multiplicity="*" />
     <End Role="Users" Type="Self.User" Multiplicity="*" />
   </Association>
-  <EntityContainer Name="CheckersDBEntities" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="CheckersDBEntities1" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Games" EntityType="Self.Game" />
     <EntitySet Name="Moves" EntityType="Self.Move" />
     <EntitySet Name="Users" EntityType="Self.User" />
@@ -72,7 +71,7 @@
       <End Role="Games" EntitySet="Games" />
       <End Role="Moves" EntitySet="Moves" />
     </AssociationSet>
-    <AssociationSet Name="FK_dbo_Moves_dbo_Users_User_Email" Association="Self.FK_dbo_Moves_dbo_Users_User_Email">
+    <AssociationSet Name="FK_dbo_Moves_dbo_Users_User_UserName" Association="Self.FK_dbo_Moves_dbo_Users_User_UserName">
       <End Role="Users" EntitySet="Users" />
       <End Role="Moves" EntitySet="Moves" />
     </AssociationSet>

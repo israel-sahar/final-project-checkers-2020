@@ -12,7 +12,6 @@ namespace Database
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Email { get; set; }
         public string UserName { get; set; }
         public string HashedPassword { get; set; }
         public ICollection<Game> Games { get; set; }

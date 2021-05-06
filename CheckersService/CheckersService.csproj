@@ -86,7 +86,6 @@
     <Compile Include="User.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserAlreadyExistsFault.cs" />
     <Compile Include="UserAlreadyLoginFault.cs" />
     <Compile Include="UserContact.cs" />
     <Compile Include="UserNameAlreadyExistsFault.cs" />

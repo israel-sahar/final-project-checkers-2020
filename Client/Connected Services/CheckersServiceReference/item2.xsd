@@ -21,17 +21,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="WrongPasswordFault" nillable="true" type="tns:WrongPasswordFault" />
-  <xs:complexType name="UserAlreadyExistsFault">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="UserAlreadyExistsFault" nillable="true" type="tns:UserAlreadyExistsFault" />
   <xs:complexType name="UserNameAlreadyExistsFault">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="UserNameAlreadyExistsFault" nillable="true" type="tns:UserNameAlreadyExistsFault" />
@@ -89,11 +82,11 @@
   <xs:complexType name="Move">
     <xs:sequence>
       <xs:element minOccurs="0" name="Game" nillable="true" type="tns:Game" />
-      <xs:element minOccurs="0" name="Game_GameId" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="GameId" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="MoveId" type="xs:int" />
       <xs:element minOccurs="0" name="RecordTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="User" nillable="true" type="tns:User" />
-      <xs:element minOccurs="0" name="User_Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="pathIndex" type="xs:int" />
       <xs:element minOccurs="0" name="posX" type="xs:int" />
       <xs:element minOccurs="0" name="posY" type="xs:int" />
@@ -102,7 +95,6 @@
   <xs:element name="Move" nillable="true" type="tns:Move" />
   <xs:complexType name="User">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Games" nillable="true" type="tns:ArrayOfGame" />
       <xs:element minOccurs="0" name="HashedPassword" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Moves" nillable="true" type="tns:ArrayOfMove" />

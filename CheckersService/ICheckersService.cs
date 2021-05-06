@@ -17,9 +17,8 @@ namespace CheckersService
         [FaultContract(typeof(WrongPasswordFault))]
         void Connect(string usrName, string hashedPassword);
         [OperationContract]
-        [FaultContract(typeof(UserAlreadyExistsFault))]
         [FaultContract(typeof(UserNameAlreadyExistsFault))]
-        void Register(string email, string userName, string hashedPassword);
+        void Register(string userName, string hashedPassword);
         [OperationContract]
        [FaultContract(typeof(GameIdNotExistsFault))]
         (int, Status, DateTime, bool, int, string, string) GetGame(int gameId);
@@ -40,12 +39,9 @@ namespace CheckersService
         [OperationContract]
         bool Ping();
         [OperationContract]
-        [FaultContract(typeof(UserNotExistsFault))]
-        void ResetPassword(string email);
-        [OperationContract]
         bool IsUserNameTaken(string userName);
         [OperationContract]
-        void StopWaitingGame(string UserName,int boardSize);
+        void StopWaitingGame(string UserName,int boardSize,int eatMode);
         [OperationContract]
         ICollection<(int, string, string, Status, DateTime)> GetPlayedGames(string usrName1=null, string usrName2 = null);
         [OperationContract]

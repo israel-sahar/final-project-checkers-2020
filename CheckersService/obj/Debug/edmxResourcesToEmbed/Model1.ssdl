@@ -19,23 +19,22 @@
     <Property Name="posX" Type="int" Nullable="false" />
     <Property Name="posY" Type="int" Nullable="false" />
     <Property Name="pathIndex" Type="int" Nullable="false" />
-    <Property Name="User_Email" Type="nvarchar" MaxLength="128" />
+    <Property Name="User_UserName" Type="nvarchar" MaxLength="128" />
     <Property Name="Game_GameId" Type="int" />
   </EntityType>
   <EntityType Name="UserGames">
     <Key>
-      <PropertyRef Name="User_Email" />
+      <PropertyRef Name="User_UserName" />
       <PropertyRef Name="Game_GameId" />
     </Key>
-    <Property Name="User_Email" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="User_UserName" Type="nvarchar" MaxLength="128" Nullable="false" />
     <Property Name="Game_GameId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
-      <PropertyRef Name="Email" />
+      <PropertyRef Name="UserName" />
     </Key>
-    <Property Name="Email" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="UserName" Type="nvarchar(max)" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="128" Nullable="false" />
     <Property Name="HashedPassword" Type="nvarchar(max)" />
   </EntityType>
   <Association Name="FK_dbo_Moves_dbo_Games_Game_GameId">
@@ -50,15 +49,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_dbo_Moves_dbo_Users_User_Email">
+  <Association Name="FK_dbo_Moves_dbo_Users_User_UserName">
     <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
     <End Role="Moves" Type="Self.Moves" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Users">
-        <PropertyRef Name="Email" />
+        <PropertyRef Name="UserName" />
       </Principal>
       <Dependent Role="Moves">
-        <PropertyRef Name="User_Email" />
+        <PropertyRef Name="User_UserName" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -76,17 +75,17 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_dbo_UserGames_dbo_Users_User_Email">
+  <Association Name="FK_dbo_UserGames_dbo_Users_User_UserName">
     <End Role="Users" Type="Self.Users" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
     <End Role="UserGames" Type="Self.UserGames" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Users">
-        <PropertyRef Name="Email" />
+        <PropertyRef Name="UserName" />
       </Principal>
       <Dependent Role="UserGames">
-        <PropertyRef Name="User_Email" />
+        <PropertyRef Name="User_UserName" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -99,7 +98,7 @@
       <End Role="Games" EntitySet="Games" />
       <End Role="Moves" EntitySet="Moves" />
     </AssociationSet>
-    <AssociationSet Name="FK_dbo_Moves_dbo_Users_User_Email" Association="Self.FK_dbo_Moves_dbo_Users_User_Email">
+    <AssociationSet Name="FK_dbo_Moves_dbo_Users_User_UserName" Association="Self.FK_dbo_Moves_dbo_Users_User_UserName">
       <End Role="Users" EntitySet="Users" />
       <End Role="Moves" EntitySet="Moves" />
     </AssociationSet>
@@ -107,7 +106,7 @@
       <End Role="Games" EntitySet="Games" />
       <End Role="UserGames" EntitySet="UserGames" />
     </AssociationSet>
-    <AssociationSet Name="FK_dbo_UserGames_dbo_Users_User_Email" Association="Self.FK_dbo_UserGames_dbo_Users_User_Email">
+    <AssociationSet Name="FK_dbo_UserGames_dbo_Users_User_UserName" Association="Self.FK_dbo_UserGames_dbo_Users_User_UserName">
       <End Role="Users" EntitySet="Users" />
       <End Role="UserGames" EntitySet="UserGames" />
     </AssociationSet>

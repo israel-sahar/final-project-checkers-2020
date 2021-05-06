@@ -111,17 +111,17 @@ namespace Client
         {
 
         }
-        bool EatMode = true;
+        EatMode EatMode;
         private void chooseEatModePCClick(object sender, RoutedEventArgs e)
         {
             string eatMode = ((Button)sender).Tag.ToString();
             switch (eatMode)
             {
                 case ("True"):
-                    EatMode = true;
+                    EatMode = EatMode.On;
                     break;
                 case ("False"):
-                    EatMode = false;
+                    EatMode = EatMode.Off;
                     break;
             }
 
@@ -130,7 +130,7 @@ namespace Client
             window.Callback = Callback;
             window.UserName = User;
 
-            var gameDetails = Client.JoinGame(User, true, chosenSize,EatMode);
+            var gameDetails = Client.JoinGame(User, true, chosenSize,EatMode==EatMode.On?true:false);
             window.GameId = gameDetails.Item1;
             window.Show();
             this.Close();
@@ -148,14 +148,14 @@ namespace Client
             switch (eatMode)
             {
                 case ("True"):
-                    EatMode = true;
+                    EatMode = EatMode.On;
                     break;
                 case ("False"):
-                    EatMode = false;
+                    EatMode = EatMode.Off;
                     break;
             }
 
-            WaitingWindow window = new WaitingWindow(Callback, Client, User, chosenSize, Level.Human,EatMode);
+            WaitingWindow window = new WaitingWindow(Callback, Client, User, chosenSize, Level.Human, EatMode);
             //window.Show();
             this.Close();
         }

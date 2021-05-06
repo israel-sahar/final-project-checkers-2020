@@ -33,7 +33,7 @@ namespace Client
 
         private (Piece, Path) GetHardNextMove(Board game)
         {
-            var nextMove = MiniMaxAlgorithm(game,null,null, DEPTH_NUM, Team.Opponent,Double.NegativeInfinity,Double.PositiveInfinity);
+            var nextMove = MiniMaxAlgorithm(game,null,null, DEPTH_NUM, Team.Two,Double.NegativeInfinity,Double.PositiveInfinity);
             return (nextMove.Item2, nextMove.Item3);
         }
 
@@ -42,12 +42,13 @@ namespace Client
             if (depth == 0 || game.CheckResultGame(turn) != CheckersServiceReference.Result.Continue)
                 return (game.Evaluate(), currentPiece, currentPath);
 
-            if (turn == Team.Opponent)
+            //enter if its cpu turn
+            if (turn == Team.Two)
             {
                 Path bestPath=null;
                 Piece bestPiece=null;
                 double value = Double.NegativeInfinity;
-                var all_pieces = game.OpponentTeamPieces;
+                var all_pieces = game.TeamTwoPieces;
                 List<(Piece, Path)> allPaths = new List<(Piece, Path)>();
                 foreach (var piece in all_pieces)
                 {
@@ -59,7 +60,7 @@ namespace Client
                     Board tempBoard = new Board(game);
                     tempBoard.MovePiece(tempBoard.GetPieceAt(pp.Item1.Coordinate), pp.Item2);
 
-                    double eval = MiniMaxAlgorithm(tempBoard, pp.Item1, pp.Item2, depth - 1, Team.Me,alpha,beta).Item1;
+                    double eval = MiniMaxAlgorithm(tempBoard, pp.Item1, pp.Item2, depth - 1, Team.One,alpha,beta).Item1;
 
                     if (eval > value)
                     {
@@ -79,7 +80,7 @@ namespace Client
                 Path bestPath = null;
                 Piece bestPiece = null;
                 double value = Double.PositiveInfinity;
-                var all_pieces = game.MyTeamPieces;
+                var all_pieces = game.TeamOnePieces;
                 List<(Piece, Path)> allPaths = new List<(Piece, Path)>();
                 foreach (var piece in all_pieces)
                 {
@@ -92,7 +93,7 @@ namespace Client
                     Board tempBoard = new Board(game);
                     tempBoard.MovePiece(tempBoard.GetPieceAt(pp.Item1.Coordinate), pp.Item2);
 
-                    double eval = MiniMaxAlgorithm(tempBoard, pp.Item1, pp.Item2, depth - 1, Team.Opponent,alpha,beta).Item1;
+                    double eval = MiniMaxAlgorithm(tempBoard, pp.Item1, pp.Item2, depth - 1, Team.Two,alpha,beta).Item1;
                     value = value < eval ? value : eval;
                     if (eval < value)
                     {
@@ -109,7 +110,7 @@ namespace Client
 
         private (Piece, Path) GetEasyNextMove(Board game)
         {
-            var computerPieces = game.OpponentTeamPieces;
+            var computerPieces = game.TeamTwoPieces;
             (Piece, Path) reqPiece = (null, null);
             List<(Piece, Path)> forRandomChoose = new List<(Piece, Path)>();
             foreach (Piece p in computerPieces)

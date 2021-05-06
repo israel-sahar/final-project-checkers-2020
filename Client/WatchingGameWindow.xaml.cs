@@ -26,7 +26,7 @@ namespace Client
         public string UserName { get; internal set; }
 
         public int GameId { get; internal set; }
-        public bool EatMode { get; private set; }
+        public EatMode EatMode { get; private set; }
         public int BoardSize { get; set; }
         public string userOne { get; set; }
         public string userTwo { get; set; }
@@ -48,7 +48,7 @@ namespace Client
             Callback = callback;
             UserName = userName;
             Moves = gameDetails.Item1.Moves;
-            EatMode = gameDetails.Item1.EatMode;
+            EatMode = gameDetails.Item1.EatMode?EatMode.On:EatMode.Off;
             GameId = gameDetails.Item1.GameId;
             BoardSize = gameDetails.Item1.BoardSize;
             userOne = gameDetails.Item2;
@@ -140,7 +140,7 @@ namespace Client
             animationTimer.Interval = new TimeSpan(0, 0, 0, 0, 400);
             animationTimer.Start();
 
-            Game = new Board(BoardSize, Direction.Down, EatMode);
+            Game = new Board(BoardSize, EatMode);
 
             InitializeComponent();
             startBtn.IsEnabled = (IsLive) ? false : true;
@@ -197,9 +197,6 @@ namespace Client
                 currentLocation = currentPosition;
                 canContinue = false;
                 animationTimer.Tick += Animation;
-
-
-
             }
         }
 
@@ -292,26 +289,30 @@ namespace Client
             StartGameAsync();
 
         }
-        List<Move> copyToUse;
             private async Task StartGameAsync()
             {
                 foreach (var p in Moves)
                 {
-                    if (p.User_Email == null) p.User_Email = "Computer";
-                    Turn.Text = $"This is {(p.User_Email == Moves.ElementAt(0).User_Email ? userOne : userTwo)} Turn";
+                    if (p.UserName == null) p.UserName = "Computer";
+                    Turn.Text = $"This is {(p.UserName == Moves.ElementAt(0).UserName ? userOne : userTwo)} Turn";
                     ellipse.Fill = GetEllipse(p.posX, p.posY).Fill;
                     var res = MakeMove(p);
                     while (!canContinue) await Dispatcher.Yield();
                     if (res != Result.Continue)
                     {
-                        if (res == Result.Lost)
-                            Turn.Text = $"{(p.User_Email == Moves.ElementAt(0).User_Email ? userOne : userTwo)} Lost the Game, {(p.User_Email != Moves.ElementAt(0).User_Email ? userOne : userTwo)} is the Winner!";
+                    ellipse.Visibility = Visibility.Collapsed;
+                    Turn.HorizontalAlignment = HorizontalAlignment.Center;
+                    Turn.FontSize = 30;
+                    Turn.FontWeight = FontWeights.Bold;
+
+                    if (res == Result.Lost)
+                            Turn.Text = $"{(p.UserName == Moves.ElementAt(0).UserName ? userOne : userTwo)} Lost the Game, {(p.UserName != Moves.ElementAt(0).UserName ? userOne : userTwo)} is the Winner!";
 
                         if (res == Result.Tie)
                             Turn.Text = "is Tie!";
 
                         if (res == Result.Win)
-                            Turn.Text = $"{(p.User_Email != Moves.ElementAt(0).User_Email ? userOne : userTwo)} Lost the Game, {(p.User_Email == Moves.ElementAt(0).User_Email ? userOne : userTwo)} is the Winner!";
+                            Turn.Text = $"{(p.UserName != Moves.ElementAt(0).UserName ? userOne : userTwo)} Lost the Game, {(p.UserName == Moves.ElementAt(0).UserName ? userOne : userTwo)} is the Winner!";
 
                         MessageBox.Show("The Game is ended!");
                         startBtn.IsEnabled = true;
@@ -324,10 +325,15 @@ namespace Client
 
             public void resetTable()
             {
-                Game = new Board(BoardSize, Direction.Down, EatMode);
+                Game = new Board(BoardSize, EatMode);
                 RemoveAllPieces();
                 InitializePieces();
-            }
+            ellipse.Visibility = Visibility.Visible;
+            Turn.HorizontalAlignment = HorizontalAlignment.Left;
+            Turn.FontWeight = FontWeights.Normal;
+
+            Turn.FontSize = 20;
+        }
 
             private void RemoveAllPieces()
             {

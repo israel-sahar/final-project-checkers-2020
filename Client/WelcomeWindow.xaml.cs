@@ -102,14 +102,14 @@ namespace Client
         private void chooseEatModeClick(object sender, RoutedEventArgs e)
         {
             string mode = ((Button)sender).Tag.ToString();
-            bool EatMode=true;
+            EatMode EatMode = EatMode.Off;
             switch (mode)
             {
                 case ("True"):
-                    EatMode = true;
+                    EatMode = EatMode.On;
                     break;
                 case ("False"):
-                    EatMode = false;
+                    EatMode = EatMode.Off;
                     break;
             }
             GameWindow window = new GameWindow(choosenSize, selectedLevel, true, EatMode);

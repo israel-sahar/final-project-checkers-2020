@@ -21,7 +21,7 @@ namespace Client
     public partial class WaitingWindow : Window
     {
 
-        public WaitingWindow(ClientCallback callback,CheckersServiceClient client,string userName, int chosenSize, Level human, bool eatMode)
+        public WaitingWindow(ClientCallback callback,CheckersServiceClient client,string userName, int chosenSize, Level human, EatMode eatMode)
         {
             InitializeComponent();
             ChosenSize = chosenSize;
@@ -33,7 +33,7 @@ namespace Client
             EatMode = eatMode;
             //need to get from client turn,gameid,OpponentName
             //the second player will get this return value the first one will get -1
-            (int, string, bool) gameId_OppName_Turn = Client.JoinGame(userName, false, chosenSize, eatMode);
+            (int, string, bool) gameId_OppName_Turn = Client.JoinGame(userName, false, chosenSize, eatMode==EatMode.On?true:false);
             if(gameId_OppName_Turn.Item1!=-1)
                 CreateGameWindow(gameId_OppName_Turn.Item1, gameId_OppName_Turn.Item2, gameId_OppName_Turn.Item3);
             
@@ -49,7 +49,7 @@ namespace Client
         public ClientCallback Callback { get; internal set; }
         public CheckersServiceClient Client { get; internal set; }
         public string UserName { get; internal set; }
-        public bool EatMode { get; private set; }
+        public EatMode EatMode { get; private set; }
 
         public void CreateGameWindow(int gameId, string OpponentName, bool myTurn)
         {
@@ -60,7 +60,7 @@ namespace Client
         }
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
-            Client.StopWaitingGame(UserName, ChosenSize);
+            Client.StopWaitingGame(UserName, ChosenSize, (int)EatMode);
             MenuWindow win = new MenuWindow();
             win.Client = Client;
             win.Content = Content;

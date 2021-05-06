@@ -198,67 +198,6 @@ namespace Client.CheckersServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserAlreadyExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-    [System.SerializableAttribute()]
-    public partial class UserAlreadyExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string EmailField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string MessageField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Email {
-            get {
-                return this.EmailField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EmailField, value) != true)) {
-                    this.EmailField = value;
-                    this.RaisePropertyChanged("Email");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Message {
-            get {
-                return this.MessageField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
-                    this.MessageField = value;
-                    this.RaisePropertyChanged("Message");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UserNameAlreadyExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
     [System.SerializableAttribute()]
     public partial class UserNameAlreadyExistsFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -267,10 +206,10 @@ namespace Client.CheckersServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string EmailField;
+        private string MessageField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string MessageField;
+        private string UserNameField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -283,19 +222,6 @@ namespace Client.CheckersServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Email {
-            get {
-                return this.EmailField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EmailField, value) != true)) {
-                    this.EmailField = value;
-                    this.RaisePropertyChanged("Email");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Message {
             get {
                 return this.MessageField;
@@ -304,6 +230,19 @@ namespace Client.CheckersServiceReference {
                 if ((object.ReferenceEquals(this.MessageField, value) != true)) {
                     this.MessageField = value;
                     this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string UserName {
+            get {
+                return this.UserNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserNameField, value) != true)) {
+                    this.UserNameField = value;
+                    this.RaisePropertyChanged("UserName");
                 }
             }
         }
@@ -581,7 +520,7 @@ namespace Client.CheckersServiceReference {
         private Client.CheckersServiceReference.Game GameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<int> Game_GameIdField;
+        private System.Nullable<int> GameIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int MoveIdField;
@@ -593,7 +532,7 @@ namespace Client.CheckersServiceReference {
         private Client.CheckersServiceReference.User UserField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string User_EmailField;
+        private string UserNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int pathIndexField;
@@ -628,14 +567,14 @@ namespace Client.CheckersServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> Game_GameId {
+        public System.Nullable<int> GameId {
             get {
-                return this.Game_GameIdField;
+                return this.GameIdField;
             }
             set {
-                if ((this.Game_GameIdField.Equals(value) != true)) {
-                    this.Game_GameIdField = value;
-                    this.RaisePropertyChanged("Game_GameId");
+                if ((this.GameIdField.Equals(value) != true)) {
+                    this.GameIdField = value;
+                    this.RaisePropertyChanged("GameId");
                 }
             }
         }
@@ -680,14 +619,14 @@ namespace Client.CheckersServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string User_Email {
+        public string UserName {
             get {
-                return this.User_EmailField;
+                return this.UserNameField;
             }
             set {
-                if ((object.ReferenceEquals(this.User_EmailField, value) != true)) {
-                    this.User_EmailField = value;
-                    this.RaisePropertyChanged("User_Email");
+                if ((object.ReferenceEquals(this.UserNameField, value) != true)) {
+                    this.UserNameField = value;
+                    this.RaisePropertyChanged("UserName");
                 }
             }
         }
@@ -751,9 +690,6 @@ namespace Client.CheckersServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string EmailField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.List<Client.CheckersServiceReference.Game> GamesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -772,19 +708,6 @@ namespace Client.CheckersServiceReference {
             }
             set {
                 this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Email {
-            get {
-                return this.EmailField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EmailField, value) != true)) {
-                    this.EmailField = value;
-                    this.RaisePropertyChanged("Email");
-                }
             }
         }
         
@@ -864,12 +787,11 @@ namespace Client.CheckersServiceReference {
         System.Threading.Tasks.Task ConnectAsync(string usrName, string hashedPassword);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/Register", ReplyAction="http://tempuri.org/ICheckersService/RegisterResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.UserAlreadyExistsFault), Action="http://tempuri.org/ICheckersService/RegisterUserAlreadyExistsFaultFault", Name="UserAlreadyExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
         [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.UserNameAlreadyExistsFault), Action="http://tempuri.org/ICheckersService/RegisterUserNameAlreadyExistsFaultFault", Name="UserNameAlreadyExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-        void Register(string email, string userName, string hashedPassword);
+        void Register(string userName, string hashedPassword);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/Register", ReplyAction="http://tempuri.org/ICheckersService/RegisterResponse")]
-        System.Threading.Tasks.Task RegisterAsync(string email, string userName, string hashedPassword);
+        System.Threading.Tasks.Task RegisterAsync(string userName, string hashedPassword);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetGame", ReplyAction="http://tempuri.org/ICheckersService/GetGameResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.GameIdNotExistsFault), Action="http://tempuri.org/ICheckersService/GetGameGameIdNotExistsFaultFault", Name="GameIdNotExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
@@ -926,13 +848,6 @@ namespace Client.CheckersServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/Ping", ReplyAction="http://tempuri.org/ICheckersService/PingResponse")]
         System.Threading.Tasks.Task<bool> PingAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/ResetPassword", ReplyAction="http://tempuri.org/ICheckersService/ResetPasswordResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Client.CheckersServiceReference.UserNotExistsFault), Action="http://tempuri.org/ICheckersService/ResetPasswordUserNotExistsFaultFault", Name="UserNotExistsFault", Namespace="http://schemas.datacontract.org/2004/07/CheckersService")]
-        void ResetPassword(string email);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/ResetPassword", ReplyAction="http://tempuri.org/ICheckersService/ResetPasswordResponse")]
-        System.Threading.Tasks.Task ResetPasswordAsync(string email);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/IsUserNameTaken", ReplyAction="http://tempuri.org/ICheckersService/IsUserNameTakenResponse")]
         bool IsUserNameTaken(string userName);
         
@@ -940,10 +855,10 @@ namespace Client.CheckersServiceReference {
         System.Threading.Tasks.Task<bool> IsUserNameTakenAsync(string userName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/StopWaitingGame", ReplyAction="http://tempuri.org/ICheckersService/StopWaitingGameResponse")]
-        void StopWaitingGame(string UserName, int boardSize);
+        void StopWaitingGame(string UserName, int boardSize, int eatMode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/StopWaitingGame", ReplyAction="http://tempuri.org/ICheckersService/StopWaitingGameResponse")]
-        System.Threading.Tasks.Task StopWaitingGameAsync(string UserName, int boardSize);
+        System.Threading.Tasks.Task StopWaitingGameAsync(string UserName, int boardSize, int eatMode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICheckersService/GetPlayedGames", ReplyAction="http://tempuri.org/ICheckersService/GetPlayedGamesResponse")]
         System.Collections.Generic.List<System.ValueTuple<int, string, string, Client.CheckersServiceReference.Status, System.DateTime>> GetPlayedGames(string usrName1, string usrName2);
@@ -1004,12 +919,12 @@ namespace Client.CheckersServiceReference {
             return base.Channel.ConnectAsync(usrName, hashedPassword);
         }
         
-        public void Register(string email, string userName, string hashedPassword) {
-            base.Channel.Register(email, userName, hashedPassword);
+        public void Register(string userName, string hashedPassword) {
+            base.Channel.Register(userName, hashedPassword);
         }
         
-        public System.Threading.Tasks.Task RegisterAsync(string email, string userName, string hashedPassword) {
-            return base.Channel.RegisterAsync(email, userName, hashedPassword);
+        public System.Threading.Tasks.Task RegisterAsync(string userName, string hashedPassword) {
+            return base.Channel.RegisterAsync(userName, hashedPassword);
         }
         
         public System.ValueTuple<int, Client.CheckersServiceReference.Status, System.DateTime, bool, int, string, string> GetGame(int gameId) {
@@ -1084,14 +999,6 @@ namespace Client.CheckersServiceReference {
             return base.Channel.PingAsync();
         }
         
-        public void ResetPassword(string email) {
-            base.Channel.ResetPassword(email);
-        }
-        
-        public System.Threading.Tasks.Task ResetPasswordAsync(string email) {
-            return base.Channel.ResetPasswordAsync(email);
-        }
-        
         public bool IsUserNameTaken(string userName) {
             return base.Channel.IsUserNameTaken(userName);
         }
@@ -1100,12 +1007,12 @@ namespace Client.CheckersServiceReference {
             return base.Channel.IsUserNameTakenAsync(userName);
         }
         
-        public void StopWaitingGame(string UserName, int boardSize) {
-            base.Channel.StopWaitingGame(UserName, boardSize);
+        public void StopWaitingGame(string UserName, int boardSize, int eatMode) {
+            base.Channel.StopWaitingGame(UserName, boardSize, eatMode);
         }
         
-        public System.Threading.Tasks.Task StopWaitingGameAsync(string UserName, int boardSize) {
-            return base.Channel.StopWaitingGameAsync(UserName, boardSize);
+        public System.Threading.Tasks.Task StopWaitingGameAsync(string UserName, int boardSize, int eatMode) {
+            return base.Channel.StopWaitingGameAsync(UserName, boardSize, eatMode);
         }
         
         public System.Collections.Generic.List<System.ValueTuple<int, string, string, Client.CheckersServiceReference.Status, System.DateTime>> GetPlayedGames(string usrName1, string usrName2) {

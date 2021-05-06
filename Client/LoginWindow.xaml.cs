@@ -45,7 +45,7 @@ namespace Client
                 MessageBox.Show("Please enter a password..", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            User user=null;
+            
             try
             {
                 Client.Connect(usrName, HashValue(pass));
@@ -88,14 +88,6 @@ namespace Client
             this.Close();
         }
 
-        private void forgotPasswordClick(object sender, MouseButtonEventArgs e)
-        {
-            ResetPasswordWindow window = new ResetPasswordWindow();
-            window.Client = Client;
-            window.Callback = Callback;
-            window.Show();
-            this.Close();
-        }
             private string HashValue(string password)
             {
                 using (SHA256 hashObject = SHA256.Create())

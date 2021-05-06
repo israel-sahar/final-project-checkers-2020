@@ -8,6 +8,6 @@ namespace CheckersService
         [DataMember]
         public string Message { get; set; }
         [DataMember]
-        public string Email { get; set; }
+        public string UserName { get; set; }
     }
 }
