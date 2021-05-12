@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-Title="Watching Game.." Height="700" Width="679.947" ResizeMode="NoResize">
+Title="Watching Game.." Height="700" Width="679.947" ResizeMode="NoResize" Closed="Window_Closed">
     <Window.Background>
         <ImageBrush ImageSource="assets\images\background.jpg" Opacity="0.5"/>
     </Window.Background>
@@ -110,7 +110,7 @@ Title="Watching Game.." Height="700" Width="679.947" ResizeMode="NoResize">
                 </Grid>
             </Border>
         </Canvas>
-        <Border BorderThickness="7" BorderBrush="Black" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="6" Margin="0.333,0.333,60.667,0.333">
+        <Border BorderThickness="7" BorderBrush="Black" Grid.Row="9"  Grid.ColumnSpan="7" Margin="2">
             <StackPanel Orientation="Horizontal" Background="BurlyWood" Margin="0.333,0.333,3.333,0">
                 <Ellipse Name="ellipse" Fill="Black" Width="50" Height="50"/>
                 <TextBlock Name="Turn" VerticalAlignment="Center" Margin="5" FontSize="20">

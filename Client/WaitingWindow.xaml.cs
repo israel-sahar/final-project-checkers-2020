@@ -56,6 +56,8 @@ namespace Client
             GameWindow window = new GameWindow(Client, Callback, gameId, UserName, OpponentName,ChosenSize, myTurn,EatMode);
 
             window.Show();
+            this.Closing -= Window_Closing;
+
             this.Close();
         }
         private void backBtn_Click(object sender, RoutedEventArgs e)
@@ -66,7 +68,19 @@ namespace Client
             win.Content = Content;
             win.User = UserName;
             win.Show();
+            this.Closing -= Window_Closing;
             this.Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("This step will close the app,OK?",
+"Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                Client.StopWaitingGame(UserName, ChosenSize, (int)EatMode);
+                Client.Disconnect(UserName, Mode.Lobby, -1);
+                
+            }
         }
     }
 }

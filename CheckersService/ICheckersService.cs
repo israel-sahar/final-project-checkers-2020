@@ -29,7 +29,7 @@ namespace CheckersService
         [OperationContract]
         (int, string, bool) JoinGame(string user, bool isVsCPU, int boardSize,bool EatMode);
         [OperationContract]
-        Game WatchGame(string usrName, int gameId);
+        (int, Status, DateTime, bool, int, string, string) WatchGame(string usrName, int gameId);
         [OperationContract]
         void CloseUnFinishedGame(int GameId, string UserName);
         [OperationContract]
@@ -39,13 +39,13 @@ namespace CheckersService
         [OperationContract]
         bool Ping();
         [OperationContract]
-        bool IsUserNameTaken(string userName);
-        [OperationContract]
         void StopWaitingGame(string UserName,int boardSize,int eatMode);
         [OperationContract]
         ICollection<(int, string, string, Status, DateTime)> GetPlayedGames(string usrName1=null, string usrName2 = null);
         [OperationContract]
         ICollection<(int, string, string, Status, DateTime)> GetPlayedGamesByDate(DateTime date);
+        [OperationContract]
+        (Game, Move) GameMoveRegonizer();
     }
 
     public interface ICheckersCallback {
@@ -53,5 +53,7 @@ namespace CheckersService
         void SendOpponentMove(Point correntPos, int indexPath, Result result);
         [OperationContract(IsOneWay = true)]
         void StartGame(int GameId, string OpponentName, bool MyTurn);
+        [OperationContract(IsOneWay = true)]
+        void CloseTheGame();
     }
 }

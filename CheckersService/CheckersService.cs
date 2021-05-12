@@ -24,15 +24,15 @@ namespace CheckersService
     }
     //lecture 13_3 -43:48 make a thread to connect with users
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
-        ConcurrencyMode =ConcurrencyMode.Reentrant)]
+        ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class CheckersService : ICheckersService
     {
         private readonly int PASS_LENGTH = 8;
 
         Dictionary<string, ICheckersCallback> onlineUsers = new Dictionary<string, ICheckersCallback>();
         Dictionary<int, List<UserContact>> waitingRooms = new Dictionary<int, List<UserContact>>();
-
-        Dictionary<int, (UserContact, UserContact)> runningGame = new Dictionary<int, (UserContact, UserContact)>();
+        //the bool is for load-balance
+        Dictionary<int, (UserContact, UserContact,bool)> runningGame = new Dictionary<int, (UserContact, UserContact, bool)>();
         //Dictionary<int, Dictionary<string, ICheckersCallback>> watchingGames = new Dictionary<int, Dictionary<string, ICheckersCallback>>(); 
 
         public CheckersService()
@@ -44,73 +44,134 @@ namespace CheckersService
         }
         public void Connect(string usrName, string hashedPassword)
         {
-            if(onlineUsers.ContainsKey(usrName)){
+            if (onlineUsers.ContainsKey(usrName)) {
                 UserAlreadyLoginFault fault = new UserAlreadyLoginFault {
                     Message = $" The User {usrName} online",
                     usrName = usrName
                 };
-                throw new FaultException<UserAlreadyLoginFault>(fault);
+                throw new FaultException<UserAlreadyLoginFault>(fault, new FaultReason($" The User {usrName} online"));
             }
             User user;
-            using (var ctx = new CheckersDBEntities1()){
+            using (var ctx = new CheckersDBEntities1()) {
                 user = (from u in ctx.Users where u.UserName == usrName select u).FirstOrDefault();
-                if (user == null){
-                    UserNotExistsFault fault = new UserNotExistsFault{
+                if (user == null) {
+                    UserNotExistsFault fault = new UserNotExistsFault {
                         Message = $"The user {usrName} is not Exists",
                         usrName = usrName
                     };
-                    throw new FaultException<UserNotExistsFault>(fault);
+                    throw new FaultException<UserNotExistsFault>(fault, new FaultReason($"The user {usrName} is not Exists"));
                 }
                 else {
                     if (user.HashedPassword != hashedPassword) {
-                        WrongPasswordFault fault = new WrongPasswordFault{
-                            Message = $"The password is incorrect",
+                        WrongPasswordFault fault = new WrongPasswordFault {
+                            Message = "The password is incorrect",
                             usrName = usrName
                         };
-                        throw new FaultException<WrongPasswordFault>(fault);
+                        throw new FaultException<WrongPasswordFault>(fault, new FaultReason("The password is incorrect"));
                     }
-                  
+
                 }
             }
-            ICheckersCallback callback = OperationContext.Current.GetCallbackChannel<ICheckersCallback>();
-            onlineUsers.Add(usrName, callback);
+            AddLogin(usrName);
         }
-
         public void Register(string userName, string hashedPassword)
         {
             User user;
-            using (var ctx = new CheckersDBEntities1()) {
+            using (var ctx = new CheckersDBEntities1())
+            {
                 user = (from u in ctx.Users where u.UserName == userName select u).FirstOrDefault();
                 if (user != null)
                 {
                     UserNameAlreadyExistsFault f = new UserNameAlreadyExistsFault
                     {
-                        Message = $"Username already in database",
+                        Message = "Username already in database",
                         UserName = userName
                     };
-                    throw new FaultException<UserNameAlreadyExistsFault>(f);
+                    throw new FaultException<UserNameAlreadyExistsFault>(f, new FaultReason("Username already in database"));
                 }
                 user = new User
                 {
                     HashedPassword = hashedPassword,
-                    UserName= userName
+                    UserName = userName
 
                 };
                 ctx.Users.Add(user);
                 ctx.SaveChanges();
             }
-            Connect(userName, hashedPassword);
+            AddLogin(userName);
+        }
+        private void AddLogin(string usrName){
+            ICheckersCallback callback = OperationContext.Current.GetCallbackChannel<ICheckersCallback>();
+            onlineUsers.Add(usrName, callback);
         }
 
-        public bool IsUserNameTaken(string userName)
+        public (int, string, bool) JoinGame(string user, bool isVsCPU, int boardSize, bool EatMode)
         {
             using (var ctx = new CheckersDBEntities1())
             {
-                var user = (from u in ctx.Users where u.UserName==userName select u).FirstOrDefault();
-                if (user != null)
-                    return true;
-                return false;
+                if (isVsCPU)
+                {
+                    var Game = new Game
+                    {
+                        Date = DateTime.Now,
+                        Status = (int)Status.Unfinished,
+                        EatMode = EatMode,
+                        BoardSize = boardSize
+                    };
+                    var usr = (from u in ctx.Users
+                               where u.UserName == user
+                               select u).FirstOrDefault();
+                    Game.Users.Add(usr);
+                    ctx.Games.Add(Game);
+                    ctx.SaveChanges();
+                    runningGame.Add(Game.GameId, (new UserContact(usr.UserName, onlineUsers[usr.UserName]), null,true));
+                    return (Game.GameId, null, true);
+                }
+                else
+                {
+                    //playing against human
+                    int key = boardSize * 10 + (EatMode ? 1 : 0);
+                    if (waitingRooms[key].Count == 0)
+                        waitingRooms[key].Add(new UserContact(user, onlineUsers[user]));
+
+                    else
+                    {
+                        var OpponentPlayer = waitingRooms[key].First();
+                        waitingRooms[key].RemoveAt(0);
+
+                        var Game = new Game
+                        {
+                            Date = DateTime.Now,
+                            Status = (int)Status.Unfinished,
+                            EatMode = EatMode,
+                            BoardSize = boardSize
+                        };
+                        var usrOne = (from u in ctx.Users
+                                      where u.UserName == user
+                                      select u).FirstOrDefault();
+                        var usrTwo = (from u in ctx.Users
+                                      where u.UserName == OpponentPlayer.UserName
+                                      select u).FirstOrDefault();
+                        Game.Users.Add(usrOne);
+                        Game.Users.Add(usrTwo);
+
+                        ctx.Games.Add(Game);
+                        ctx.SaveChanges();
+                        OpponentPlayer.CheckersCallback.StartGame(Game.GameId, user, false);
+                        runningGame.Add(Game.GameId, (new UserContact(usrOne.UserName, onlineUsers[usrOne.UserName]),
+                                                        OpponentPlayer,true));
+                        return (Game.GameId, OpponentPlayer.UserName, true);
+                    }
+
+                }
+                return (-1, null, false);
             }
+        }
+
+        public (int, Status, DateTime, bool, int, string, string) WatchGame(string usrName, int gameId)
+        {
+            //runningGame[gameId].Item1.CheckersCallback.AddViewer();
+            return GetGame(gameId);
         }
 
         //(moveId,record,(posX,posY),pathI,usrName)
@@ -147,7 +208,7 @@ namespace CheckersService
                         Message = "gameId not in database",
                         gameId = gameId
                     };
-                    throw new FaultException<GameIdNotExistsFault>(fault);
+                    throw new FaultException<GameIdNotExistsFault>(fault,new FaultReason("gameId not in database"));
                 }
 
 
@@ -156,67 +217,6 @@ namespace CheckersService
             }
         }
 
-        public (int,string, bool) JoinGame(string user,bool isVsCPU,int boardSize, bool EatMode)
-        {
-            using (var ctx = new CheckersDBEntities1()) {
-
-                if (isVsCPU) {
-                    var Game = new Game
-                    {
-                        Date = DateTime.Now,
-                        Status = (int)Status.Unfinished,
-                        EatMode = EatMode,
-                        BoardSize = boardSize
-                    };
-                    var usr = (from u in ctx.Users
-                               where u.UserName == user
-                               select u).FirstOrDefault();
-                    Game.Users.Add(usr);
-                    ctx.Games.Add(Game);
-                    ctx.SaveChanges();
-                    runningGame.Add(Game.GameId, (new UserContact(usr.UserName, onlineUsers[usr.UserName]), null));
-                    return (Game.GameId,null,true);
-                }
-                else
-                {
-                    //playing against human
-                    int key = boardSize * 10 + (EatMode ? 1 : 0);
-                    if (waitingRooms[key].Count == 0) 
-                        waitingRooms[key].Add(new UserContact(user, onlineUsers[user]));
-                    
-                    else
-                    {
-                        var OpponentPlayer = waitingRooms[key].First();
-                        waitingRooms[key].RemoveAt(0);
-
-                        var Game = new Game
-                        {
-                            Date = DateTime.Now,
-                            Status = (int)Status.Unfinished,
-                            EatMode = EatMode,
-                            BoardSize = boardSize
-                        };
-                        var usrOne = (from u in ctx.Users
-                                   where u.UserName == user
-                                   select u).FirstOrDefault();
-                        var usrTwo = (from u in ctx.Users
-                                      where u.UserName == OpponentPlayer.UserName
-                                      select u).FirstOrDefault();
-                        Game.Users.Add(usrOne);
-                        Game.Users.Add(usrTwo);
-
-                        ctx.Games.Add(Game);
-                        ctx.SaveChanges();
-                        OpponentPlayer.CheckersCallback.StartGame(Game.GameId, user, false);
-                        runningGame.Add(Game.GameId, (new UserContact(usrOne.UserName, onlineUsers[usrOne.UserName]),
-                                                        OpponentPlayer));
-                        return (Game.GameId, OpponentPlayer.UserName, true);
-                    }
-                    
-                }
-                return (-1,null,false);
-            }
-        }
 
         public void MakeMove(string UserName, int GameId, DateTime time, Point correntPos, int indexPath, Result result)
         {
@@ -296,20 +296,6 @@ namespace CheckersService
             //onlineUsers.Add(usrName, callback);
         }
 
-        public Game WatchGame(string usrName, int gameId)
-        {
-            //ICheckersCallback callback = onlineUsers[usrName];
-            // onlineUsers.Remove(usrName);
-            //watchingGames[gameId].Add(usrName, callback);
-
-            //using (var ctx = new CheckersDBContext())
-            //{
-            //    var game = (from u in ctx.Games where u.GameId == gameId select u).FirstOrDefault();
-            //    return game;
-            // }
-            return new Game();
-        }
-
         public void Disconnect(string usrName, Mode userMode, int numGame = -1)
         {
             //need to check if is playing,watching, or in lobby
@@ -326,8 +312,7 @@ namespace CheckersService
             }
             if (userMode == Mode.Playing)
             {
-                /*Game game = runningGame[numGame];
-                User winner*/
+                CloseUnFinishedGame(numGame, usrName);
             }
 
 
@@ -336,9 +321,33 @@ namespace CheckersService
 
         public void CloseUnFinishedGame(int GameId, string UserName)
         {
-            throw new NotImplementedException();
+            DeleteGameFromDB(GameId);
+            if(runningGame[GameId].Item1.UserName!= UserName)
+            {
+                runningGame[GameId].Item1.CheckersCallback.CloseTheGame();
+            }
+            if (runningGame[GameId].Item2!= null && runningGame[GameId].Item2.UserName != UserName)
+            {
+                runningGame[GameId].Item2.CheckersCallback.CloseTheGame();
+            }
+            runningGame.Remove(GameId);
         }
 
+        private void DeleteGameFromDB(int GameId)
+        {
+            using (var ctx = new CheckersDBEntities1())
+            {
+                var movesToD = (from u in ctx.Moves
+                                where u.GameId == GameId
+                                select u).ToList();
+                ctx.Moves.RemoveRange(movesToD);
+                var g = (from u in ctx.Games
+                         where u.GameId == GameId
+                         select u).FirstOrDefault();
+                ctx.Games.Remove(g);
+                ctx.SaveChanges();
+            }
+        }
         public void StopWaitingGame(string UserName, int boardSize,int eatMode)
         {
             int key = boardSize * 10 + eatMode;
@@ -377,7 +386,43 @@ namespace CheckersService
 
         public ICollection<(int, string, string, Status, DateTime)> GetPlayedGamesByDate(DateTime date)
         {
-            throw new NotImplementedException();
+            ICollection<(int, string, string, Status, DateTime)> list = new List<(int, string, string, Status, DateTime)>();
+            using (var ctx = new CheckersDBEntities1())
+            {
+                List<Game> games = (from g in ctx.Games
+                                    where date.Year == g.Date.Year && date.DayOfYear == g.Date.DayOfYear
+                                    select g).ToList();
+
+                foreach (var ou in games)
+                {
+                    list.Add((ou.GameId, ou.Users.ElementAt(0).UserName,
+                        ou.Users.Count() == 2 ? ou.Users.ElementAt(1).UserName : "Computer", (Status)ou.Status, ou.Date));
+                }
+            }
+            return list;
+        }
+
+        public ICollection<(int, string, string, TimeSpan)> GetLiveGames()
+        {
+            ICollection<(int, string, string, TimeSpan)> list = new List<(int, string, string, TimeSpan)>();
+            using (var ctx = new CheckersDBEntities1())
+            {
+                List<Game> games = (from g in ctx.Games
+                                    where g.Status == (int)Status.Unfinished
+                                    select g).ToList();
+
+                foreach (var ou in games)
+                {
+                    list.Add((ou.GameId, ou.Users.ElementAt(0).UserName,
+                        ou.Users.Count() == 2 ? ou.Users.ElementAt(1).UserName : "Computer", ou.Date.TimeOfDay));
+                }
+            }
+            return list;
+        }
+
+        public (Game, Move) GameMoveRegonizer()
+        {
+            return (null,null);
         }
     }
 }

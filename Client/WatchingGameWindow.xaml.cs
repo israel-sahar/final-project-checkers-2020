@@ -171,18 +171,6 @@ namespace Client
             return result.Item1;
         }
 
-        private void leaveBtn_Click(object sender, RoutedEventArgs e)
-        {
-            animationTimer.Tick -= Animation;
-
-            MenuWindow window = new MenuWindow();
-            window.Client = Client;
-            window.User = UserName;
-            window.Callback = Callback;
-            window.Show();
-            this.Close();
-        }
-
         Path pathToAnimate;
         Point currentLocation;
         private void MakeAnimationMove(Point currentPosition, Path path, bool isBurn)
@@ -348,5 +336,30 @@ namespace Client
                     GameBoardGrid.Children.Remove((Ellipse)ell);
                 }
             }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            //handle livw
+            if (MessageBox.Show("This step will close the app,OK?",
+"Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                animationTimer.Tick -= Animation;
+                Client.Disconnect(UserName, Mode.Lobby, -1);
+                
+            }
         }
+
+        private void leaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            animationTimer.Tick -= Animation;
+
+            MenuWindow window = new MenuWindow();
+            window.Client = Client;
+            window.User = UserName;
+            window.Callback = Callback;
+            window.Show();
+            this.Closed -= Window_Closed;
+            this.Close();
+        }
+    }
     }

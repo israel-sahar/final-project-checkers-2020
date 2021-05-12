@@ -102,7 +102,7 @@
   <xs:element name="WatchGameResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="WatchGameResult" nillable="true" type="q6:Game" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="WatchGameResult" type="q6:ValueTupleOfintStatusdateTimebooleanintstringstringcL5AZO_S0" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -155,20 +155,6 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="PingResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="IsUserNameTaken">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="IsUserNameTakenResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="IsUserNameTakenResult" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -231,6 +217,11 @@
         <xs:element minOccurs="0" name="OpponentName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="MyTurn" type="xs:boolean" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CloseTheGame">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
 </xs:schema>

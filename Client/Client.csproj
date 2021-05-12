@@ -156,9 +156,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Connected Services\CheckersServiceReference\CheckersService1.wsdl" />
-    <None Include="Connected Services\CheckersServiceReference\Client.CheckersServiceReference.Game.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Connected Services\CheckersServiceReference\Client.CheckersServiceReference.Status.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

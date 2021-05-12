@@ -30,6 +30,7 @@ namespace Client
         public MenuWindow()
         {
             InitializeComponent();
+            
         }
 
         private void vsComputer_Click(object sender, RoutedEventArgs e)
@@ -104,6 +105,7 @@ namespace Client
             PrevsGamesWindow window = new PrevsGamesWindow(Client, Callback,User);
 
             window.Show();
+            this.Closing -= Window_Closing;
             this.Close();
         }
 
@@ -133,6 +135,8 @@ namespace Client
             var gameDetails = Client.JoinGame(User, true, chosenSize,EatMode==EatMode.On?true:false);
             window.GameId = gameDetails.Item1;
             window.Show();
+            this.Closing -= Window_Closing;
+
             this.Close();
         }
 
@@ -156,7 +160,9 @@ namespace Client
             }
 
             WaitingWindow window = new WaitingWindow(Callback, Client, User, chosenSize, Level.Human, EatMode);
-            //window.Show();
+            
+            this.Closing -= Window_Closing;
+
             this.Close();
         }
 
@@ -164,6 +170,17 @@ namespace Client
         {
             eatModePlayerGrid.Visibility = Visibility.Hidden;
             tableSizePlayerGrid.Visibility = Visibility.Visible;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("This step will close the app,OK?",
+"Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+
+                        Client.Disconnect(User, Mode.Lobby, -1);
+                
+            }
         }
     }
 }

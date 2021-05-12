@@ -76,6 +76,7 @@ namespace Client
             var gameDetails = ConvertGame(p,moves);
             WatchingGameWindow window = new WatchingGameWindow(gameDetails,Client,Callback,UserName,false);
             window.Show();
+            this.Closing -= Window_Closing;
             this.Close();
         }
 
@@ -127,7 +128,19 @@ namespace Client
                 window.Client = Client;
                 window.User = UserName;
             window.Show();
+            this.Closing -= Window_Closing;
             this.Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("This step will close the app,OK?",
+"Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                
+                        Client.Disconnect(UserName, Mode.Lobby, -1);
+                
+            }
         }
     }
 

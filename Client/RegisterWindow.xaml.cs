@@ -62,16 +62,6 @@ namespace Client
             }
         }
 
-
-        private void haveAnAccount_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            LoginWindow window = new LoginWindow();
-            window.Client = Client;
-            window.Callback = Callback;
-            window.Show();
-            this.Close();
-        }
-
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
             WelcomeWindow window = new WelcomeWindow();

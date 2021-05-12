@@ -75,11 +75,6 @@ namespace Client
             this.Close();
         }
 
-        private void FaceBookGoogleBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
             WelcomeWindow window = new WelcomeWindow();
@@ -102,6 +97,5 @@ namespace Client
                 }
             }
 
-
-        }
+    }
 }

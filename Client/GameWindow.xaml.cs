@@ -78,6 +78,20 @@ namespace Client
             OpponentUserName = opponentName;
             pcPlayer = null;
             Init(eatMode);
+            Callback.CloseGame = OpponentCloseGame;
+        }
+
+        private void OpponentCloseGame(bool obj)
+        {
+            MessageBox.Show("The Opponent go out from game, the game deleted from server");
+
+            this.Closing -= Window_Closing;
+            MenuWindow window = new MenuWindow();
+            window.Client = Client;
+            window.User = UserName;
+            window.Callback = Callback;
+            window.Show();
+
         }
 
         private void MakeOpponentMove(Point correntPos, int indexPath, Result res)
@@ -397,7 +411,7 @@ namespace Client
                 MakeComputerTurn();
             else
             {
-                //fix!
+                
                 if (resO != Result.Continue) {
                     ellipse.Visibility = Visibility.Collapsed;
                     Turn.HorizontalAlignment = HorizontalAlignment.Center;
@@ -445,6 +459,7 @@ namespace Client
 
         private void leaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            this.Closing -= Window_Closing;
             //handle things before closing the game
             if (Client == null) {
                 WelcomeWindow win = new WelcomeWindow();
@@ -462,6 +477,22 @@ namespace Client
             }
 
             this.Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("This step will close the app,OK?",
+"Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                if (Client != null)
+                {
+                    if (resO == Result.Continue)
+
+                        Client.Disconnect(UserName, Mode.Playing, GameId);
+                    else
+                        Client.Disconnect(UserName, Mode.Lobby, -1);
+                }
+            }
         }
     }
 }

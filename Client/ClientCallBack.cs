@@ -12,7 +12,13 @@ namespace Client
     public class ClientCallback : ICheckersServiceCallback
     {
         internal Action<int,string, bool> OpenNewGame;
+        internal Action<bool> CloseGame;
         internal Action<Point, int, Result> MakeOpponentMove;
+
+        public void CloseTheGame()
+        {
+            CloseGame(true);
+        }
 
         public void SendOpponentMove(Point correntPos, int indexPath, Result result)
         {
