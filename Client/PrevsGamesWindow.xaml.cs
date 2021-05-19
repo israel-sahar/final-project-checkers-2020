@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Client
 {
@@ -24,15 +25,28 @@ namespace Client
         public CheckersServiceClient Client { get; internal set; }
         public ClientCallback Callback { get; internal set; }
         public string UserName { get; internal set; }
+        public DispatcherTimer updateListTimer { get; set; }
 
         public PrevsGamesWindow(CheckersServiceClient client, ClientCallback callback, string user)
         {
             InitializeComponent();
             Client = client;
-                Callback = callback;
-                UserName = user;
-            
-            var games = client.GetPlayedGames(null,null);
+            Callback = callback;
+            UserName = user;
+
+            NoGamesText.Visibility = Visibility.Visible;
+            gamesList.Visibility = Visibility.Hidden;
+
+            updateListTimer = new DispatcherTimer();
+            updateListTimer.Interval = new TimeSpan(0, 0, 5);
+            updateListTimer.Tick += UpdatePrevList;
+            updateListTimer.Start();
+        }
+        
+        
+        private void UpdatePrevList(object sender, EventArgs e)
+        {
+            var games = Client.GetPlayedGames(null, null);
             if (games.Count == 0)
             {
                 NoGamesText.Visibility = Visibility.Visible;
@@ -40,11 +54,13 @@ namespace Client
             }
             else
             {
+                NoGamesText.Visibility = Visibility.Hidden;
+                gamesList.Visibility = Visibility.Visible;
                 List<GameShow> gamesView = new List<GameShow>();
                 foreach (var game in games)
                 {
-                    string winner="";
-                    switch(game.Item4)
+                    string winner = "";
+                    switch (game.Item4)
                     {
                         case Status.isTie:
                             winner = "isTie";
@@ -74,9 +90,10 @@ namespace Client
             var p = Client.GetGame(((GameShow)gamesList.SelectedItem).GameNumber);
             var moves = Client.GetAllMoves(p.Item1);
             var gameDetails = ConvertGame(p,moves);
-            WatchingGameWindow window = new WatchingGameWindow(gameDetails,Client,Callback,UserName,false);
+            WatchingGameWindow window = new WatchingGameWindow(gameDetails,Client,Callback,UserName);
             window.Show();
             this.Closing -= Window_Closing;
+            updateListTimer.Stop();
             this.Close();
         }
 
@@ -129,6 +146,8 @@ namespace Client
                 window.User = UserName;
             window.Show();
             this.Closing -= Window_Closing;
+            updateListTimer.Stop();
+
             this.Close();
         }
 

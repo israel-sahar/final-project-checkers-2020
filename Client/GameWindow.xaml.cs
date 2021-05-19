@@ -1,9 +1,15 @@
 ﻿
 using Client.CheckersServiceReference;
+using SimpleTcp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +23,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using Point = System.Windows.Point;
 
 namespace Client
 {
@@ -48,8 +53,11 @@ namespace Client
 
         //timers
         DispatcherTimer animationTimer;
-
         public Team MyTeam { get; set; }
+
+
+        public SimpleTcpServer server { get; set; }
+
         public GameWindow(int chosenSize, Level chosenLevel, bool myTurn,EatMode eatMode)
         {
             MyTeam = Team.One;
@@ -63,9 +71,10 @@ namespace Client
             OpponentUserName = "Computer";
             pcPlayer = new ComputerMove(chosenLevel);
             Init(eatMode);
+            server = null;
         }
 
-        public GameWindow(CheckersServiceClient client, ClientCallback callback, int gameId, string userName, string opponentName, int chosenSize, bool myTurn, EatMode eatMode)
+        public GameWindow(CheckersServiceClient client, ClientCallback callback, int gameId, string userName, string opponentName, int chosenSize, Level chosenLevel, bool myTurn, EatMode eatMode)
         {
             MyTeam = MyTurn ? Team.One : Team.Two;
             Client = client;
@@ -77,21 +86,97 @@ namespace Client
             BoardSize = chosenSize;
             OpponentUserName = opponentName;
             pcPlayer = null;
+            if (chosenLevel != Level.Human)
+                pcPlayer = new ComputerMove(chosenLevel);
+            
+
             Init(eatMode);
             Callback.CloseGame = OpponentCloseGame;
+            if (MyTurn)
+            {
+                Callback.GetIPAddress();
+                Callback.FreeTcpPort();
+                Thread t = new Thread(new ThreadStart(CreateTCPConnection));
+                t.Start();
+            }
+            else
+            {
+                server = null;
+            }
+        }
+
+
+        private void CreateTCPConnection()
+        {
+            server = new SimpleTcpServer(Callback.machineIP, Callback.machinePort);
+
+            // set events
+            server.Events.ClientConnected += ClientConnected;
+
+            // Start listening for client requests.
+            server.Start();
+        }
+
+        private void SendMoveToAllWatchers(DateTime now, string userName, Point lastP, int pathIndex)
+        {
+            var v = server.GetClients();
+            List<(int,DateTime,(int, int),int,string)> move = new List<(int, DateTime, (int, int), int, string)>();
+            move.Add(
+                (-1, now, ((int)lastP.X, (int)lastP.Y), pathIndex, userName));
+            foreach (var u in v)
+            {
+                server.Send(u, ObjectToByteArray(move));
+            }
+        }
+
+        private void ClientConnected(object sender, ClientConnectedEventArgs e)
+        {
+           var v = server.GetClients();
+            server.Send(e.IpPort, ObjectToByteArray(Client.GetAllMoves(GameId)));
+        }
+
+        // Convert an object to a byte array
+        public static byte[] ObjectToByteArray(Object obj)
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            using (var ms = new MemoryStream())
+            {
+                bf.Serialize(ms, obj);
+                return ms.ToArray();
+            }
         }
 
         private void OpponentCloseGame(bool obj)
         {
             MessageBox.Show("The Opponent go out from game, the game deleted from server");
 
-            this.Closing -= Window_Closing;
             MenuWindow window = new MenuWindow();
             window.Client = Client;
             window.User = UserName;
             window.Callback = Callback;
+     
             window.Show();
+            CloseWindow();
+        }
 
+        private void CloseWindow()
+        {
+            animationTimer.Stop();
+
+            if (server != null)
+                CloseWatchers();
+
+            this.Closing -= Window_Closing;
+            this.Close();
+        }
+        private void CloseWatchers()
+        {
+            var v = server.GetClients();
+            foreach (var u in v)
+            {
+                server.DisconnectClient(u);
+            }
+            server.Dispose();
         }
 
         private void MakeOpponentMove(Point correntPos, int indexPath, Result res)
@@ -104,6 +189,8 @@ namespace Client
             (Result, bool) result = Game.MovePiece(pToMove, indexPath);
             Game.VerifyCrown(pToMove);
             MakeAnimationMove(GetPosition(chosenPiece), path, result.Item2);
+            if (server!=null)
+            SendMoveToAllWatchers(DateTime.Now, OpponentUserName, correntPos, indexPath);
         }
 
         //Piece to move
@@ -121,6 +208,8 @@ namespace Client
             MakeAnimationMove(lastP, path, res.Item2);
             if (Client != null)
                 Client.MakeMove(UserName, GameId, DateTime.Now, lastP, pathIndex , resO);
+            if (server != null)
+                SendMoveToAllWatchers(DateTime.Now,UserName, lastP, pathIndex);
         }
 
         private void MakeComputerTurn()
@@ -140,6 +229,8 @@ namespace Client
 
             if (Client != null)
                 Client.MakeMove("Computer", GameId, DateTime.Now, tempP, pathIndex, resO);
+            if (server != null)
+                SendMoveToAllWatchers(DateTime.Now, OpponentUserName, tempP, pathIndex);
 
             // if (!res.Item2 && Game.GetPieceAt(move.Item1.Coordinate).IsKing) AddKingIcon(move.Item1.Coordinate);
             //do something with result
@@ -468,16 +559,16 @@ namespace Client
             else
             {
                 if(resO == Result.Continue)
-                    Client.CloseUnFinishedGame(GameId, UserName);
+                    Client.CloseUnFinishedGame(GameId, UserName,true);
                 MenuWindow window = new MenuWindow();
                 window.Client = Client;
                 window.User = UserName;
                 window.Callback = Callback;
                 window.Show();
             }
-
-            this.Close();
+            CloseWindow();
         }
+
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -492,6 +583,7 @@ namespace Client
                     else
                         Client.Disconnect(UserName, Mode.Lobby, -1);
                 }
+                CloseWindow();
             }
         }
     }

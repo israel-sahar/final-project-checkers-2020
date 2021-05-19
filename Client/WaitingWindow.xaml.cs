@@ -53,7 +53,7 @@ namespace Client
 
         public void CreateGameWindow(int gameId, string OpponentName, bool myTurn)
         {
-            GameWindow window = new GameWindow(Client, Callback, gameId, UserName, OpponentName,ChosenSize, myTurn,EatMode);
+            GameWindow window = new GameWindow(Client, Callback, gameId, UserName, OpponentName,ChosenSize,Level.Human, myTurn,EatMode);
 
             window.Show();
             this.Closing -= Window_Closing;

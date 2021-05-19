@@ -91,18 +91,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="WatchGame">
+  <xs:element name="StartWatchGame">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="usrName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="gameId" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="WatchGameResponse">
+  <xs:element name="StartWatchGameResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="WatchGameResult" type="q6:ValueTupleOfintStatusdateTimebooleanintstringstringcL5AZO_S0" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="StartWatchGameResult" type="q6:ValueTupleOfstringint" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -111,23 +110,11 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="GameId" type="xs:int" />
         <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="sendMsg" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="CloseUnFinishedGameResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="StopWatchGame">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="usrName" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="gameId" type="xs:int" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="StopWatchGameResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
@@ -156,6 +143,19 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="PingResult" type="xs:boolean" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PingOpponent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="gameId" type="xs:int" />
+        <xs:element minOccurs="0" name="pingTo" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PingOpponentResponse">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
   <xs:element name="StopWaitingGame">
@@ -201,12 +201,36 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetLiveGames">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetLiveGamesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="GetLiveGamesResult" nillable="true" type="q10:ArrayOfValueTupleOfintstringstringdurationbooleanint" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GameMoveRegonizer">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GameMoveRegonizerResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="GameMoveRegonizerResult" type="q11:ValueTupleOfGameMoveJ8dbTJWT" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="SendOpponentMove">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/System.Windows" minOccurs="0" name="correntPos" type="q10:Point" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/System.Windows" minOccurs="0" name="correntPos" type="q12:Point" />
         <xs:element minOccurs="0" name="indexPath" type="xs:int" />
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="result" type="q11:Result" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/CheckersService" minOccurs="0" name="result" type="q13:Result" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -222,6 +246,30 @@
   <xs:element name="CloseTheGame">
     <xs:complexType>
       <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetNetworkDetails">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetNetworkDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="GetNetworkDetailsResult" type="q14:ValueTupleOfstringint" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PingClient">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PingClientResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="PingClientResult" type="xs:boolean" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 </xs:schema>

@@ -1,7 +1,11 @@
 ﻿using Client.CheckersServiceReference;
+using SimpleTcp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,39 +29,140 @@ namespace Client
         public ClientCallback Callback { get; internal set; }
         public string UserName { get; internal set; }
 
-        public int GameId { get; internal set; }
         public EatMode EatMode { get; private set; }
         public int BoardSize { get; set; }
         public string userOne { get; set; }
         public string userTwo { get; set; }
         public bool IsLive { get; set; }
         private Board Game { get; set; }
-        public int MoveIndex { get; set; }
         public bool Reset { get; private set; }
+        public int portToConnect { get; internal set; }
+        public string ipToConnect { get; internal set; }
 
-        private List<Move> Moves;
+        private Queue<Move> Moves;
+        private Queue<Move> MovesCopy;
 
+        public SimpleTcpClient tcpClient { get; set; }
         private readonly SolidColorBrush redColorPiece = new SolidColorBrush(Color.FromArgb(150, (byte)255, (byte)0, (byte)0));
         private readonly SolidColorBrush blueColorPiece = new SolidColorBrush(Color.FromArgb(150, (byte)0, (byte)0, (byte)255));
-
+        private SolidColorBrush CorrentColor;
         DispatcherTimer animationTimer;
 
-        public WatchingGameWindow((Game, string, string) gameDetails, CheckersServiceClient client, ClientCallback callback, string userName, bool isLive)
+        public WatchingGameWindow((Game, string, string) gameDetails, CheckersServiceClient client, ClientCallback callback, string userName)
         {
             Client = client;
             Callback = callback;
             UserName = userName;
-            Moves = gameDetails.Item1.Moves;
+            Moves = new Queue<Move>(gameDetails.Item1.Moves);
+            MovesCopy = new Queue<Move>(Moves);
             EatMode = gameDetails.Item1.EatMode?EatMode.On:EatMode.Off;
-            GameId = gameDetails.Item1.GameId;
             BoardSize = gameDetails.Item1.BoardSize;
             userOne = gameDetails.Item2;
             userTwo = gameDetails.Item3;
             Reset = false;
-
-            Init();
+            IsLive = false;
+            Init(IsLive);
         }
 
+        public WatchingGameWindow((Game, string, string) gameDetails, CheckersServiceClient client, ClientCallback callback, string userName, string ip, int port)
+        {
+
+            Client = client;
+            Callback = callback;
+            UserName = userName;
+            Moves = new Queue<Move>();
+            EatMode = gameDetails.Item1.EatMode ? EatMode.On : EatMode.Off;
+            BoardSize = gameDetails.Item1.BoardSize;
+            userOne = gameDetails.Item2;
+            userTwo = gameDetails.Item3;
+            Reset = false;
+            IsLive = true;
+
+            Init(IsLive);
+            ellipse.Fill = CorrentColor = redColorPiece;
+
+            ipToConnect = ip;
+            portToConnect = port;
+            tcpClient = new SimpleTcpClient(ipToConnect, portToConnect);
+
+            // set events
+            tcpClient.Events.Connected += Connected;
+            tcpClient.Events.Disconnected += Disconnected;
+            tcpClient.Events.DataReceived += DataReceived;
+
+            // let's go!
+            tcpClient.Connect();
+        }
+
+        static void Connected(object sender, EventArgs e)
+        {
+            Console.WriteLine("*** Server connected");
+        }
+
+        async void Disconnected(object sender, EventArgs e)
+        {
+            while (Moves.Count>0) await Dispatcher.Yield();
+            if (res == Result.Continue) {
+                MessageBox.Show("Some of the players disconnected. The game is stop.");
+                animationTimer.Tick -= Animation;
+
+                Application.Current.Dispatcher.Invoke((Action)delegate {
+                    MenuWindow window = new MenuWindow();
+                    window.Client = Client;
+                    window.User = UserName;
+                    window.Callback = Callback;
+                    window.Show();
+                    this.Closed -= Window_Closed;
+                    this.Close();
+                });
+
+            }
+        }
+
+        void DataReceived(object sender, DataReceivedEventArgs e)
+        {
+            var moves = ConvertMoves((List<(int, DateTime, (int, int), int, string)>)ByteArrayToObject(e.Data));
+           
+            foreach(var move in moves)
+                Moves.Enqueue(move);
+            
+            Application.Current.Dispatcher.Invoke((Action)delegate {
+                StartGameAsync();
+            });
+        }
+
+
+        private List<Move> ConvertMoves(List<(int, DateTime, (int, int), int, string)> item)
+        {
+            List<Move> move = new List<Move>();
+            foreach (var m in item)
+            {
+                move.Add(new Move()
+                {
+                    MoveId = m.Item1,
+                    RecordTime = m.Item2,
+                    posX = m.Item3.Item1,
+                    posY = m.Item3.Item2,
+                    pathIndex = m.Item4,
+                    UserName = m.Item5
+                });
+
+            }
+            return move;
+        }
+
+        // Convert a byte array to an Object
+        public static Object ByteArrayToObject(byte[] arrBytes)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                var binForm = new BinaryFormatter();
+                memStream.Write(arrBytes, 0, arrBytes.Length);
+                memStream.Seek(0, SeekOrigin.Begin);
+                var obj = binForm.Deserialize(memStream);
+                return obj;
+            }
+        }
         private void CheckerBord_Initialized(object sender, EventArgs e)
         {
             //Initialize rows and Columns
@@ -134,7 +239,7 @@ namespace Client
             }
         }
 
-        private void Init()
+        private void Init(bool isLive)
         {
             animationTimer = new DispatcherTimer();
             animationTimer.Interval = new TimeSpan(0, 0, 0, 0, 400);
@@ -143,7 +248,8 @@ namespace Client
             Game = new Board(BoardSize, EatMode);
 
             InitializeComponent();
-            startBtn.IsEnabled = (IsLive) ? false : true;
+            startBtn.Visibility = (isLive)?Visibility.Hidden:Visibility.Visible;
+
         }
 
         private Ellipse GetEllipse(Point pointFrom)
@@ -159,7 +265,7 @@ namespace Client
         }
 
         Ellipse chosenPiece = null;
-        private Result MakeMove(Move currentMove)
+        private Result MakeMove(Move currentMove,bool animation)
         {
             Piece pToMove = Game.GetPieceAt(currentMove.posX, currentMove.posY);
             chosenPiece = GetEllipse(currentMove.posX, currentMove.posY);
@@ -185,6 +291,7 @@ namespace Client
                 currentLocation = currentPosition;
                 canContinue = false;
                 animationTimer.Tick += Animation;
+
             }
         }
 
@@ -272,44 +379,63 @@ namespace Client
             if (Reset)
             {
                 resetTable();
+                Moves = new Queue<Move>(MovesCopy);
                 Reset = false;
+                res = Result.Continue;
             }
             StartGameAsync();
 
         }
-            private async Task StartGameAsync()
+        Result res = Result.Continue;
+
+        private async Task StartGameAsync()
             {
-                foreach (var p in Moves)
+            
+                while (res == Result.Continue)
                 {
+                var p = Moves.Dequeue();
                     if (p.UserName == null) p.UserName = "Computer";
-                    Turn.Text = $"This is {(p.UserName == Moves.ElementAt(0).UserName ? userOne : userTwo)} Turn";
+                    Turn.Text = $"This is {p.UserName} Turn";
                     ellipse.Fill = GetEllipse(p.posX, p.posY).Fill;
-                    var res = MakeMove(p);
+                    res = MakeMove(p,true);
                     while (!canContinue) await Dispatcher.Yield();
-                    if (res != Result.Continue)
+                  Turn.Text = $"This is {(p.UserName == userOne ? userTwo : userOne)} Turn";
+                  ellipse.Fill = (ellipse.Fill == redColorPiece) ? blueColorPiece : redColorPiece;
+                if (res != Result.Continue)
                     {
                     ellipse.Visibility = Visibility.Collapsed;
                     Turn.HorizontalAlignment = HorizontalAlignment.Center;
                     Turn.FontSize = 30;
                     Turn.FontWeight = FontWeights.Bold;
 
-                    if (res == Result.Lost)
-                            Turn.Text = $"{(p.UserName == Moves.ElementAt(0).UserName ? userOne : userTwo)} Lost the Game, {(p.UserName != Moves.ElementAt(0).UserName ? userOne : userTwo)} is the Winner!";
+                        if (res == Result.Lost)
+                            Turn.Text = $"{(p.UserName == userOne ? userOne : userTwo)} Lost the Game, {(p.UserName != userOne ? userOne : userTwo)} is the Winner!";
 
                         if (res == Result.Tie)
                             Turn.Text = "is Tie!";
 
                         if (res == Result.Win)
-                            Turn.Text = $"{(p.UserName != Moves.ElementAt(0).UserName ? userOne : userTwo)} Lost the Game, {(p.UserName == Moves.ElementAt(0).UserName ? userOne : userTwo)} is the Winner!";
+                            Turn.Text = $"{(p.UserName != userOne ? userOne : userTwo)} Lost the Game, {(p.UserName == userOne ? userOne : userTwo)} is the Winner!";
 
                         MessageBox.Show("The Game is ended!");
+                    if (IsLive == false)
+                    {
                         startBtn.IsEnabled = true;
                         startBtn.Content = "AGAIN";
                         Reset = true;
                     }
+                    else
+                    {
+                        tcpClient.Disconnect();
+                    }
+                }
+                else
+                {
+                    while (Moves.Count==0) await Dispatcher.Yield();
 
                 }
             }
+        }
 
             public void resetTable()
             {
@@ -339,13 +465,18 @@ namespace Client
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            //handle livw
+            
             if (MessageBox.Show("This step will close the app,OK?",
 "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 animationTimer.Tick -= Animation;
                 Client.Disconnect(UserName, Mode.Lobby, -1);
-                
+                if (tcpClient != null)
+                {
+                    tcpClient.Events.Disconnected -= Disconnected;
+
+                    tcpClient.Disconnect();
+                }
             }
         }
 
@@ -354,6 +485,11 @@ namespace Client
             animationTimer.Tick -= Animation;
 
             MenuWindow window = new MenuWindow();
+            if (tcpClient != null) {
+            tcpClient.Events.Disconnected -= Disconnected;
+
+            tcpClient.Disconnect();
+            }
             window.Client = Client;
             window.User = UserName;
             window.Callback = Callback;

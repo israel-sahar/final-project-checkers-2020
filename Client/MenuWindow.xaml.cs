@@ -111,7 +111,11 @@ namespace Client
 
         private void watchLiveGame_Click(object sender, RoutedEventArgs e)
         {
+            LiveGamesWindow window = new LiveGamesWindow(Client, Callback, User);
 
+            window.Show();
+            this.Closing -= Window_Closing;
+            this.Close();
         }
         EatMode EatMode;
         private void chooseEatModePCClick(object sender, RoutedEventArgs e)
@@ -127,13 +131,11 @@ namespace Client
                     break;
             }
 
-            GameWindow window = new GameWindow(chosenSize, chosenLevel, true, EatMode);
-            window.Client = Client;
-            window.Callback = Callback;
-            window.UserName = User;
+ 
 
             var gameDetails = Client.JoinGame(User, true, chosenSize,EatMode==EatMode.On?true:false);
-            window.GameId = gameDetails.Item1;
+            GameWindow window = new GameWindow(Client, Callback, gameDetails.Item1,User,"Computer",chosenSize, chosenLevel, true, EatMode);
+
             window.Show();
             this.Closing -= Window_Closing;
 

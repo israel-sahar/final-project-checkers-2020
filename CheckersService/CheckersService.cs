@@ -7,7 +7,9 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace CheckersService
 {
@@ -27,13 +29,10 @@ namespace CheckersService
         ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class CheckersService : ICheckersService
     {
-        private readonly int PASS_LENGTH = 8;
-
-        Dictionary<string, ICheckersCallback> onlineUsers = new Dictionary<string, ICheckersCallback>();
+        Dictionary<string, (ICheckersCallback,Mode)> onlineUsers = new Dictionary<string, (ICheckersCallback,Mode)>();
         Dictionary<int, List<UserContact>> waitingRooms = new Dictionary<int, List<UserContact>>();
-        //the bool is for load-balance
-        Dictionary<int, (UserContact, UserContact,bool)> runningGame = new Dictionary<int, (UserContact, UserContact, bool)>();
-        //Dictionary<int, Dictionary<string, ICheckersCallback>> watchingGames = new Dictionary<int, Dictionary<string, ICheckersCallback>>(); 
+        Dictionary<int, (UserContact, UserContact)> runningGame = new Dictionary<int, (UserContact, UserContact)>();
+
 
         public CheckersService()
         {
@@ -41,7 +40,19 @@ namespace CheckersService
             waitingRooms.Add(81, new List<UserContact>());// size 8 with eating
             waitingRooms.Add(100, new List<UserContact>());// size 10 without eating
             waitingRooms.Add(101, new List<UserContact>());// size 10 with eating
+
+            IEnumerable<Game> games;
+            using (var ctx = new CheckersDBEntities1())
+            {
+                games = (from game in ctx.Games
+                         where game.Status == (int)Status.Unfinished
+                         select game).ToArray();
+            }
+
+            foreach (Game game in games)
+                DeleteGameFromDB(game.GameId);
         }
+
         public void Connect(string usrName, string hashedPassword)
         {
             if (onlineUsers.ContainsKey(usrName)) {
@@ -100,9 +111,11 @@ namespace CheckersService
             }
             AddLogin(userName);
         }
+        
+        
         private void AddLogin(string usrName){
             ICheckersCallback callback = OperationContext.Current.GetCallbackChannel<ICheckersCallback>();
-            onlineUsers.Add(usrName, callback);
+            onlineUsers.Add(usrName, (callback,Mode.Lobby));
         }
 
         public (int, string, bool) JoinGame(string user, bool isVsCPU, int boardSize, bool EatMode)
@@ -124,7 +137,8 @@ namespace CheckersService
                     Game.Users.Add(usr);
                     ctx.Games.Add(Game);
                     ctx.SaveChanges();
-                    runningGame.Add(Game.GameId, (new UserContact(usr.UserName, onlineUsers[usr.UserName]), null,true));
+                    runningGame.Add(Game.GameId, (new UserContact(usr.UserName, onlineUsers[usr.UserName].Item1), null));
+                    onlineUsers[usr.UserName] = (onlineUsers[usr.UserName].Item1,Mode.Playing);
                     return (Game.GameId, null, true);
                 }
                 else
@@ -132,7 +146,11 @@ namespace CheckersService
                     //playing against human
                     int key = boardSize * 10 + (EatMode ? 1 : 0);
                     if (waitingRooms[key].Count == 0)
-                        waitingRooms[key].Add(new UserContact(user, onlineUsers[user]));
+                    {
+                        waitingRooms[key].Add(new UserContact(user, onlineUsers[user].Item1));
+                        onlineUsers[user] = (onlineUsers[user].Item1, Mode.Playing);
+
+                    }
 
                     else
                     {
@@ -158,8 +176,8 @@ namespace CheckersService
                         ctx.Games.Add(Game);
                         ctx.SaveChanges();
                         OpponentPlayer.CheckersCallback.StartGame(Game.GameId, user, false);
-                        runningGame.Add(Game.GameId, (new UserContact(usrOne.UserName, onlineUsers[usrOne.UserName]),
-                                                        OpponentPlayer,true));
+                        runningGame.Add(Game.GameId, (new UserContact(usrOne.UserName, onlineUsers[usrOne.UserName].Item1),
+                                                        OpponentPlayer));
                         return (Game.GameId, OpponentPlayer.UserName, true);
                     }
 
@@ -168,10 +186,10 @@ namespace CheckersService
             }
         }
 
-        public (int, Status, DateTime, bool, int, string, string) WatchGame(string usrName, int gameId)
+        public (string,int) StartWatchGame(int gameId)
         {
-            //runningGame[gameId].Item1.CheckersCallback.AddViewer();
-            return GetGame(gameId);
+            var d = runningGame[gameId].Item1.CheckersCallback.GetNetworkDetails();
+            return (d.Item1,d.Item2);
         }
 
         //(moveId,record,(posX,posY),pathI,usrName)
@@ -289,39 +307,23 @@ namespace CheckersService
             return true;
         }
 
-        public void StopWatchGame(string usrName, int gameId)
-        {
-            //ICheckersCallback callback = watchingGames[gameId][usrName];
-            //watchingGames[gameId].Remove(usrName);
-            //onlineUsers.Add(usrName, callback);
-        }
-
         public void Disconnect(string usrName, Mode userMode, int numGame = -1)
         {
             //need to check if is playing,watching, or in lobby
-            User usr;
-            using (var ctx = new CheckersDBEntities1())
-            {
-                usr = (from u in ctx.Users
-                       where u.UserName == usrName
-                       select u).FirstOrDefault();
-            }
-            if (userMode == Mode.Watching)
-            {
-               // watchingGames[numGame].Remove(usrName);
-            }
             if (userMode == Mode.Playing)
             {
-                CloseUnFinishedGame(numGame, usrName);
+                CloseUnFinishedGame(numGame, usrName,true);
             }
+            
 
 
             onlineUsers.Remove(usrName);
         }
 
-        public void CloseUnFinishedGame(int GameId, string UserName)
+        public void CloseUnFinishedGame(int GameId, string UserName,bool sendMsg)
         {
             DeleteGameFromDB(GameId);
+            if (sendMsg) { 
             if(runningGame[GameId].Item1.UserName!= UserName)
             {
                 runningGame[GameId].Item1.CheckersCallback.CloseTheGame();
@@ -329,6 +331,7 @@ namespace CheckersService
             if (runningGame[GameId].Item2!= null && runningGame[GameId].Item2.UserName != UserName)
             {
                 runningGame[GameId].Item2.CheckersCallback.CloseTheGame();
+            }
             }
             runningGame.Remove(GameId);
         }
@@ -356,6 +359,7 @@ namespace CheckersService
                                   where u.UserName == UserName
                                   select u).First();
             waitingRooms[key].Remove(playerToRemove);
+            onlineUsers[UserName] = (onlineUsers[UserName].Item1, Mode.Lobby);
         }
 
         public ICollection<(int, string, string, Status, DateTime)> GetPlayedGames(string usrName1, string usrName2)
@@ -402,9 +406,9 @@ namespace CheckersService
             return list;
         }
 
-        public ICollection<(int, string, string, TimeSpan)> GetLiveGames()
+        public ICollection<(int, string, string, TimeSpan,bool,int)> GetLiveGames()
         {
-            ICollection<(int, string, string, TimeSpan)> list = new List<(int, string, string, TimeSpan)>();
+            ICollection<(int, string, string, TimeSpan,bool,int)> list = new List<(int, string, string, TimeSpan, bool, int)>();
             using (var ctx = new CheckersDBEntities1())
             {
                 List<Game> games = (from g in ctx.Games
@@ -414,7 +418,7 @@ namespace CheckersService
                 foreach (var ou in games)
                 {
                     list.Add((ou.GameId, ou.Users.ElementAt(0).UserName,
-                        ou.Users.Count() == 2 ? ou.Users.ElementAt(1).UserName : "Computer", ou.Date.TimeOfDay));
+                        ou.Users.Count() == 2 ? ou.Users.ElementAt(1).UserName : "Computer", ou.Date.TimeOfDay,ou.EatMode,ou.BoardSize));
                 }
             }
             return list;
@@ -423,6 +427,26 @@ namespace CheckersService
         public (Game, Move) GameMoveRegonizer()
         {
             return (null,null);
+        }
+
+        public void PingOpponent(int gameId, string pingTo)
+        {
+            try { 
+            if (pingTo.Equals(runningGame[gameId].Item1.UserName))
+                    runningGame[gameId].Item1.CheckersCallback.PingClient();
+                else
+                {
+                    runningGame[gameId].Item2.CheckersCallback.PingClient();
+                }
+            
+            }
+            catch (Exception)
+            {
+                UserDisconnectedFault f = new UserDisconnectedFault();
+                f.Message="User Disconnected";
+                CloseUnFinishedGame(gameId, null, false);
+                throw new FaultException<UserDisconnectedFault>(f, new FaultReason("User Disconnected"));
+            }
         }
     }
 }

@@ -29,21 +29,25 @@ namespace CheckersService
         [OperationContract]
         (int, string, bool) JoinGame(string user, bool isVsCPU, int boardSize,bool EatMode);
         [OperationContract]
-        (int, Status, DateTime, bool, int, string, string) WatchGame(string usrName, int gameId);
+        (string, int) StartWatchGame(int gameId);
         [OperationContract]
-        void CloseUnFinishedGame(int GameId, string UserName);
-        [OperationContract]
-        void StopWatchGame(string usrName, int gameId);
+        void CloseUnFinishedGame(int GameId, string UserName,bool sendMsg);
         [OperationContract]
         ICollection<(int, DateTime, (int, int), int, string)> GetAllMoves(int gameId);
         [OperationContract]
         bool Ping();
+
+        [OperationContract]
+        [FaultContract(typeof(UserDisconnectedFault))]
+        void PingOpponent(int gameId,string pingTo);
         [OperationContract]
         void StopWaitingGame(string UserName,int boardSize,int eatMode);
         [OperationContract]
         ICollection<(int, string, string, Status, DateTime)> GetPlayedGames(string usrName1=null, string usrName2 = null);
         [OperationContract]
         ICollection<(int, string, string, Status, DateTime)> GetPlayedGamesByDate(DateTime date);
+        [OperationContract]
+        ICollection<(int, string, string, TimeSpan,bool, int)> GetLiveGames();
         [OperationContract]
         (Game, Move) GameMoveRegonizer();
     }
@@ -55,5 +59,9 @@ namespace CheckersService
         void StartGame(int GameId, string OpponentName, bool MyTurn);
         [OperationContract(IsOneWay = true)]
         void CloseTheGame();
+        [OperationContract]
+        (string, int) GetNetworkDetails();
+        [OperationContract]
+        bool PingClient();
     }
 }

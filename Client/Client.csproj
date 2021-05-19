@@ -40,6 +40,9 @@
     <StartupObject>Client.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SimpleTcp, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SuperSimpleTcp.2.4.0\lib\net461\SimpleTcp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
@@ -72,6 +75,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="King.cs" />
+    <Compile Include="LiveGamesWindow.xaml.cs">
+      <DependentUpon>LiveGamesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
@@ -107,6 +113,10 @@
       <DependentUpon>GameWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="LiveGamesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -156,6 +166,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Connected Services\CheckersServiceReference\CheckersService1.wsdl" />
+    <None Include="Connected Services\CheckersServiceReference\Client.CheckersServiceReference.Game.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\CheckersServiceReference\Client.CheckersServiceReference.Move.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\CheckersServiceReference\Client.CheckersServiceReference.Status.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

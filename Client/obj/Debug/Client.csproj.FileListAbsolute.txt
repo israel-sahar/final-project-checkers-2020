@@ -56,3 +56,8 @@ C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\Clien
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\WatchingGameWindow.g.cs
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\WatchingGameWindow.baml
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\LiveGamesWindow.g.cs
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\LiveGamesWindow.baml
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\bin\Debug\SimpleTcp.dll
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\bin\Debug\SimpleTcp.xml
+C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\obj\Debug\Client.csproj.CopyComplete

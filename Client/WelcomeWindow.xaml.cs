@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Net.Sockets;
 
 namespace Client
 {
@@ -32,6 +34,7 @@ namespace Client
             InitializeComponent();
             Callback = new ClientCallback();
             Client = new CheckersServiceClient(new InstanceContext(Callback));
+
         }
 
         private void loginBtn_Click(object sender, RoutedEventArgs e)
