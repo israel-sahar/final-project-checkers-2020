@@ -180,7 +180,7 @@ namespace Client
 "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
 
-                        Client.Disconnect(User, Mode.Lobby, -1);
+                        Client.Disconnect(User, -1);
                 
             }
         }

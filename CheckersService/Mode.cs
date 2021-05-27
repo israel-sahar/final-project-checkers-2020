@@ -10,6 +10,8 @@ namespace CheckersService
         [EnumMember]
         Watching,
         [EnumMember]
-        Playing
+        Playing,
+        [EnumMember]
+        Waiting,
     }
 }

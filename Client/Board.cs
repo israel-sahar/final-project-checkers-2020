@@ -176,7 +176,7 @@ namespace Client
             SetPieceAt(pieceToMove, path.GetLastPosition());
 
             //VerifyCrown(pieceToMove);
-            if (IsKingsOnlyLeft() && path.EatenPieces.Count == 0)
+            if (pieceToMove.IsKing && path.EatenPieces.Count == 0)
             {
                 withoutEatingCounter++;
             }

@@ -20,12 +20,9 @@ namespace CheckersService
         [FaultContract(typeof(UserNameAlreadyExistsFault))]
         void Register(string userName, string hashedPassword);
         [OperationContract]
-       [FaultContract(typeof(GameIdNotExistsFault))]
-        (int, Status, DateTime, bool, int, string, string) GetGame(int gameId);
+        void Disconnect(string usrName, int numGame = -1);
         [OperationContract]
-        void Disconnect(string usrName, Mode userMode, int numGame = -1);
-        [OperationContract]
-        void MakeMove(string UserName, int GameId, DateTime time, Point correntPos, int indexPath, Result result);
+        void MakeMove(string UserName, int GameId, Point correntPos, int indexPath, Result result);
         [OperationContract]
         (int, string, bool) JoinGame(string user, bool isVsCPU, int boardSize,bool EatMode);
         [OperationContract]
@@ -36,18 +33,10 @@ namespace CheckersService
         ICollection<(int, DateTime, (int, int), int, string)> GetAllMoves(int gameId);
         [OperationContract]
         bool Ping();
-
         [OperationContract]
-        [FaultContract(typeof(UserDisconnectedFault))]
-        void PingOpponent(int gameId,string pingTo);
+        void StopWaitingGame(string UserName, int boardSize = -1, bool eatMode = false);
         [OperationContract]
-        void StopWaitingGame(string UserName,int boardSize,int eatMode);
-        [OperationContract]
-        ICollection<(int, string, string, Status, DateTime)> GetPlayedGames(string usrName1=null, string usrName2 = null);
-        [OperationContract]
-        ICollection<(int, string, string, Status, DateTime)> GetPlayedGamesByDate(DateTime date);
-        [OperationContract]
-        ICollection<(int, string, string, TimeSpan,bool, int)> GetLiveGames();
+        ICollection<(int, string, string, Status, DateTime, bool, int)> GetGames(bool liveMode);
         [OperationContract]
         (Game, Move) GameMoveRegonizer();
     }

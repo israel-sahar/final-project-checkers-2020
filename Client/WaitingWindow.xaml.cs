@@ -62,7 +62,7 @@ namespace Client
         }
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
-            Client.StopWaitingGame(UserName, ChosenSize, (int)EatMode);
+            Client.StopWaitingGame(UserName, ChosenSize, EatMode == EatMode.On ? true : false);
             MenuWindow win = new MenuWindow();
             win.Client = Client;
             win.Content = Content;
@@ -77,8 +77,8 @@ namespace Client
             if (MessageBox.Show("This step will close the app,OK?",
 "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Client.StopWaitingGame(UserName, ChosenSize, (int)EatMode);
-                Client.Disconnect(UserName, Mode.Lobby, -1);
+                Client.StopWaitingGame(UserName, ChosenSize, EatMode == EatMode.On ? true : false) ;
+                Client.Disconnect(UserName,-1);
                 
             }
         }

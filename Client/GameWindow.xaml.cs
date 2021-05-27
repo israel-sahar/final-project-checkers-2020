@@ -41,7 +41,6 @@ namespace Client
         public int GameId { get; internal set; }
         public string UserName { get; internal set; }
         public string OpponentUserName { get; internal set; }
-        public Mode PlayerMode { get; set; }
 
         ComputerMove pcPlayer;
         //colors
@@ -156,10 +155,10 @@ namespace Client
             window.Callback = Callback;
      
             window.Show();
-            CloseWindow();
+            CloseWindow(true);
         }
 
-        private void CloseWindow()
+        private void CloseWindow(bool notLeave)
         {
             animationTimer.Stop();
 
@@ -167,7 +166,7 @@ namespace Client
                 CloseWatchers();
 
             this.Closing -= Window_Closing;
-            this.Close();
+            if(notLeave) this.Close();
         }
         private void CloseWatchers()
         {
@@ -207,7 +206,7 @@ namespace Client
             Game.VerifyCrown(pToMove);
             MakeAnimationMove(lastP, path, res.Item2);
             if (Client != null)
-                Client.MakeMove(UserName, GameId, DateTime.Now, lastP, pathIndex , resO);
+                Client.MakeMove(UserName, GameId, lastP, pathIndex , resO);
             if (server != null)
                 SendMoveToAllWatchers(DateTime.Now,UserName, lastP, pathIndex);
         }
@@ -228,7 +227,7 @@ namespace Client
             MakeAnimationMove(GetPosition(chosenPiece), move.Item2, res.Item2);
 
             if (Client != null)
-                Client.MakeMove("Computer", GameId, DateTime.Now, tempP, pathIndex, resO);
+                Client.MakeMove("Computer", GameId, tempP, pathIndex, resO);
             if (server != null)
                 SendMoveToAllWatchers(DateTime.Now, OpponentUserName, tempP, pathIndex);
 
@@ -514,7 +513,7 @@ namespace Client
                         Turn.Text = "is Tie!";
                     if (MyTurn && resO == Result.Win || !MyTurn && resO == Result.Lost)
                         Turn.Text = "Try next time!";
-
+                    MyTurn = false;
                     MessageBox.Show("The Game is ended!");
                 }
             }
@@ -566,7 +565,7 @@ namespace Client
                 window.Callback = Callback;
                 window.Show();
             }
-            CloseWindow();
+            CloseWindow(true);
         }
 
 
@@ -579,11 +578,11 @@ namespace Client
                 {
                     if (resO == Result.Continue)
 
-                        Client.Disconnect(UserName, Mode.Playing, GameId);
+                        Client.Disconnect(UserName, GameId);
                     else
-                        Client.Disconnect(UserName, Mode.Lobby, -1);
+                        Client.Disconnect(UserName, -1);
                 }
-                CloseWindow();
+                CloseWindow(false);
             }
         }
     }

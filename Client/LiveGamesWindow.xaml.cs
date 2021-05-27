@@ -46,7 +46,7 @@ namespace Client
 
         private void UpdateList(object sender, EventArgs e)
         {
-            var games = Client.GetLiveGames();
+            var games = Client.GetGames(true);
             if (games.Count == 0)
             {
                 NoGamesText.Visibility = Visibility.Visible;
@@ -62,11 +62,11 @@ namespace Client
                     gamesView.Add(new LiveGameShow()
                     {
                         GameNumber = game.Item1,
-                        Start = game.Item4,
+                        Start = game.Item5.TimeOfDay,
                         Player1 = game.Item2,
                         Player2 = game.Item3,
-                        TableSize = game.Item6,
-                        EatMode = game.Item5
+                        TableSize = game.Item7,
+                        EatMode = game.Item6
                     });
                 }
                 gamesList.ItemsSource = gamesView;
@@ -142,7 +142,7 @@ namespace Client
 "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
 
-                Client.Disconnect(UserName, Mode.Lobby, -1);
+                Client.Disconnect(UserName, -1);
             }
         }
     }

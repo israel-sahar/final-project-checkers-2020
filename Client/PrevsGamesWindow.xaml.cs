@@ -46,7 +46,7 @@ namespace Client
         
         private void UpdatePrevList(object sender, EventArgs e)
         {
-            var games = Client.GetPlayedGames(null, null);
+            var games = Client.GetGames(false);
             if (games.Count == 0)
             {
                 NoGamesText.Visibility = Visibility.Visible;
@@ -78,7 +78,9 @@ namespace Client
                         Start = game.Item5,
                         Player1 = game.Item2,
                         Player2 = game.Item3,
-                        Winner = winner
+                        Winner = winner,
+                        EatMode = game.Item6,
+                        BoardSize = game.Item7
                     });
                 }
                 gamesList.ItemsSource = gamesView;
@@ -87,9 +89,9 @@ namespace Client
 
         private void watchButton_Click(object sender, RoutedEventArgs e)
         {
-            var p = Client.GetGame(((GameShow)gamesList.SelectedItem).GameNumber);
-            var moves = Client.GetAllMoves(p.Item1);
-            var gameDetails = ConvertGame(p,moves);
+            var game = ((GameShow)gamesList.SelectedItem);
+            var moves = Client.GetAllMoves(game.GameNumber);
+            var gameDetails = ConvertGame(game, moves);
             WatchingGameWindow window = new WatchingGameWindow(gameDetails,Client,Callback,UserName);
             window.Show();
             this.Closing -= Window_Closing;
@@ -98,18 +100,18 @@ namespace Client
         }
 
         /*(gameId,Status,date,EatMode,boardSize,usr1,usr2,Moves)*/
-        private (Game,string,string) ConvertGame((int, Status, DateTime, bool, int, string, string) p,List<(int, DateTime, (int, int), int, string)> moves)
+        private (Game,string,string) ConvertGame(GameShow p,List<(int, DateTime, (int, int), int, string)> moves)
         {
             Game newGame = new Game()
             {
-                GameId = p.Item1,
-                Status = (int)p.Item2,
-                Date = p.Item3,
-                EatMode = p.Item4,
-                BoardSize = p.Item5,
+                GameId = p.GameNumber,
+                Status =(int)Status.Unfinished,
+                Date = DateTime.Now,
+                EatMode = p.EatMode,
+                BoardSize = p.BoardSize,
                 Moves = ConvertMoves(moves)
             };
-            return (newGame,p.Item6,p.Item7);
+            return (newGame,p.Player1,p.Player2);
         }
 
         //(moveId,record,(posX,posY),pathI,usrName)
@@ -157,8 +159,7 @@ namespace Client
 "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 
-                        Client.Disconnect(UserName, Mode.Lobby, -1);
-                
+                        Client.Disconnect(UserName, -1);
             }
         }
     }
@@ -169,6 +170,8 @@ namespace Client
         public DateTime Start { get; set; }
         public string Player1 { get; set; }
         public string Player2 { get; set; }
+        public bool EatMode { get; set; }
+        public int BoardSize { get; set; }
         public string Winner { get; set; }
     }
 

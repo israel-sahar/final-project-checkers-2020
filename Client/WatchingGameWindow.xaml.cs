@@ -62,6 +62,9 @@ namespace Client
             Reset = false;
             IsLive = false;
             Init(IsLive);
+            ellipse.Fill = redColorPiece;
+            Turn.Text = $"This is {userOne} Turn";
+
         }
 
         public WatchingGameWindow((Game, string, string) gameDetails, CheckersServiceClient client, ClientCallback callback, string userName, string ip, int port)
@@ -79,7 +82,8 @@ namespace Client
             IsLive = true;
 
             Init(IsLive);
-            ellipse.Fill = CorrentColor = redColorPiece;
+            ellipse.Fill = redColorPiece;
+            Turn.Text = $"This is {userOne} Turn";
 
             ipToConnect = ip;
             portToConnect = port;
@@ -470,7 +474,7 @@ namespace Client
 "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 animationTimer.Tick -= Animation;
-                Client.Disconnect(UserName, Mode.Lobby, -1);
+                Client.Disconnect(UserName, -1);
                 if (tcpClient != null)
                 {
                     tcpClient.Events.Disconnected -= Disconnected;

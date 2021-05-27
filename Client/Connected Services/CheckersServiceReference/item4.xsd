@@ -1,16 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/System.Windows" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/System.Windows" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/System" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/System" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-  <xs:complexType name="Point">
+  <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/CheckersService/Service1/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CheckersService" />
+  <xs:complexType name="ValueTupleOfintstringboolean">
     <xs:annotation>
       <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{2}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="boolean" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
         <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
       </xs:appinfo>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="_x" type="xs:double" />
-      <xs:element name="_y" type="xs:double" />
+      <xs:element name="Item1" type="xs:int" />
+      <xs:element name="Item2" nillable="true" type="xs:string" />
+      <xs:element name="Item3" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="Point" nillable="true" type="tns:Point" />
+  <xs:element name="ValueTupleOfintstringboolean" nillable="true" type="tns:ValueTupleOfintstringboolean" />
+  <xs:complexType name="ValueTupleOfstringint">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item1" nillable="true" type="xs:string" />
+      <xs:element name="Item2" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValueTupleOfstringint" nillable="true" type="tns:ValueTupleOfstringint" />
+  <xs:complexType name="ArrayOfValueTupleOfintdateTimeValueTupleOfintintintstringdZZoPUbq">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ValueTupleOfintdateTimeValueTupleOfintintintstringdZZoPUbq" type="tns:ValueTupleOfintdateTimeValueTupleOfintintintstringdZZoPUbq" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfValueTupleOfintdateTimeValueTupleOfintintintstringdZZoPUbq" nillable="true" type="tns:ArrayOfValueTupleOfintdateTimeValueTupleOfintintintstringdZZoPUbq" />
+  <xs:complexType name="ValueTupleOfintdateTimeValueTupleOfintintintstringdZZoPUbq">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{2}{3}{4}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="dateTime" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="ValueTupleOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/System">
+            <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+            <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+          </GenericParameter>
+          <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item1" type="xs:int" />
+      <xs:element name="Item2" type="xs:dateTime" />
+      <xs:element name="Item3" type="tns:ValueTupleOfintint" />
+      <xs:element name="Item4" type="xs:int" />
+      <xs:element name="Item5" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValueTupleOfintdateTimeValueTupleOfintintintstringdZZoPUbq" nillable="true" type="tns:ValueTupleOfintdateTimeValueTupleOfintintintstringdZZoPUbq" />
+  <xs:complexType name="ValueTupleOfintint">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item1" type="xs:int" />
+      <xs:element name="Item2" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValueTupleOfintint" nillable="true" type="tns:ValueTupleOfintint" />
+  <xs:complexType name="ArrayOfValueTupleOfintstringstringStatusdateTimebooleanintiYHbegs4">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ValueTupleOfintstringstringStatusdateTimebooleanintiYHbegs4" type="tns:ValueTupleOfintstringstringStatusdateTimebooleanintiYHbegs4" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfValueTupleOfintstringstringStatusdateTimebooleanintiYHbegs4" nillable="true" type="tns:ArrayOfValueTupleOfintstringstringStatusdateTimebooleanintiYHbegs4" />
+  <xs:complexType name="ValueTupleOfintstringstringStatusdateTimebooleanintiYHbegs4">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{2}{3}{4}{5}{6}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="Status" Namespace="http://schemas.datacontract.org/2004/07/CheckersService" />
+          <GenericParameter Name="dateTime" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="boolean" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item1" type="xs:int" />
+      <xs:element name="Item2" nillable="true" type="xs:string" />
+      <xs:element name="Item3" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CheckersService" name="Item4" type="q1:Status" />
+      <xs:element name="Item5" type="xs:dateTime" />
+      <xs:element name="Item6" type="xs:boolean" />
+      <xs:element name="Item7" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValueTupleOfintstringstringStatusdateTimebooleanintiYHbegs4" nillable="true" type="tns:ValueTupleOfintstringstringStatusdateTimebooleanintiYHbegs4" />
+  <xs:complexType name="ValueTupleOfGameMoveJ8dbTJWT">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Game" Namespace="http://schemas.datacontract.org/2004/07/CheckersService" />
+          <GenericParameter Name="Move" Namespace="http://schemas.datacontract.org/2004/07/CheckersService" />
+        </GenericType>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CheckersService" name="Item1" nillable="true" type="q2:Game" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CheckersService" name="Item2" nillable="true" type="q3:Move" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValueTupleOfGameMoveJ8dbTJWT" nillable="true" type="tns:ValueTupleOfGameMoveJ8dbTJWT" />
 </xs:schema>
