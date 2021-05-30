@@ -37,7 +37,7 @@ namespace Client
             gamesList.Visibility = Visibility.Hidden;
 
             updateTimer = new DispatcherTimer();
-            updateTimer.Interval = new TimeSpan(0, 0, 5);
+            updateTimer.Interval = new TimeSpan(0, 0, 20);
             updateTimer.Tick += UpdateList;
             updateTimer.Start();
 

@@ -184,7 +184,7 @@
           <End Role="Games" Type="Self.Game" Multiplicity="*" />
           <End Role="Users" Type="Self.User" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="CheckersDBEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="CheckersDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Games" EntityType="Self.Game" />
           <EntitySet Name="Moves" EntityType="Self.Move" />
           <EntitySet Name="Users" EntityType="Self.User" />
@@ -206,7 +206,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="CheckersDBModelStoreContainer" CdmEntityContainer="CheckersDBEntities1">
+        <EntityContainerMapping StorageEntityContainer="CheckersDBModelStoreContainer" CdmEntityContainer="CheckersDBEntities">
           <EntitySetMapping Name="Games">
             <EntityTypeMapping TypeName="CheckersDBModel.Game">
               <MappingFragment StoreEntitySet="Games">

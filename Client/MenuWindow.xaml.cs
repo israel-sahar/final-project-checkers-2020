@@ -176,13 +176,7 @@ namespace Client
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (MessageBox.Show("This step will close the app,OK?",
-"Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-
-                        Client.Disconnect(User, -1);
-                
-            }
+            Client.Disconnect(User, -1);
         }
     }
 }

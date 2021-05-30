@@ -42,7 +42,7 @@ namespace CheckersService
             waitingRooms.Add(101, new List<UserContact>());// size 10 with eating
 
             IEnumerable<Game> games;
-            using (var ctx = new CheckersDBEntities1())
+            using (var ctx = new CheckersDBEntities())
             {
                 games = (from game in ctx.Games
                          where game.Status == (int)Status.Unfinished
@@ -90,7 +90,7 @@ namespace CheckersService
                 throw new FaultException<UserAlreadyLoginFault>(fault, new FaultReason($" The User {usrName} online"));
             }
             User user;
-            using (var ctx = new CheckersDBEntities1()) {
+            using (var ctx = new CheckersDBEntities()) {
                 user = (from u in ctx.Users where u.UserName == usrName select u).FirstOrDefault();
                 if (user == null) {
                     UserNotExistsFault fault = new UserNotExistsFault {
@@ -115,7 +115,7 @@ namespace CheckersService
         public void Register(string userName, string hashedPassword)
         {
             User user;
-            using (var ctx = new CheckersDBEntities1())
+            using (var ctx = new CheckersDBEntities())
             {
                 user = (from u in ctx.Users where u.UserName == userName select u).FirstOrDefault();
                 if (user != null)
@@ -154,7 +154,7 @@ namespace CheckersService
         /// <returns></returns>
         public (int, string, bool) JoinGame(string user, bool isVsCPU, int boardSize, bool EatMode)
         {
-            using (var ctx = new CheckersDBEntities1())
+            using (var ctx = new CheckersDBEntities())
             {
                 if (isVsCPU)
                 {
@@ -243,14 +243,21 @@ namespace CheckersService
         /// <param name="result">the result of the move</param>
         public void MakeMove(string UserName, int GameId, Point correntPos, int indexPath, Result result)
         {
-            using(var ctx = new CheckersDBEntities1())
+            using(var ctx = new CheckersDBEntities())
             {
                 Game game = (from u in ctx.Games where u.GameId == GameId select u).First();
-                User OtherUser = null;
+                User OtherUser=null, CurrentUser=null;
 
-                User CurrentUser = UserName.Equals("Computer") ?null:game.Users.Where(x => x.UserName == UserName).First();
                 if (game.Users.Count() == 2)
+                {
                     OtherUser = game.Users.Where(x => x.UserName != UserName).First();
+                    CurrentUser = game.Users.Where(x => x.UserName == UserName).First();
+                }
+                else
+                {
+                    CurrentUser = UserName.Equals("Computer") ? null : game.Users.First();
+                    OtherUser = UserName.Equals("Computer") ? game.Users.First() : null;
+                }
 
                 var move = new Move
                 {
@@ -263,7 +270,7 @@ namespace CheckersService
                 };
                 game.Moves.Add(move);
 
-                if (OtherUser != null)
+                if (game.Users.Count() == 2)
                 {
                     UserContact sentTo = runningGame[GameId].Item1.UserName == UserName ? runningGame[GameId].Item2 : runningGame[GameId].Item1;
                     sentTo.CheckersCallback.SendOpponentMove(correntPos, indexPath, result);
@@ -274,7 +281,7 @@ namespace CheckersService
                     switch (result)
                     {
                         case (Result.Lost):
-                            if (OtherUser == null)
+                            if (game.Users.Count() == 1)
                                 {
                                     if (UserName == "Computer")
                                         game.Status = (int)Status.OneWon;
@@ -288,7 +295,7 @@ namespace CheckersService
                             game.Status = (int)Status.isTie;
                             break;
                         case (Result.Win):
-                            if (OtherUser == null)
+                            if (game.Users.Count() == 1)
                             {
                                 if (UserName == "Computer")
                                     game.Status = (int)Status.TwoWon;
@@ -301,7 +308,7 @@ namespace CheckersService
                     }
 
                     if(OtherUser!=null) onlineUsers[OtherUser.UserName] = (onlineUsers[OtherUser.UserName].Item1,Mode.Lobby);
-                    onlineUsers[UserName] = (onlineUsers[UserName].Item1, Mode.Lobby);
+                    if(CurrentUser!=null) onlineUsers[CurrentUser.UserName] = (onlineUsers[CurrentUser.UserName].Item1, Mode.Lobby);
 
                     runningGame.Remove(GameId);
                 }
@@ -384,7 +391,7 @@ namespace CheckersService
         /// <param name="GameId">id of game you want to delete</param>
         private void DeleteGameFromDB(int GameId)
         {
-            using (var ctx = new CheckersDBEntities1())
+            using (var ctx = new CheckersDBEntities())
             {
                 var movesToD = (from u in ctx.Moves
                                 where u.GameId == GameId
@@ -446,7 +453,7 @@ namespace CheckersService
         /// </returns>
         public ICollection<(int, DateTime, (int, int), int, string)> GetAllMoves(int gameId)
         {
-            using (var ctx = new CheckersDBEntities1())
+            using (var ctx = new CheckersDBEntities())
             {
                 var game = (from u in ctx.Games
                             where u.GameId == gameId
@@ -477,7 +484,7 @@ namespace CheckersService
         public ICollection<(int, string, string, Status, DateTime, bool, int)> GetGames(bool liveMode)
         {
             ICollection<(int, string, string, Status, DateTime, bool, int)> list = new List<(int, string, string, Status, DateTime, bool, int)>();
-            using (var ctx = new CheckersDBEntities1())
+            using (var ctx = new CheckersDBEntities())
             {
                 List<Game> games=null;
                 games = (from g in ctx.Games

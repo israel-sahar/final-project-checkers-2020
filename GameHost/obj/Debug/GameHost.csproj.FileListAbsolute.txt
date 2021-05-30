@@ -13,8 +13,6 @@ C:\Users\sahar\Desktop\Github\final-project-checkers-2020\GameHost\obj\Debug\Gam
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\GameHost\obj\Debug\GameHost.exe
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\GameHost\obj\Debug\GameHost.pdb
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\GameHost\bin\Debug\CheckersService.dll
-C:\Users\sahar\Desktop\Github\final-project-checkers-2020\GameHost\bin\Debug\CheckersService.pdb
-C:\Users\sahar\Desktop\Github\final-project-checkers-2020\GameHost\bin\Debug\CheckersService.dll.config
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\GameHost\obj\Debug\GameHost.csproj.CopyComplete
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\GameHost\obj\Debug\GameHost.csprojAssemblyReference.cache
 C:\Users\sahar\Desktop\Github\final-project-checkers-2020\GameHost\bin\Debug\EntityFramework.dll

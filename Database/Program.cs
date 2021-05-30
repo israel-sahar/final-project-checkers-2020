@@ -10,9 +10,14 @@ namespace Database
     {
         static void Main(string[] args)
         {
-            using (GameContext gc = new GameContext("CheckersDB")) {
-                gc.Database.Initialize(force: true);
-            } 
+            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog= CheckersDB;AttachDbFilename=C:\Checkers\CheckersDB.mdf;Integrated Security=True";
+            using (var ctx = new GameContext(connectionString))
+            {
+                
+                ctx.Database.Initialize(force: true);
+                Console.WriteLine("database created..");
+                Console.ReadLine();
+            }
         }
     }
 }

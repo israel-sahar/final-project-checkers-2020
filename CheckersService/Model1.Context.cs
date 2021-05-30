@@ -13,10 +13,10 @@ namespace CheckersService
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class CheckersDBEntities1 : DbContext
+    public partial class CheckersDBEntities : DbContext
     {
-        public CheckersDBEntities1()
-            : base("name=CheckersDBEntities1")
+        public CheckersDBEntities()
+            : base("name=CheckersDBEntities")
         {
         }
     

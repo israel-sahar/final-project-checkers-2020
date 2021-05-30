@@ -63,7 +63,7 @@
     <End Role="Games" Type="Self.Game" Multiplicity="*" />
     <End Role="Users" Type="Self.User" Multiplicity="*" />
   </Association>
-  <EntityContainer Name="CheckersDBEntities1" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="CheckersDBEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Games" EntityType="Self.Game" />
     <EntitySet Name="Moves" EntityType="Self.Move" />
     <EntitySet Name="Users" EntityType="Self.User" />
