@@ -402,7 +402,7 @@ namespace Client
             {
                 Image kingImg = new Image()
                 {
-                    Source = new BitmapImage(new Uri(@"C:\Users\sahar\Desktop\Github\final-project-checkers-2020\Client\assets\images\king.png")),
+                    Source = new BitmapImage(new Uri(@"\assets\images\king.png",UriKind.RelativeOrAbsolute)),
                     Width = ell.Width,
                     Height = ell.Height,
                     Margin = new Thickness(12),
