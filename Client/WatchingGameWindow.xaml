@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-Title="Watching Game.." Height="700" Width="679.947" ResizeMode="NoResize" Closed="Window_Closed">
+Title="Watching Game.." Height="700" Width="679.947" ResizeMode="NoResize" Closed="Window_Closed" WindowStartupLocation="CenterScreen">
     <Window.Background>
         <ImageBrush ImageSource="assets\images\background.jpg" Opacity="0.5"/>
     </Window.Background>

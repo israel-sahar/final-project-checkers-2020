@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="Chesser Game" Closing="Window_Closing" Height="500" Width="600" ResizeMode="NoResize">
+        Title="Chesser Game" Closing="Window_Closing" Height="500" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
