@@ -400,8 +400,10 @@ namespace CheckersService
                 var g = (from u in ctx.Games
                          where u.GameId == GameId
                          select u).FirstOrDefault();
+                if (g != null) { 
                 ctx.Games.Remove(g);
                 ctx.SaveChanges();
+                }
             }
         }
 
